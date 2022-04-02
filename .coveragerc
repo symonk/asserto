@@ -1,0 +1,7 @@
+[run]
+source = asserto/
+
+[report]
+sort = -Cover
+skip_empty = True
+precision = 2
