@@ -14,7 +14,7 @@ python = "^3.10"  # Lax this in future; we don't need to be so strict.
 
 [tool.poetry.dev-dependencies]
 codecov = "^2.1.12"
-ipython = "^8.0.1"
+ipython = "^8.2.0"
 pre-commit = "^2.16.0"
 mkdocs = "^1.2.3"
 mkdocs-material = "^8.2.7"
