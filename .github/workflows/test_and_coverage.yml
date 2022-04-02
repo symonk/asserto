@@ -28,7 +28,7 @@ jobs:
           poetry --version
       - name: Execute tests
         run: |
-          tox -e py310
+          tox
       - uses: actions/checkout@master
       - uses: codecov/codecov-action@v2
         with:
