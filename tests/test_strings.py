@@ -2,9 +2,9 @@ import pytest
 
 
 def test_ends_with_success(asserto) -> None:
-    asserto("foo").endswith("oo")
+    asserto("foo").ends_with("oo")
 
 
 def test_ends_with_failures(asserto) -> None:
     with pytest.raises(AssertionError):
-        asserto("foo").endswith("baz")
+        asserto("foo").ends_with("baz")
