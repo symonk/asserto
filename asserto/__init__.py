@@ -1,3 +1,3 @@
-from .api import assert_that
+from .api import asserto
 
-__all__ = ["assert_that"]
+__all__ = ["asserto"]

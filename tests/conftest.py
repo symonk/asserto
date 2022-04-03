@@ -1,8 +1,8 @@
 import pytest
 
-from asserto import assert_that
+from asserto import asserto as Asserto
 
 
 @pytest.fixture
 def asserto():
-    return assert_that
+    return Asserto
