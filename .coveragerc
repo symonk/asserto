@@ -1,5 +1,6 @@
 [run]
 source = asserto/
+omit = tests/
 
 [report]
 sort = -Cover
