@@ -19,14 +19,12 @@ from asserto import asserto
 
 
 def test_something():
-    asserto((5, 6, 7)).is_length(3)
+    asserto((5, 6, 7)).is_length(3).equals((5,6,7))
 
 
-# Or use our pytest fixture
-
+# Or if you are using the `asserto-pytest` plugin:
 def test_with_pytest(asserto):
-    asserto(25).is_instance_of(int)
-    asserto("Hello World").matches(r"^[A-Z][a-z]{4} [A-Z][a-z]{4}$")
+    asserto("Hello World").is_length(11).matches(r"^[A-Z][a-z]{4} [A-Z][a-z]{4}$")
 
 ```
 
