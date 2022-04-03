@@ -6,10 +6,8 @@ __tracebackhide__ = True
 class StringMixin:
     def ends_with(self, suffix: str) -> StringMixin:
         if not self.value.endswith(suffix):
-            self._failed(f"String: {self.value} did not end with: {suffix}")
-        return self
+            self.error(f"{self.value} did not end with {suffix}")
 
     def starts_with(self, prefix: str) -> StringMixin:
         if not self.value.startswith(prefix):
-            self._failed(f"String: {self.value} did not start with: {prefix}")
-        return self
+            self.error(f"{self.value} did not end with {prefix}")
