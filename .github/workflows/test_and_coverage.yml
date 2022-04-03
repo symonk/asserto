@@ -32,7 +32,6 @@ jobs:
       - uses: actions/checkout@master
       - uses: codecov/codecov-action@v2
         with:
-          files: ./coverage
           flags: asserto unit tests
           fail_ci_if_error: true
           verbose: true
