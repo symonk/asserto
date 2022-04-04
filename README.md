@@ -21,11 +21,9 @@ from asserto import asserto
 def test_something():
     asserto((5, 6, 7)).is_length(3).equals((5,6,7))
 
-
 # Or if you are using the `asserto-pytest` plugin:
 def test_with_pytest(asserto):
-    asserto("Hello World").is_length(11).matches(r"^[A-Z][a-z]{4} [A-Z][a-z]{4}$")
-
+    asserto("Hello").is_length(11).matches(r"^[A-Z][a-z]{4}$")
 ```
 
 Asserto is current in its early development stages; contributions are extremely welcome!

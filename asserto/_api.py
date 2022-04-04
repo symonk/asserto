@@ -1,6 +1,6 @@
 import typing
 
-from .asserto import Asserto
+from ._asserto import Asserto
 
 
 def asserto(value: typing.Any) -> Asserto:

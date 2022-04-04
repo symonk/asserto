@@ -1,0 +1,3 @@
+"""
+Asserto exception hierarchy.
+"""

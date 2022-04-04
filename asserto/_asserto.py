@@ -3,18 +3,26 @@ from __future__ import annotations
 import types
 import typing
 
-from .constants import AssertTypes
+from ._constants import AssertTypes
+from ._types import TYPE_ALIAS
 from .mixins import StringMixin
+from .mixins import RegexMixin
+
+__tracebackhide__ = True
 
 
-class Asserto(StringMixin):
+class Asserto(StringMixin, RegexMixin):
     """
     Core API
     """
 
     def __init__(self, value: typing.Any, type_of: str = AssertTypes.HARD, description: typing.Optional[str] = None):
         self.value = value
+        self.type_of = type_of
         self.description = description
+
+    def __repr__(self) -> str:
+        return f"Asserto(value={self.value}, type_of: {self.type_of}, description: {self.description})"
 
     def equals(self, value: typing.Any) -> Asserto:
         # Todo: Make all of these generic checks 'realistic', they aren't actually fit for purpose atm.
@@ -27,7 +35,7 @@ class Asserto(StringMixin):
             self.error(f"{self.value} was not equal to: {value}")
         return self
 
-    def has_same_identity_of(self, value: typing.Any) -> Asserto:
+    def has_same_identity_of(self, value: TYPE_ALIAS) -> Asserto:
         # Todo: Make all of these generic checks 'realistic', they aren't actually fit for purpose atm.
         """
         General pointer comparison, compare by object ID.
@@ -44,10 +52,16 @@ class Asserto(StringMixin):
             self.error(f"Length of: {self.value} was not equal to length of: {length}")
         return self
 
-    def is_instance_of(self, cls: typing.Type[typing.Any]) -> Asserto:
-        # Todo: Make all of these generic checks 'realistic', they aren't actually fit for purpose atm.
-        if not isinstance(self.value, cls):
-            self.error(f"Type of: {self.value} was: {type(self.value)} not {cls}")
+    def is_instance(self, cls_or_tuple: typing.Union[TYPE_ALIAS, typing.Iterable[TYPE_ALIAS]]) -> Asserto:
+        """
+        Checks if the value provided is either:
+            :: Is a direct subclass instance of at least one of the types in cls_or_tuple.
+            :: Is an indirect subclass instance of at least one of the types in cls_or_tuple.
+            :: Is a virtual subclass instance of at least one of the types in cls_or_tuple.
+        :param cls_or_tuple: A single Type, or iterable of types to check the object against.
+        """
+        if not isinstance(self.value, cls_or_tuple):
+            self.error(f"[{self.value!r}]: {type(self.value)} was not an instance of: {cls_or_tuple}")
         return self
 
     def error(self, message: str) -> typing.NoReturn:

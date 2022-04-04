@@ -1,3 +1,3 @@
-from .api import asserto
+from ._api import asserto
 
 __all__ = ["asserto"]
