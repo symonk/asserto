@@ -22,7 +22,7 @@ class Asserto(StringMixin, RegexMixin):
         self.description = description
 
     def __repr__(self) -> str:
-        return f"Asserto(value={self.value}, type_of: {self.type_of}, description: {self.description})"
+        return f"Asserto(value={self.value}, type_of={self.type_of}, description={self.description})"
 
     def equals(self, value: typing.Any) -> Asserto:
         # Todo: Make all of these generic checks 'realistic', they aren't actually fit for purpose atm.
