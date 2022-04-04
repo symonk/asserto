@@ -11,7 +11,7 @@ from asserto import asserto
 
 
 def test_something():
-    asserto((5, 6, 7)).is_length(3).equals((5,6,7))
+    asserto((5, 6, 7)).is_length(3).is_equal_to((5,6,7))
 
 # Or if you are using the `asserto-pytest` plugin:
 def test_with_pytest(asserto):

@@ -14,6 +14,15 @@ __tracebackhide__ = True
 class Asserto(StringMixin, RegexMixin):
     """
     Core API
+
+    Todos:
+        :: is_true()
+        :: is_false()
+        :: is_none()
+        :: is_not_none()
+        :: is_type_of()
+        :: is_subclass_of? (maybe is_instance covers it?)
+        :: is_not_equal_to()
     """
 
     def __init__(self, value: typing.Any, type_of: str = AssertTypes.HARD, description: typing.Optional[str] = None):
@@ -24,7 +33,7 @@ class Asserto(StringMixin, RegexMixin):
     def __repr__(self) -> str:
         return f"Asserto(value={self.value}, type_of={self.type_of}, description={self.description})"
 
-    def equals(self, value: typing.Any) -> Asserto:
+    def is_equal_to(self, value: typing.Any) -> Asserto:
         # Todo: Make all of these generic checks 'realistic', they aren't actually fit for purpose atm.
         """
         General object comparison.
@@ -33,17 +42,6 @@ class Asserto(StringMixin, RegexMixin):
         """
         if self.value != value:
             self.error(f"{self.value} was not equal to: {value}")
-        return self
-
-    def has_same_identity_of(self, value: TYPE_ALIAS) -> Asserto:
-        # Todo: Make all of these generic checks 'realistic', they aren't actually fit for purpose atm.
-        """
-        General pointer comparison, compare by object ID.
-        :param value: The other object to compare.
-        :return: The instance of `Asserto` to chain asserts.
-        """
-        if self.value is not value:
-            self.error(f"{self.value} is not: {value}")
         return self
 
     def is_length(self, length: int) -> Asserto:
@@ -62,6 +60,17 @@ class Asserto(StringMixin, RegexMixin):
         """
         if not isinstance(self.value, cls_or_tuple):
             self.error(f"[{self.value!r}]: {type(self.value)} was not an instance of: {cls_or_tuple}")
+        return self
+
+    def has_same_id_as(self, value: TYPE_ALIAS) -> Asserto:
+        # Todo: Make all of these generic checks 'realistic', they aren't actually fit for purpose atm.
+        """
+        General pointer comparison, compare by object ID.
+        :param value: The other object to compare.
+        :return: The instance of `Asserto` to chain asserts.
+        """
+        if self.value is not value:
+            self.error(f"{self.value} is not: {value}")
         return self
 
     def error(self, message: str) -> typing.NoReturn:
