@@ -23,7 +23,7 @@ def test_something():
 
 # Or if you are using the `asserto-pytest` plugin:
 def test_with_pytest(asserto):
-    asserto("Hello").is_length(11).matches(r"^[A-Z][a-z]{4}$")
+    asserto("Hello").is_length(5).matches(r"^[A-Z][a-z]{4}$")
 ```
 
 Asserto is current in its early development stages; contributions are extremely welcome!
