@@ -13,18 +13,7 @@ __tracebackhide__ = True
 
 
 class Asserto(AsserterMixin):
-    """
-    Core API
-
-    Todos:
-        :: is_true()
-        :: is_false()
-        :: is_none()
-        :: is_not_none()
-        :: is_type_of()
-        :: is_subclass_of? (maybe is_instance covers it?)
-        :: is_not_equal_to()
-    """
+    """Asserto"""
 
     def __init__(
         self,
@@ -42,6 +31,11 @@ class Asserto(AsserterMixin):
 
     # ----- String Delegation -----
     def ends_with(self, suffix: str) -> Asserto:
+        """
+        Asserts that the value provided begins with the suffix.
+        :param suffix: A substring to ensure the value begins with.
+        :return: The Asserto instance for fluency.
+        """
         self.string_asserter.ends_with(suffix)
         return self
 

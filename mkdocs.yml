@@ -2,8 +2,7 @@ site_name: Asserto documentation
 site_url: https://www.google.com
 nav:
     - Overview: index.md
-    - String Assertions: strings.md
-    - Generic Assertions: generic.md
+    - Assertions API: assertions.md
 theme:
   name: material
   features:
