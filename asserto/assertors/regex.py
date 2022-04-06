@@ -9,9 +9,9 @@ from .._mixins import AsserterMixin
 
 
 class AssertsRegex(AsserterMixin):
-    def __init__(self, value: str) -> None:
-        self.value = value
+    def __init__(self, actual: str) -> None:
+        self.actual = actual
 
     def matches(self, pattern: str) -> None:
-        if re.match(re.compile(rf"{pattern}"), self.value) is None:
-            self.error(f"{pattern} did not match the value: {self.value}")
+        if re.match(re.compile(rf"{pattern}"), self.actual) is None:
+            self.error(f"{pattern} did not match the value: {self.actual}")
