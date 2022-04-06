@@ -4,7 +4,12 @@
     selection:
       members:
         - ends_with
+        - starts_with
+        - has_same_id_as
+        - is_length
         - is_equal_to
+        - is_instance
+        - matches
+        -
     rendering:
-        show_root_heading: true
-        show_source: true
+        show_root_heading: false

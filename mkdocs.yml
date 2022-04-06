@@ -2,14 +2,21 @@ site_name: Asserto documentation
 site_url: https://www.google.com
 nav:
     - Overview: index.md
-    - Assertions API: assertions.md
+    - Assertions: assertions.md
 theme:
   name: material
   features:
     - content.code.annotate
 plugins:
     - search
-    - mkdocstrings
+    - mkdocstrings:
+        default_handler: python
+        handlers:
+          python:
+            rendering:
+              show_source: false
+        watch:
+          - asserto/
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true

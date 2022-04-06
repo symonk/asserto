@@ -34,7 +34,6 @@ class Asserto(AsserterMixin):
         """
         Asserts that the value provided begins with the suffix.
         :param suffix: A substring to ensure the value begins with.
-        :return: The Asserto instance for fluency.
         """
         self.string_asserter.ends_with(suffix)
         return self
@@ -55,29 +54,31 @@ class Asserto(AsserterMixin):
     def __repr__(self) -> str:
         return f"Asserto(value={self.value}, type_of={self.type_of}, description={self.description})"
 
-    def is_equal_to(self, value: typing.Any) -> Asserto:
+    def is_equal_to(self, other: typing.Any) -> Asserto:
         # Todo: Make all of these generic checks 'realistic', they aren't actually fit for purpose atm.
         """
         General object comparison.
-        :param value: The value to compare against.
+        :param other: The value to compare against.
         :return: The instance of `Asserto` to chain asserts.
         """
-        if self.value != value:
-            self.error(f"{self.value} was not equal to: {value}")
+        if self.value != other:
+            self.error(f"{self.value} was not equal to: {other}")
         return self
 
-    def is_length(self, length: int) -> Asserto:
+    def is_length(self, other: int) -> Asserto:
         # Todo: Make all of these generic checks 'realistic', they aren't actually fit for purpose atm.
-        if len(self.value) != length:
-            self.error(f"Length of: {self.value} was not equal to length of: {length}")
+        if len(self.value) != other:
+            self.error(f"Length of: {self.value} was not equal to length of: {other}")
         return self
 
     def is_instance(self, cls_or_tuple: typing.Union[TYPE_ALIAS, typing.Iterable[TYPE_ALIAS]]) -> Asserto:
         """
         Checks if the value provided is either:
-            :: Is a direct subclass instance of at least one of the types in cls_or_tuple.
-            :: Is an indirect subclass instance of at least one of the types in cls_or_tuple.
-            :: Is a virtual subclass instance of at least one of the types in cls_or_tuple.
+
+            :: A direct subclass.
+            :: An indirect subclass.
+            :: A virtual subclass registered via the abc.
+
         :param cls_or_tuple: A single Type, or iterable of types to check the object against.
         """
         if not isinstance(self.value, cls_or_tuple):
