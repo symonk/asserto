@@ -15,4 +15,4 @@ class AssertsStrings(AsserterMixin):
 
     def starts_with(self, prefix: str) -> None:
         if not self.actual.startswith(prefix):
-            self.error(f"{self.actual} did not end with {prefix}")
+            self.error(f"{self.actual} did not start with {prefix}")

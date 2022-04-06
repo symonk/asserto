@@ -1,12 +1,15 @@
 import typing
 
 from ._asserto import Asserto
+from ._constants import AssertTypes
 
 
-def asserto(value: typing.Any) -> Asserto:
+def asserto(actual: typing.Any, type_of: str = AssertTypes.HARD, description: typing.Optional[str] = None) -> Asserto:
     """
     Retrieve an appropriate asserter for the type of value.
-    :param value: The value to compare against later and defer a type specific asserter from.
+    :param actual: The value to compare against later and defer a type specific asserter from.
+    :param type_of: ...
+    :param description: ...
     :return: An instance of an asserter
     """
-    return Asserto(value)
+    return Asserto(actual, type_of, description)
