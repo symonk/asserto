@@ -5,7 +5,6 @@ import typing
 
 from ._constants import AssertTypes
 from ._mixins import AsserterMixin
-from ._types import TYPE_ALIAS
 from .assertors import AssertsRegex
 from .assertors import AssertsStrings
 
@@ -55,14 +54,25 @@ class Asserto(AsserterMixin):
         return f"Asserto(value={self.value}, type_of={self.type_of}, description={self.description})"
 
     def is_equal_to(self, other: typing.Any) -> Asserto:
-        # Todo: Make all of these generic checks 'realistic', they aren't actually fit for purpose atm.
         """
-        General object comparison.
-        :param other: The value to compare against.
+        Compares the value against `other` for equality.
+
+        :param other: The other object to compare against.
         :return: The instance of `Asserto` to chain asserts.
         """
         if self.value != other:
-            self.error(f"{self.value} was not equal to: {other}")
+            self.error(f"{self.value!r} was not equal to: {other!r}")
+        return self
+
+    def is_not_equal_to(self, other: typing.Any) -> Asserto:
+        """
+        Compares the value against `other` for non equality.
+
+        :param other: The other object to compare against.
+        :return: The instance of `Asserto` to chain asserts.
+        """
+        if self.value == other:
+            self.error(f"{self.value!r} is equal to: {other!r}")
         return self
 
     def is_length(self, other: int) -> Asserto:
@@ -71,7 +81,7 @@ class Asserto(AsserterMixin):
             self.error(f"Length of: {self.value} was not equal to length of: {other}")
         return self
 
-    def is_instance(self, cls_or_tuple: typing.Union[TYPE_ALIAS, typing.Iterable[TYPE_ALIAS]]) -> Asserto:
+    def is_instance(self, cls_or_tuple: typing.Union[typing.Any, typing.Iterable[typing.Any]]) -> Asserto:
         """
         Checks if the value provided is either:
 
@@ -85,15 +95,24 @@ class Asserto(AsserterMixin):
             self.error(f"[{self.value!r}]: {type(self.value)} was not an instance of: {cls_or_tuple}")
         return self
 
-    def has_same_id_as(self, value: TYPE_ALIAS) -> Asserto:
-        # Todo: Make all of these generic checks 'realistic', they aren't actually fit for purpose atm.
+    def refers_to(self, other: typing.Any) -> Asserto:
         """
-        General pointer comparison, compare by object ID.
-        :param value: The other object to compare.
+        Checks that the value refers to the same object in memory as `other`.`
+        :param other: The other object to compare identity of.
         :return: The instance of `Asserto` to chain asserts.
         """
-        if self.value is not value:
-            self.error(f"{self.value} is not: {value}")
+        if self.value is not other:
+            self.error(f"{self.value!r} is not: {other!r}")
+        return self
+
+    def does_not_refer_to(self, other: typing.Any) -> Asserto:
+        """
+        Checks that the value does not refer to the same object in memory as `other`.
+        :param other: The other object to compare identity of.
+        :return: The instance of `Asserto` to chain asserts.
+        """
+        if self.value is other:
+            self.error(f"{self.value!r} points to the same memory location as: {other!r}")
         return self
 
     def __enter__(self) -> Asserto:
