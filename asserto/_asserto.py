@@ -4,14 +4,15 @@ import types
 import typing
 
 from ._constants import AssertTypes
+from ._mixins import AsserterMixin
 from ._types import TYPE_ALIAS
-from .mixins import StringMixin
-from .mixins import RegexMixin
+from .assertors import AssertsRegex
+from .assertors import AssertsStrings
 
 __tracebackhide__ = True
 
 
-class Asserto(StringMixin, RegexMixin):
+class Asserto(AsserterMixin):
     """
     Core API
 
@@ -25,10 +26,37 @@ class Asserto(StringMixin, RegexMixin):
         :: is_not_equal_to()
     """
 
-    def __init__(self, value: typing.Any, type_of: str = AssertTypes.HARD, description: typing.Optional[str] = None):
+    def __init__(
+        self,
+        value: typing.Any,
+        type_of: str = AssertTypes.HARD,
+        description: typing.Optional[str] = None,
+        string_asserter: typing.Type[AssertsStrings] = AssertsStrings,
+        regex_asserter: typing.Type[AssertsRegex] = AssertsRegex,
+    ):
         self.value = value
         self.type_of = type_of
         self.description = description
+        self.string_asserter = string_asserter(self.value)
+        self.regex_asserter = regex_asserter(self.value)
+
+    # ----- String Delegation -----
+    def ends_with(self, suffix: str) -> Asserto:
+        self.string_asserter.ends_with(suffix)
+        return self
+
+    def starts_with(self, suffix: str) -> Asserto:
+        self.string_asserter.starts_with(suffix)
+        return self
+
+    # ----- End of String Delegation -----
+
+    # ----- Regex Delegation -----
+    def matches(self, pattern: str) -> Asserto:
+        self.regex_asserter.matches(pattern)
+        return self
+
+    # ----- End of Regex Delegation -----
 
     def __repr__(self) -> str:
         return f"Asserto(value={self.value}, type_of={self.type_of}, description={self.description})"
@@ -72,10 +100,6 @@ class Asserto(StringMixin, RegexMixin):
         if self.value is not value:
             self.error(f"{self.value} is not: {value}")
         return self
-
-    def error(self, message: str) -> typing.NoReturn:
-        msg_with_desc = f"[{self.description}] {message}" if self.description else message
-        raise AssertionError(msg_with_desc)
 
     def __enter__(self) -> Asserto:
         return self
