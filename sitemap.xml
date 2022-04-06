@@ -2,17 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://www.google.com/</loc>
-         <lastmod>2022-04-04</lastmod>
+         <lastmod>2022-04-06</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://www.google.com/generic/</loc>
-         <lastmod>2022-04-04</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://www.google.com/strings/</loc>
-         <lastmod>2022-04-04</lastmod>
+         <loc>https://www.google.com/assertions/</loc>
+         <lastmod>2022-04-06</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

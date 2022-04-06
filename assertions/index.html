@@ -8,14 +8,14 @@
       
       
       
-        <link rel="canonical" href="https://www.google.com/strings/">
+        <link rel="canonical" href="https://www.google.com/assertions/">
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.8">
     
     
       
-        <title>String Assertions - Asserto documentation</title>
+        <title>Assertions - Asserto documentation</title>
       
     
     
@@ -62,6 +62,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#asserto-api" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -91,7 +96,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              String Assertions
+              Assertions
             
           </span>
         </div>
@@ -198,26 +203,72 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Assertions
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        String Assertions
+        Assertions
       </a>
       
-    </li>
-  
+        
 
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
     
-      
-      
-      
-
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto" class="md-nav__link">
+    asserto._asserto.Asserto
+  </a>
   
-    <li class="md-nav__item">
-      <a href="../generic/" class="md-nav__link">
-        Generic Assertions
-      </a>
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.ends_with" class="md-nav__link">
+    ends_with()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.has_same_id_as" class="md-nav__link">
+    has_same_id_as()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.is_equal_to" class="md-nav__link">
+    is_equal_to()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.is_instance" class="md-nav__link">
+    is_instance()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -229,6 +280,67 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto" class="md-nav__link">
+    asserto._asserto.Asserto
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.ends_with" class="md-nav__link">
+    ends_with()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.has_same_id_as" class="md-nav__link">
+    has_same_id_as()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.is_equal_to" class="md-nav__link">
+    is_equal_to()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.is_instance" class="md-nav__link">
+    is_instance()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
@@ -236,9 +348,129 @@
                 
 
 
-  <h1>String Assertions</h1>
+<h1 id="asserto-api">Asserto API</h1>
 
 
+  <div class="doc doc-object doc-class">
+
+<a id="asserto._asserto.Asserto"></a>
+    <div class="doc doc-contents first">
+
+      <p>Asserto</p>
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="asserto._asserto.Asserto.ends_with" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">ends_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Asserts that the value provided begins with the suffix.
+:param suffix: A substring to ensure the value begins with.</p>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="asserto._asserto.Asserto.has_same_id_as" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">has_same_id_as</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>General pointer comparison, compare by object ID.
+:param value: The other object to compare.
+:return: The instance of <code>Asserto</code> to chain asserts.</p>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="asserto._asserto.Asserto.is_equal_to" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_equal_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>General object comparison.
+:param other: The value to compare against.
+:return: The instance of <code>Asserto</code> to chain asserts.</p>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="asserto._asserto.Asserto.is_instance" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls_or_tuple</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Checks if the value provided is either:</p>
+<div class="highlight"><pre><span></span><code>:: A direct subclass.
+:: An indirect subclass.
+:: A virtual subclass registered via the abc.
+</code></pre></div>
+<p>:param cls_or_tuple: A single Type, or iterable of types to check the object against.</p>
+
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+  </div>
 
               
             </article>
@@ -266,21 +498,6 @@
           </div>
         </a>
       
-      
-        
-        <a href="../generic/" class="md-footer__link md-footer__link--next" aria-label="Next: Generic Assertions" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Generic Assertions
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
-        </a>
       
     </nav>
   
