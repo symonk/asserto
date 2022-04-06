@@ -6,3 +6,6 @@ omit = tests/
 sort = -Cover
 skip_empty = True
 precision = 2
+exclude_lines =
+    ^\s*raise NotImplementedError\b
+    ^\s*return NotImplemented\b
