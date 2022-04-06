@@ -14,6 +14,10 @@ __tracebackhide__ = True
 
 # Todo: base: `is_none()` & `is_not_none()`
 # Todo: base: `has_repr(...)`
+# Todo: base: `is_true() & is_false()`
+# Todo: base: `descriptions`
+# Todo: base: `tidy up docstrings`
+# Todo: base `remove duplication here`
 
 
 class Asserto(AsserterMixin):
