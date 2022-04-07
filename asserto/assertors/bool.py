@@ -9,7 +9,7 @@ class AssertsBooleans(AsserterMixin):
         """
         Checks the actual value evaluates to `True`.
         """
-        if bool(self.actual) is not True:
+        if not self.actual:
             self.error(f"{self.actual!r} was not True")
 
     def is_false(self) -> None:
@@ -17,5 +17,5 @@ class AssertsBooleans(AsserterMixin):
         Checks the actual value evaluates to `False`.
         :return:
         """
-        if bool(self.actual) is not False:
+        if self.actual:
             self.error(f"{self.actual!r} was not False")

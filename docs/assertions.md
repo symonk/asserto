@@ -10,6 +10,9 @@
         - is_equal_to
         - is_instance
         - matches
-        -
+        - is_none
+        - is_not_none
+        - is_true
+        - is_false
     rendering:
         show_root_heading: false
