@@ -26,7 +26,7 @@ class Asserto(AsserterMixin):
         self,
         actual: typing.Any,
         type_of: str = AssertTypes.HARD,
-        description: typing.Optional[str] = None,
+        category: typing.Optional[str] = None,
         # Todo: Improve these... the interface is kinda scuffed.
         string_asserter: typing.Type[AssertsStrings] = AssertsStrings,
         regex_asserter: typing.Type[AssertsRegex] = AssertsRegex,
@@ -34,12 +34,33 @@ class Asserto(AsserterMixin):
     ):
         self.actual = actual
         self.type_of = type_of
-        self.description = description
         self.string_asserter = string_asserter(self.actual)
         self.regex_asserter = regex_asserter(self.actual)
         self.bool_asserter = bool_asserter(self.actual)
         self._in_context = False
         self._soft_failures = []
+        self._category = category
+        self._because = None
+        self._triggered = False  # Warn when never invoked & enforce descriptions before hand.
+
+    def grouped_by(self, categorised_by: str) -> Asserto:
+        """
+        Set a prefix or `category` to group the assertion under.
+        :param categorised_by:
+        :return: The `Asserto` instance for fluency.
+        """
+        self._category = categorised_by
+        return self
+
+    def with_message(self, because: str) -> Asserto:
+        """
+        Set the full `AssertionError`` message to a custom reason.  If this is
+        invoked anything after the category (if also set) will be user defined.
+        :param because: The reason to display if an `AssertionError` is raised.
+        :return: The `Asserto` instance for fluency.
+        """
+        self._because = because
+        return self
 
     # ----- String Delegation -----
     def ends_with(self, suffix: str) -> Asserto:
@@ -180,7 +201,7 @@ class Asserto(AsserterMixin):
     # ----- Start of Dunder Methods -----
 
     def __repr__(self) -> str:
-        return f"Asserto(value={self.actual}, type_of={self.type_of}, description={self.description})"
+        return f"Asserto(value={self.actual}, type_of={self.type_of}, category={self._category})"
 
     def __enter__(self) -> Asserto:
         """
