@@ -245,13 +245,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#asserto._asserto.Asserto.has_same_id_as" class="md-nav__link">
-    has_same_id_as()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#asserto._asserto.Asserto.is_equal_to" class="md-nav__link">
     is_equal_to()
   </a>
@@ -259,8 +252,36 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.is_false" class="md-nav__link">
+    is_false()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#asserto._asserto.Asserto.is_instance" class="md-nav__link">
     is_instance()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.is_none" class="md-nav__link">
+    is_none()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.is_not_none" class="md-nav__link">
+    is_not_none()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.is_true" class="md-nav__link">
+    is_true()
   </a>
   
 </li>
@@ -314,13 +335,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#asserto._asserto.Asserto.has_same_id_as" class="md-nav__link">
-    has_same_id_as()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#asserto._asserto.Asserto.is_equal_to" class="md-nav__link">
     is_equal_to()
   </a>
@@ -328,8 +342,36 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.is_false" class="md-nav__link">
+    is_false()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#asserto._asserto.Asserto.is_instance" class="md-nav__link">
     is_instance()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.is_none" class="md-nav__link">
+    is_none()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.is_not_none" class="md-nav__link">
+    is_not_none()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.is_true" class="md-nav__link">
+    is_true()
   </a>
   
 </li>
@@ -356,7 +398,7 @@
 <a id="asserto._asserto.Asserto"></a>
     <div class="doc doc-contents first">
 
-      <p>Asserto</p>
+      <p>Asserto.</p>
 
 
 
@@ -396,16 +438,16 @@
 
 
 
-<h2 id="asserto._asserto.Asserto.has_same_id_as" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">has_same_id_as</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></code>
+<h2 id="asserto._asserto.Asserto.is_equal_to" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_equal_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></code>
 
 
 </h2>
 
     <div class="doc doc-contents ">
 
-      <p>General pointer comparison, compare by object ID.
-:param value: The other object to compare.
+      <p>Compares the value against <code>other</code> for equality.</p>
+<p>:param other: The other object to compare against.
 :return: The instance of <code>Asserto</code> to chain asserts.</p>
 
     </div>
@@ -418,17 +460,16 @@
 
 
 
-<h2 id="asserto._asserto.Asserto.is_equal_to" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">is_equal_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></code>
+<h2 id="asserto._asserto.Asserto.is_false" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_false</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
 
 
 </h2>
 
     <div class="doc doc-contents ">
 
-      <p>General object comparison.
-:param other: The value to compare against.
-:return: The instance of <code>Asserto</code> to chain asserts.</p>
+      <p>Checks the actual value is False.
+:return: The <code>Asserto</code> instance for fluency.</p>
 
     </div>
 
@@ -459,6 +500,70 @@
 
   </div>
 
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="asserto._asserto.Asserto.is_none" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_none</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Checks the actual value is None.  Python <code>NoneType</code> is a singleton so <code>is</code> checks
+are used
+:return: The <code>Asserto</code> instance for fluency.</p>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="asserto._asserto.Asserto.is_not_none" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_not_none</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Checks the actual value is not None .  Python <code>None</code> is a singleton so <code>is not</code> checks are
+used.
+:return: The <code>Asserto</code> instance for fluency</p>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-method">
+
+
+
+<h2 id="asserto._asserto.Asserto.is_true" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_true</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+
+
+</h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Checks the actual value is True.
+:return: The <code>Asserto</code> instance for fluency.</p>
+
+    </div>
+
+  </div>
 
 
 
