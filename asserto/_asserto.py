@@ -36,6 +36,8 @@ class Asserto(AsserterMixin):
         self.description = description
         self.string_asserter = string_asserter(self.actual)
         self.regex_asserter = regex_asserter(self.actual)
+        self._in_context = False
+        self._soft_failures = []
 
     # ----- String Delegation -----
     def ends_with(self, suffix: str) -> Asserto:
@@ -59,8 +61,7 @@ class Asserto(AsserterMixin):
 
     # ----- End of Regex Delegation -----
 
-    def __repr__(self) -> str:
-        return f"Asserto(value={self.actual}, type_of={self.type_of}, description={self.description})"
+    # ----- Start of Generic Delegation -----
 
     def is_equal_to(self, other: typing.Any) -> Asserto:
         """
@@ -132,7 +133,42 @@ class Asserto(AsserterMixin):
             self.error(f"{self.actual!r} points to the same memory location as: {other!r}")
         return self
 
+    def is_none(self) -> Asserto:
+        """
+        Checks the actual value is None.  Python `NoneType` is a singleton so `is` checks
+        are used
+        :return: The `Asserto` instance for fluency.
+        """
+        if self.actual is not None:
+            self.error(f"{self.actual!r} is not {None}")
+        return self
+
+    def is_not_none(self) -> Asserto:
+        """
+        Checks the actual value is not None .  Python `None` is a singleton so `is not` checks are
+        used.
+        :return: The `Asserto` instance for fluency
+        """
+        if self.actual is None:
+            self.error(f"{self.actual!r} is {None}")
+        return self
+
+    # ----- End of Generic Delegation -----
+
+    # ----- Start of Dunder Methods -----
+
+    def __repr__(self) -> str:
+        return f"Asserto(value={self.actual}, type_of={self.type_of}, description={self.description})"
+
     def __enter__(self) -> Asserto:
+        """
+        Enter a `soft` context mode;  During this context `AssertionErrors` are silently
+        ignored until the context is exited at which point any assertions will cause test
+        failure(s) and raise the sequence of AssertionError's in the order in which they
+        occurred.
+        :return: The instance of `Asserto`.
+        """
+        self._in_context = True  # Know we are being used as a context.
         return self
 
     def __exit__(
@@ -142,4 +178,6 @@ class Asserto(AsserterMixin):
         exc_tb: typing.Optional[types.TracebackType] = None,
     ):
         # Todo: Implement the concept of 'soft' assertions using `Asserto` as a context
-        ...
+        self._in_context = False
+
+    # ----- end of dunder -----
