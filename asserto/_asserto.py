@@ -6,15 +6,14 @@ import typing
 from ._constants import AssertTypes
 from ._exceptions import ExpectedTypeError
 from ._mixins import AsserterMixin
+from .assertors import AssertsBooleans
 from .assertors import AssertsRegex
 from .assertors import AssertsStrings
 
 __tracebackhide__ = True
 
 
-# Todo: base: `is_none()` & `is_not_none()`
 # Todo: base: `has_repr(...)`
-# Todo: base: `is_true() & is_false()`
 # Todo: base: `descriptions`
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
@@ -28,14 +27,17 @@ class Asserto(AsserterMixin):
         actual: typing.Any,
         type_of: str = AssertTypes.HARD,
         description: typing.Optional[str] = None,
+        # Todo: Improve these... the interface is kinda scuffed.
         string_asserter: typing.Type[AssertsStrings] = AssertsStrings,
         regex_asserter: typing.Type[AssertsRegex] = AssertsRegex,
+        bool_asserter: typing.Type[AssertsBooleans] = AssertsBooleans,
     ):
         self.actual = actual
         self.type_of = type_of
         self.description = description
         self.string_asserter = string_asserter(self.actual)
         self.regex_asserter = regex_asserter(self.actual)
+        self.bool_asserter = bool_asserter(self.actual)
         self._in_context = False
         self._soft_failures = []
 
@@ -60,6 +62,26 @@ class Asserto(AsserterMixin):
         return self
 
     # ----- End of Regex Delegation -----
+
+    # ----- Start of Boolean Delegation -----
+
+    def is_true(self) -> Asserto:
+        """
+        Checks the actual value is True.
+        :return: The `Asserto` instance for fluency.
+        """
+        self.bool_asserter.is_true()
+        return self
+
+    def is_false(self) -> Asserto:
+        """
+        Checks the actual value is False.
+        :return: The `Asserto` instance for fluency.
+        """
+        self.bool_asserter.is_false()
+        return self
+
+    # ----- End of Boolean Delegation -----
 
     # ----- Start of Generic Delegation -----
 

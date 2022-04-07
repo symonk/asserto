@@ -1,0 +1,20 @@
+import pytest
+
+__tracebackhide__ = True
+
+
+def test_bool_not_bool_works_successfully(asserto) -> None:
+    asserto(True).is_true()
+    asserto(False).is_false()
+
+
+def test_non_false_raises_for_is_false(asserto) -> None:
+    with pytest.raises(AssertionError) as error:
+        asserto(True).is_false()
+    asserto(error.value.args[0]).is_equal_to("True was not False")
+
+
+def test_non_true_raises_for_is_true(asserto) -> None:
+    with pytest.raises(AssertionError) as error:
+        asserto(False).is_true()
+    asserto(error.value.args[0]).is_equal_to("False was not True")
