@@ -29,6 +29,7 @@ jobs:
       - name: Execute tests
         run: |
           tox
+          tox -e report_cov
       - uses: actions/checkout@master
       - uses: codecov/codecov-action@v2
         with:
