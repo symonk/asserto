@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import types
 import typing
 import warnings
@@ -10,9 +11,6 @@ from ._exceptions import ExpectedTypeError
 from ._mixins import AsserterMixin
 from ._states import State
 from ._warnings import UntriggeredAssertoWarning
-from .assertors import AssertsBooleans
-from .assertors import AssertsRegex
-from .assertors import AssertsStrings
 
 __tracebackhide__ = True
 
@@ -53,9 +51,6 @@ class Asserto(AsserterMixin):
         self._soft_failures = []
         self._category = category
         self._because = None
-        self._asserts_strings = AssertsStrings(self.actual)  # Todo: Interface? unit testable?
-        self._asserts_regex = AssertsRegex(self.actual)  # Todo: Interface? unit testable?
-        self._asserts_booleans = AssertsBooleans(self.actual)  # Todo: Interface? unit testable?
 
     def grouped_by(self, category: str) -> Asserto:
         """
@@ -82,17 +77,20 @@ class Asserto(AsserterMixin):
         Asserts that the value provided begins with the suffix.
         :param suffix: A substring to ensure the value begins with.
         """
-        self._asserts_strings.ends_with(suffix)
+        if not self.actual.endswith(suffix):
+            self.error(f"{self.actual} did not end with {suffix}")
         return self
 
     @triggered
-    def starts_with(self, suffix: str) -> Asserto:
-        self._asserts_strings.starts_with(suffix)
+    def starts_with(self, prefix: str) -> Asserto:
+        if not self.actual.startswith(prefix):
+            self.error(f"{self.actual} did not start with {prefix}")
         return self
 
     @triggered
     def matches(self, pattern: str) -> Asserto:
-        self._asserts_regex.matches(pattern)
+        if re.match(re.compile(rf"{pattern}"), self.actual) is None:
+            self.error(f"{pattern} did not match the value: {self.actual}")
         return self
 
     @triggered
@@ -101,7 +99,8 @@ class Asserto(AsserterMixin):
         Checks the actual value is True.
         :return: The `Asserto` instance for fluency.
         """
-        self._asserts_booleans.is_true()
+        if not self.actual:
+            self.error(f"{self.actual!r} was not True")
         return self
 
     @triggered
@@ -110,7 +109,8 @@ class Asserto(AsserterMixin):
         Checks the actual value is False.
         :return: The `Asserto` instance for fluency.
         """
-        self._asserts_booleans.is_false()
+        if self.actual:
+            self.error(f"{self.actual!r} was not False")
         return self
 
     @triggered
@@ -217,7 +217,7 @@ class Asserto(AsserterMixin):
         Triggers a warning if an asserto instance was created and no assertion methods was called
         to highlight potential user errors.
         """
-        warnings.warn("Asserto instance was created and never used", UntriggeredAssertoWarning)
+        warnings.warn("Asserto instance was created and never used", UntriggeredAssertoWarning, 2)
 
     def __del__(self) -> None:
         if not self._state.triggered:
