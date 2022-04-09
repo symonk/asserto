@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import pprint
 import re
 import types
 import typing
@@ -19,6 +20,21 @@ __tracebackhide__ = True
 # Todo: base: `descriptions`
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
+
+
+class MultiFailContainer:
+    """
+    Capture multiple assertion failures when used in a soft context mode.
+    """
+
+    def __init__(self) -> None:
+        self.errors = []
+
+    def register_error(self, error: AssertionError) -> None:
+        self.errors.append(error)
+
+    def __repr__(self) -> str:
+        return f"{len(self.errors)} Soft Assertion Failures\n" + pprint.pformat(self.errors, indent=4)
 
 
 class Reason(Reasonable):
@@ -51,7 +67,7 @@ class Asserto:
         self.type_of = type_of
         self._state = state()
         self._reason = reason_supplier()
-        self._soft_failures = []
+        self._soft_failures = MultiFailContainer()
 
     def with_category(self, category: str) -> Asserto:
         """
@@ -96,8 +112,8 @@ class Asserto:
         return self
 
     @triggered
-    def matches(self, pattern: str) -> Asserto:
-        if re.match(re.compile(rf"{pattern}"), self.actual) is None:
+    def matches(self, pattern: str, flags) -> Asserto:
+        if re.match(rf"{pattern}", self.actual, flags) is None:
             self.error(f"{pattern} did not match the value: {self.actual}")
         return self
 
@@ -231,8 +247,12 @@ class Asserto:
         if not self._state.triggered:
             self._warn_not_triggered()
 
-    def error(self, reason: str) -> typing.NoReturn:
-        raise AssertionError(self._reason.format(reason))
+    def error(self, reason: str) -> Asserto:
+        error = AssertionError(self._reason.format(reason))
+        if self._state.context:
+            self._soft_failures.register_error(error)
+            return self
+        raise error from None
 
     def __repr__(self) -> str:
         return f"Asserto(value={self.actual}, type_of={self.type_of}, category={self._reason.category})"
@@ -246,6 +266,7 @@ class Asserto:
         :return: The instance of `Asserto`.
         """
         self._state.context = True
+        self._soft_failures = MultiFailContainer()  # Force this to be reset.
         return self
 
     def __exit__(
@@ -254,7 +275,9 @@ class Asserto:
         exc_val: typing.Optional[BaseException] = None,
         exc_tb: typing.Optional[types.TracebackType] = None,
     ):
-        # Todo: Implement the concept of 'soft' assertions using `Asserto` as a context
         self._state.context = False
         if not self._state.triggered:
             self._warn_not_triggered()
+        if self._soft_failures:
+            # There was a compilation of assertion errors
+            raise AssertionError(self._soft_failures)
