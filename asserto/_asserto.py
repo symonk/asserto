@@ -13,9 +13,6 @@ from ._protocols import Reasonable
 from ._states import State
 from ._warnings import UntriggeredAssertoWarning
 
-__tracebackhide__ = True
-
-
 # Todo: base: `has_repr(...)`
 # Todo: base: `descriptions`
 # Todo: base: `tidy up docstrings`
@@ -32,6 +29,9 @@ class MultiFailContainer:
 
     def register_error(self, error: AssertionError) -> None:
         self.errors.append(error)
+
+    def __bool__(self) -> bool:
+        return bool(self.errors)
 
     def __repr__(self) -> str:
         return f"{len(self.errors)} Soft Assertion Failures\n" + pprint.pformat(self.errors, indent=4)
@@ -112,7 +112,7 @@ class Asserto:
         return self
 
     @triggered
-    def matches(self, pattern: str, flags) -> Asserto:
+    def matches(self, pattern: str, flags: typing.Union[int, re.RegexFlag] = 0) -> Asserto:
         if re.match(rf"{pattern}", self.actual, flags) is None:
             self.error(f"{pattern} did not match the value: {self.actual}")
         return self
