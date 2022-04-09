@@ -13,3 +13,9 @@ from asserto._asserto import Reason
 )
 def test_basic_reason(asserto, reason_obj, reason_txt, expected) -> None:
     asserto(reason_obj.format(reason_txt)).is_equal_to(expected)
+
+
+def test_described_as(asserto) -> None:
+    with pytest.raises(AssertionError) as error:
+        asserto(1).described_as("foo!").is_equal_to(2)
+    asserto(error.value.args[0]).is_equal_to("foo!")
