@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import types
 import typing
+import warnings
 
 from ._constants import AssertTypes
 from ._decorators import triggered
 from ._exceptions import ExpectedTypeError
 from ._mixins import AsserterMixin
 from ._states import State
+from ._warnings import UntriggeredAssertoWarning
 from .assertors import AssertsBooleans
 from .assertors import AssertsRegex
 from .assertors import AssertsStrings
@@ -209,6 +211,18 @@ class Asserto(AsserterMixin):
             self.error(f"{self.actual!r} is {None}")
         return self
 
+    @staticmethod
+    def _warn_not_triggered() -> None:
+        """
+        Triggers a warning if an asserto instance was created and no assertion methods was called
+        to highlight potential user errors.
+        """
+        warnings.warn("Asserto instance was created and never used", UntriggeredAssertoWarning)
+
+    def __del__(self) -> None:
+        if not self._state.triggered:
+            self._warn_not_triggered()
+
     def __repr__(self) -> str:
         return f"Asserto(value={self.actual}, type_of={self.type_of}, category={self._category})"
 
@@ -231,3 +245,5 @@ class Asserto(AsserterMixin):
     ):
         # Todo: Implement the concept of 'soft' assertions using `Asserto` as a context
         self._state.context = False
+        if not self._state.triggered:
+            self._warn_not_triggered()

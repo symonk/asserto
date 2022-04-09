@@ -1,8 +1,12 @@
 import pytest
 
 from asserto import AssertTypes
+from asserto import UntriggeredAssertoWarning
+
+from .markers import NO_UNTRIGGERED_WARNINGS
 
 
+@NO_UNTRIGGERED_WARNINGS
 def test_repr_soft(asserto) -> None:
     asserto(repr(asserto("foo", category="n"))).is_equal_to("Asserto(value=foo, type_of=hard, category=n)")
     asserto(repr(asserto(100))).is_equal_to("Asserto(value=100, type_of=hard, category=None)")
@@ -10,6 +14,7 @@ def test_repr_soft(asserto) -> None:
     asserto(repr(asserto(100, AssertTypes.WARN))).is_equal_to("Asserto(value=100, type_of=warn, category=None)")
 
 
+@NO_UNTRIGGERED_WARNINGS
 def test_soft_context_active(asserto) -> None:
     with asserto(1) as soft:
         asserto(soft._state.context).is_true()
@@ -31,5 +36,17 @@ def test_triggered(asserto) -> None:
     asserto(x._state.triggered).is_true()
 
 
+@NO_UNTRIGGERED_WARNINGS
+def test_context_triggered_warning(asserto) -> None:
+    with pytest.warns(UntriggeredAssertoWarning, match="Asserto instance was created and never used"):
+        with asserto(100) as _:
+            pass
+
+
+@NO_UNTRIGGERED_WARNINGS
+def test_non_context_triggered_warning(asserto) -> None:
+    with pytest.warns(UntriggeredAssertoWarning, match="Asserto instance was created and never used"):
+        asserto(100)
+
+
 # Test invoking description after triggered raises;
-# Test not invoking any assertions warns
