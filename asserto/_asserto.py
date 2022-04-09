@@ -8,7 +8,7 @@ import warnings
 from ._constants import AssertTypes
 from ._decorators import triggered
 from ._exceptions import ExpectedTypeError
-from ._mixins import AsserterMixin
+from ._protocols import Reasonable
 from ._states import State
 from ._warnings import UntriggeredAssertoWarning
 
@@ -21,54 +21,62 @@ __tracebackhide__ = True
 # Todo: base `remove duplication here`
 
 
-class Reason:
+class Reason(Reasonable):
     """
-    An encapsulation of assertion error messages
+    An encapsulation of assertion error messages.
     """
 
-    def __init__(self) -> None:
-        self.category = None
-        self.description = None
+    def __init__(self, category: typing.Optional[str] = None, description: typing.Optional[str] = None) -> None:
+        self.category = category
+        self.description = description
 
-    def message(self) -> str:
-        ...
+    def format(self, reason: str) -> str:
+        reason = self.description or reason
+        if self.category:
+            return f"[{self.category}] {reason}"
+        return reason
 
 
-class Asserto(AsserterMixin):
+class Asserto:
     """Asserto."""
 
     def __init__(
         self,
         actual: typing.Any,
         type_of: str = AssertTypes.HARD,
-        category: typing.Optional[str] = None,
         state: typing.Type[State] = State,
+        reason_supplier: typing.Type[Reason] = Reason,
     ):
         self.actual = actual
         self.type_of = type_of
         self._state = state()
-        self._reason = Reason()
+        self._reason = reason_supplier()
         self._soft_failures = []
-        self._category = category
-        self._because = None
 
-    def grouped_by(self, category: str) -> Asserto:
+    def with_category(self, category: str) -> Asserto:
         """
-        Set a prefix or `category` to group the assertion under.
-        :param category:
+        Set the category for the assertion.  Categories are prefixed to the assertion
+        messages, for example:
+
+            Example:
+                Usage::
+                    asserto(25).with_category("foo").is_equal_to(26)
+                    `AssertionError(["foo"] 25 was not equal to: 26)`
+
+        :param category: The Category to group the assertion under.
         :return: The `Asserto` instance for fluency.
         """
-        self._category = category
+        self._reason.category = category
         return self
 
-    def with_message(self, because: str) -> Asserto:
+    def described_as(self, description: str) -> Asserto:
         """
         Set the full `AssertionError`` message to a custom reason.  If this is
         invoked anything after the category (if also set) will be user defined.
-        :param because: The reason to display if an `AssertionError` is raised.
+        :param description: The reason to display if an `AssertionError` is raised.
         :return: The `Asserto` instance for fluency.
         """
-        self._because = because
+        self._reason.description = description
         return self
 
     @triggered
@@ -223,8 +231,11 @@ class Asserto(AsserterMixin):
         if not self._state.triggered:
             self._warn_not_triggered()
 
+    def error(self, reason: str) -> typing.NoReturn:
+        raise AssertionError(self._reason.format(reason))
+
     def __repr__(self) -> str:
-        return f"Asserto(value={self.actual}, type_of={self.type_of}, category={self._category})"
+        return f"Asserto(value={self.actual}, type_of={self.type_of}, category={self._reason.category})"
 
     def __enter__(self) -> Asserto:
         """
