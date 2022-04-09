@@ -24,8 +24,11 @@ def test_category_is_set(asserto) -> None:
         asserto(str(e)).is_equal_to("no")
 
 
-def test_instantiating_without_using_warns(asserto) -> None:
-    asserto(100)
+def test_triggered(asserto) -> None:
+    x = asserto(50)
+    asserto(x._state.triggered).is_false()
+    x.is_equal_to(50)
+    asserto(x._state.triggered).is_true()
 
 
 # Test invoking description after triggered raises;
