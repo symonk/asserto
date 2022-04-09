@@ -12,8 +12,8 @@ def test_repr_soft(asserto) -> None:
 
 def test_soft_context_active(asserto) -> None:
     with asserto(1) as soft:
-        asserto(soft._in_context).is_true()
-    asserto(soft._in_context).is_false()
+        asserto(soft._state.context).is_true()
+    asserto(soft._state.context).is_false()
 
 
 @pytest.mark.skip(reason="not implemented yet!")
@@ -22,6 +22,10 @@ def test_category_is_set(asserto) -> None:
         asserto(1).grouped_by("Category1").is_false()
     except AssertionError as e:
         asserto(str(e)).is_equal_to("no")
+
+
+def test_instantiating_without_using_warns(asserto) -> None:
+    asserto(100)
 
 
 # Test invoking description after triggered raises;

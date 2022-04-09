@@ -4,8 +4,10 @@ import types
 import typing
 
 from ._constants import AssertTypes
+from ._decorators import triggered
 from ._exceptions import ExpectedTypeError
 from ._mixins import AsserterMixin
+from ._states import State
 from .assertors import AssertsBooleans
 from .assertors import AssertsRegex
 from .assertors import AssertsStrings
@@ -19,6 +21,19 @@ __tracebackhide__ = True
 # Todo: base `remove duplication here`
 
 
+class Reason:
+    """
+    An encapsulation of assertion error messages
+    """
+
+    def __init__(self) -> None:
+        self.category = None
+        self.description = None
+
+    def message(self) -> str:
+        ...
+
+
 class Asserto(AsserterMixin):
     """Asserto."""
 
@@ -27,29 +42,26 @@ class Asserto(AsserterMixin):
         actual: typing.Any,
         type_of: str = AssertTypes.HARD,
         category: typing.Optional[str] = None,
-        # Todo: Improve these... the interface is kinda scuffed.
-        string_asserter: typing.Type[AssertsStrings] = AssertsStrings,
-        regex_asserter: typing.Type[AssertsRegex] = AssertsRegex,
-        bool_asserter: typing.Type[AssertsBooleans] = AssertsBooleans,
+        state: typing.Type[State] = State,
     ):
         self.actual = actual
         self.type_of = type_of
-        self.string_asserter = string_asserter(self.actual)
-        self.regex_asserter = regex_asserter(self.actual)
-        self.bool_asserter = bool_asserter(self.actual)
-        self._in_context = False
+        self._state = state()
+        self._reason = Reason()
         self._soft_failures = []
         self._category = category
         self._because = None
-        self._triggered = False  # Warn when never invoked & enforce descriptions before hand.
+        self._asserts_strings = AssertsStrings(self.actual)  # Todo: Interface? unit testable?
+        self._asserts_regex = AssertsRegex(self.actual)  # Todo: Interface? unit testable?
+        self._asserts_booleans = AssertsBooleans(self.actual)  # Todo: Interface? unit testable?
 
-    def grouped_by(self, categorised_by: str) -> Asserto:
+    def grouped_by(self, category: str) -> Asserto:
         """
         Set a prefix or `category` to group the assertion under.
-        :param categorised_by:
+        :param category:
         :return: The `Asserto` instance for fluency.
         """
-        self._category = categorised_by
+        self._category = category
         return self
 
     def with_message(self, because: str) -> Asserto:
@@ -62,50 +74,44 @@ class Asserto(AsserterMixin):
         self._because = because
         return self
 
-    # ----- String Delegation -----
+    @triggered
     def ends_with(self, suffix: str) -> Asserto:
         """
         Asserts that the value provided begins with the suffix.
         :param suffix: A substring to ensure the value begins with.
         """
-        self.string_asserter.ends_with(suffix)
+        self._asserts_strings.ends_with(suffix)
         return self
 
+    @triggered
     def starts_with(self, suffix: str) -> Asserto:
-        self.string_asserter.starts_with(suffix)
+        self._asserts_strings.starts_with(suffix)
         return self
 
-    # ----- End of String Delegation -----
-
-    # ----- Regex Delegation -----
+    @triggered
     def matches(self, pattern: str) -> Asserto:
-        self.regex_asserter.matches(pattern)
+        self._asserts_regex.matches(pattern)
         return self
 
-    # ----- End of Regex Delegation -----
-
-    # ----- Start of Boolean Delegation -----
-
+    @triggered
     def is_true(self) -> Asserto:
         """
         Checks the actual value is True.
         :return: The `Asserto` instance for fluency.
         """
-        self.bool_asserter.is_true()
+        self._asserts_booleans.is_true()
         return self
 
+    @triggered
     def is_false(self) -> Asserto:
         """
         Checks the actual value is False.
         :return: The `Asserto` instance for fluency.
         """
-        self.bool_asserter.is_false()
+        self._asserts_booleans.is_false()
         return self
 
-    # ----- End of Boolean Delegation -----
-
-    # ----- Start of Generic Delegation -----
-
+    @triggered
     def is_equal_to(self, other: typing.Any) -> Asserto:
         """
         Compares the value against `other` for equality.
@@ -117,6 +123,7 @@ class Asserto(AsserterMixin):
             self.error(f"{self.actual!r} was not equal to: {other!r}")
         return self
 
+    @triggered
     def is_not_equal_to(self, other: typing.Any) -> Asserto:
         """
         Compares the value against `other` for non equality.
@@ -128,6 +135,7 @@ class Asserto(AsserterMixin):
             self.error(f"{self.actual!r} is equal to: {other!r}")
         return self
 
+    @triggered
     def has_length(self, expected: int) -> Asserto:
         """
         A simple check that the actual value is equal to expected utilising the built in `len(...)`
@@ -142,6 +150,7 @@ class Asserto(AsserterMixin):
             self.error(f"Length of: {self.actual!r} was not equal to: {expected!r}")
         return self
 
+    @triggered
     def is_instance(self, cls_or_tuple: typing.Union[typing.Any, typing.Iterable[typing.Any]]) -> Asserto:
         """
         Checks if the value provided is either:
@@ -156,6 +165,7 @@ class Asserto(AsserterMixin):
             self.error(f"[{self.actual!r}]: {type(self.actual)} was not an instance of: {cls_or_tuple}")
         return self
 
+    @triggered
     def refers_to(self, other: typing.Any) -> Asserto:
         """
         Checks that the value refers to the same object in memory as `other`.`
@@ -166,6 +176,7 @@ class Asserto(AsserterMixin):
             self.error(f"{self.actual!r} is not: {other!r}")
         return self
 
+    @triggered
     def does_not_refer_to(self, other: typing.Any) -> Asserto:
         """
         Checks that the value does not refer to the same object in memory as `other`.
@@ -176,6 +187,7 @@ class Asserto(AsserterMixin):
             self.error(f"{self.actual!r} points to the same memory location as: {other!r}")
         return self
 
+    @triggered
     def is_none(self) -> Asserto:
         """
         Checks the actual value is None.  Python `NoneType` is a singleton so `is` checks
@@ -186,6 +198,7 @@ class Asserto(AsserterMixin):
             self.error(f"{self.actual!r} is not {None}")
         return self
 
+    @triggered
     def is_not_none(self) -> Asserto:
         """
         Checks the actual value is not None .  Python `None` is a singleton so `is not` checks are
@@ -195,10 +208,6 @@ class Asserto(AsserterMixin):
         if self.actual is None:
             self.error(f"{self.actual!r} is {None}")
         return self
-
-    # ----- End of Generic Delegation -----
-
-    # ----- Start of Dunder Methods -----
 
     def __repr__(self) -> str:
         return f"Asserto(value={self.actual}, type_of={self.type_of}, category={self._category})"
@@ -211,7 +220,7 @@ class Asserto(AsserterMixin):
         occurred.
         :return: The instance of `Asserto`.
         """
-        self._in_context = True  # Know we are being used as a context.
+        self._state.context = True
         return self
 
     def __exit__(
@@ -221,6 +230,4 @@ class Asserto(AsserterMixin):
         exc_tb: typing.Optional[types.TracebackType] = None,
     ):
         # Todo: Implement the concept of 'soft' assertions using `Asserto` as a context
-        self._in_context = False
-
-    # ----- end of dunder -----
+        self._state.context = False

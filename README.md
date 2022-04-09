@@ -23,7 +23,7 @@ def test_something():
     asserto((5, 6, 7)).has_length(3).is_equal_to((5, 6, 7))
 
 
-# Or if you are using the `asserto-pytest` plugin:
+# Or if you are using the `pytest-asserto` plugin:
 def test_with_pytest(asserto):
     asserto("Hello").has_length(5).matches(r"^[A-Z][a-z]{4}$")
 ```

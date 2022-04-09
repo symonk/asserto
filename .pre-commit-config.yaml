@@ -28,7 +28,7 @@ repos:
     rev: v0.942
     hooks:
       - id: mypy
-        files: src/
+        files: asserto/
   - repo: https://github.com/PyCQA/flake8
     rev: 3ce76158a0e18605e9701bd3a2a25716fea411de
     hooks:
