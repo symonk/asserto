@@ -23,6 +23,11 @@ pytest = "^7.1.1"
 tox = "^3.24.5"
 pip = "^22.0.4"
 
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore:RequestsDependencyWarning:"
+]
+
 [tool.isort]
 multi_line_output = 3
 include_trailing_comma = 'True'
