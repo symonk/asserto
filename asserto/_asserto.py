@@ -25,7 +25,7 @@ class MultiFailContainer:
     """
 
     def __init__(self) -> None:
-        self.errors = []
+        self.errors: typing.List[AssertionError] = []
 
     def register_error(self, error: AssertionError) -> None:
         self.errors.append(error)
