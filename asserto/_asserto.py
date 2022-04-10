@@ -14,7 +14,6 @@ from ._states import State
 from ._warnings import UntriggeredAssertoWarning
 
 # Todo: base: `has_repr(...)`
-# Todo: base: `descriptions`
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
 
@@ -54,7 +53,14 @@ class Reason(Reasonable):
 
 
 class Asserto:
-    """Asserto."""
+    """Asserto.
+
+    We now have a suitable 'god' class that we can determine the refactoring.  Keeping error
+    handling reusable and breaking this down is actually quite tricky, for the domain here
+    it's completely 'fine' to call methods on types that do not suit the bill, we need to add
+    increased guarding to most cases; perhaps a decorator can make life a bit less repetitive
+    for that.
+    """
 
     def __init__(
         self,
@@ -253,6 +259,26 @@ class Asserto:
             self._soft_failures.register_error(error)
             return self
         raise error from None
+
+    def __getattr__(self, item: str) -> typing.Callable:
+        """
+        # Todo: This is full of bugs!
+        Dispatch dynamic attribute lookup on the underlying `self.actual` value.
+        :param item:
+        """
+        if item.startswith("has_"):
+            item = item[4:]
+        attr = getattr(self.actual, item, None)
+        if attr is not None:
+            # we found a dynamic attribute on the underlying self.value
+            # return a callable that can subsequent assert the value later.
+            def wrapper(value):
+                # Todo: Edge case; @triggered on the wrapper with instance acces
+                if attr != value:
+                    self.error(f"{self.actual} attribute: {item} was not equal to: {value}")
+
+            return wrapper  # Todo: Various edge cases are not addresses in this implementation just yet.
+        raise AssertionError(f"{self.actual} did not have an {item} attribute.")
 
     def __repr__(self) -> str:
         return f"Asserto(value={self.actual}, type_of={self.type_of}, category={self._reason.category})"
