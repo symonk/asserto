@@ -1,7 +1,7 @@
 exclude: ^(.tox|doc|ci/templates|)(/|$)
 repos:
   - repo: https://github.com/ambv/black
-    rev: f6188ce6dcde3fcad381c52ecc74374e7d0579c9
+    rev: 431bd09e15247431056894bd6444dee7c22893f0
     hooks:
       - id: black
         args:
@@ -39,7 +39,7 @@ repos:
     hooks:
       - id: pdb-vars
   - repo: https://github.com/hadialqattan/pycln
-    rev: 570395824fcca251f7083e2d71fb52ac0dd7d5aa
+    rev: 55a339fb6e49db770a61b57e0701311cf4bcd1c2
     hooks:
       - id: pycln
         args: [--config=pyproject.toml]
