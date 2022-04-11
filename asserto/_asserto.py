@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import pprint
 import re
 import types
 import typing
@@ -9,47 +8,14 @@ import warnings
 from ._constants import AssertTypes
 from ._decorators import triggered
 from ._exceptions import ExpectedTypeError
-from ._protocols import Reasonable
+from ._messaging import ComposedFailure
+from ._messaging import Reason
 from ._states import State
 from ._warnings import UntriggeredAssertoWarning
 
 # Todo: base: `has_repr(...)`
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
-
-
-class MultiFailContainer:
-    """
-    Capture multiple assertion failures when used in a soft context mode.
-    """
-
-    def __init__(self) -> None:
-        self.errors: typing.List[AssertionError] = []
-
-    def register_error(self, error: AssertionError) -> None:
-        self.errors.append(error)
-
-    def __bool__(self) -> bool:
-        return bool(self.errors)
-
-    def __repr__(self) -> str:
-        return f"{len(self.errors)} Soft Assertion Failures\n" + pprint.pformat(self.errors, indent=4)
-
-
-class Reason(Reasonable):
-    """
-    An encapsulation of assertion error messages.
-    """
-
-    def __init__(self, category: typing.Optional[str] = None, description: typing.Optional[str] = None) -> None:
-        self.category = category
-        self.description = description
-
-    def format(self, reason: str) -> str:
-        reason = self.description or reason
-        if self.category:
-            return f"[{self.category}] {reason}"
-        return reason
 
 
 class Asserto:
@@ -73,7 +39,7 @@ class Asserto:
         self.type_of = type_of
         self._state = state()
         self._reason = reason_supplier()
-        self._soft_failures = MultiFailContainer()
+        self._soft_failures = ComposedFailure()
 
     def with_category(self, category: str) -> Asserto:
         """
@@ -292,7 +258,7 @@ class Asserto:
         :return: The instance of `Asserto`.
         """
         self._state.context = True
-        self._soft_failures = MultiFailContainer()  # Force this to be reset.
+        self._soft_failures = ComposedFailure()  # Force this to be reset.
         return self
 
     def __exit__(
