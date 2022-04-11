@@ -13,19 +13,15 @@ from ._messaging import Reason
 from ._states import State
 from ._warnings import UntriggeredAssertoWarning
 
-# Todo: base: `has_repr(...)`
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
 
 
 class Asserto:
-    """Asserto.
+    """
+    The entrypoint into asserting objects.
 
-    We now have a suitable 'god' class that we can determine the refactoring.  Keeping error
-    handling reusable and breaking this down is actually quite tricky, for the domain here
-    it's completely 'fine' to call methods on types that do not suit the bill, we need to add
-    increased guarding to most cases; perhaps a decorator can make life a bit less repetitive
-    for that.
+    :param actual: The actual value
     """
 
     def __init__(
@@ -50,9 +46,8 @@ class Asserto:
                 Usage::
                     asserto(25).with_category("foo").is_equal_to(26)
                     `AssertionError(["foo"] 25 was not equal to: 26)`
-
-        :param category: The Category to group the assertion under.
-        :return: The `Asserto` instance for fluency.
+        Args:
+            category: The Category to group the assertion under.
         """
         self._reason.category = category
         return self
@@ -71,7 +66,12 @@ class Asserto:
     def ends_with(self, suffix: str) -> Asserto:
         """
         Asserts that the value provided begins with the suffix.
-        :param suffix: A substring to ensure the value begins with.
+        Args:
+            suffix (bool): substring to ensure the value begins with.
+        Returns:
+            bool: A bool
+        Raises:
+            DivisionByZeroException: The error
         """
         if not self.actual.endswith(suffix):
             self.error(f"{self.actual} did not end with {suffix}")
