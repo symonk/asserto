@@ -66,12 +66,6 @@ class Asserto:
     def ends_with(self, suffix: str) -> Asserto:
         """
         Asserts that the value provided begins with the suffix.
-        Args:
-            suffix (bool): substring to ensure the value begins with.
-        Returns:
-            bool: A bool
-        Raises:
-            DivisionByZeroException: The error
         """
         if not self.actual.endswith(suffix):
             self.error(f"{self.actual} did not end with {suffix}")
