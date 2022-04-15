@@ -222,23 +222,57 @@ class Asserto:
 
     def __getattr__(self, item: str) -> typing.Callable:
         """
-        # Todo: This is full of bugs!
-        Dispatch dynamic attribute lookup on the underlying `self.actual` value.
-        :param item:
+        Adds the capability to object class or instance attributes dynamically.  Supports user defined
+        object types as well as built in mapping types.  In the case of a mapping type the attribute 
+        name will be the key in the dictionary and value called its value to check for equality.
+        
+        :param item: The attribute name to lookup
         """
-        if item.startswith("has_"):
-            item = item[4:]
-        attr = getattr(self.actual, item, None)
-        if attr is not None:
-            # we found a dynamic attribute on the underlying self.value
-            # return a callable that can subsequent assert the value later.
-            def wrapper(value):
-                # Todo: Edge case; @triggered on the wrapper with instance acces
-                if attr != value:
-                    self.error(f"{self.actual} attribute: {item} was not equal to: {value}")
-
-            return wrapper  # Todo: Various edge cases are not addresses in this implementation just yet.
-        raise AssertionError(f"{self.actual} did not have an {item} attribute.")
+        if not item.endswith("_is"):
+            # Todo: [unit test #1]
+            raise AttributeError(f"unknown assertion method: {item}")
+        keyattr = item[:-3]
+        is_namedtuple = self._is_namedtuple(obj)
+        is_map_like = isistance(self.actual, typing.Iterable) and hasattr(self.actual, "__getitem__")
+        failure = None
+        
+        if not hasattr(self.actual, keyattr):
+            if not is_namedtuple and is_map_like:
+                if keyattr not in self.actual:
+                    failure = f"{self.actual!r} does not contain the key: {keyattr}"
+            else:
+                failure = f"{self.actual!r} does not have a {keyattr} attribute"
+                
+        def _wrap_it(*args):
+            if failure:
+                self.error(failure)
+            if len(args) != 1:
+                raise TypeError(f"Dynamic assertions only support a single argument, but {len(args)} was given, {args}")
+            value = self.actual[keyattr] if not is_namedtuple and is_map_like else getattr(self.actual, keyattr)
+            if callable(value):
+                try:
+                    lookup = value()
+                except TypeError:
+                    # lookup is not a bound method / callable etc
+                    raise TypeError(...)
+            else:
+                lookup = value
+            if lookup != args[0]:
+                self.error("Todo: A proper error message Here!")
+            return self
+        return _wrap_it
+        
+    def _is_namedtuple(self, obj) -> bool:
+        # Todo: [unit test #2]
+        t = type(obj)
+        bases = t.__bases__
+        if len(bases) != 1 and bases[0] != tuple:
+            return False
+        fields = getattr(obj, "_fields", None)
+        if not isinstance(fields, tuple):
+            return False
+        return all(type(f) == str for f in fields)
+        
 
     def __repr__(self) -> str:
         return f"Asserto(value={self.actual}, type_of={self.type_of}, category={self._reason.category})"
