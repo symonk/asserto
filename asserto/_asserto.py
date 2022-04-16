@@ -258,8 +258,9 @@ class Asserto:
                     raise TypeError(...)
             else:
                 lookup = value
-            if lookup != args[0]:
-                self.error("Todo: A proper error message Here!")
+            expected = args[0]
+            if lookup != expected:
+                self.error(f"{lookup} was not equal to: {expected}")
             return self
         return _wrap_it
         
