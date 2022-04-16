@@ -233,7 +233,7 @@ class Asserto:
             raise AttributeError(f"unknown assertion method: {item}")
         keyattr = item[:-3]
         is_namedtuple = self._is_namedtuple(self.actual)
-        is_map_like = isistance(self.actual, typing.Iterable) and hasattr(self.actual, "__getitem__")
+        is_map_like = isinstance(self.actual, typing.Iterable) and hasattr(self.actual, "__getitem__")
         failure = None
         
         if not hasattr(self.actual, keyattr):
