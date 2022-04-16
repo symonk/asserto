@@ -232,7 +232,7 @@ class Asserto:
             # Todo: [unit test #1]
             raise AttributeError(f"unknown assertion method: {item}")
         keyattr = item[:-3]
-        is_namedtuple = self._is_namedtuple(obj)
+        is_namedtuple = self._is_namedtuple(self.actual)
         is_map_like = isistance(self.actual, typing.Iterable) and hasattr(self.actual, "__getitem__")
         failure = None
         
@@ -247,6 +247,7 @@ class Asserto:
             if failure:
                 self.error(failure)
             if len(args) != 1:
+                # Todo: Copy pytests `__new__` for error message.
                 raise TypeError(f"Dynamic assertions only support a single argument, but {len(args)} was given, {args}")
             value = self.actual[keyattr] if not is_namedtuple and is_map_like else getattr(self.actual, keyattr)
             if callable(value):
