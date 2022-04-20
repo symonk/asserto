@@ -214,6 +214,7 @@ class Asserto:
             self._warn_not_triggered()
 
     def error(self, reason: str) -> Asserto:
+        __tracebackhide__ = True
         error = AssertionError(self._reason.format(reason))
         if self._state.context:
             self._soft_failures.register_error(error)
@@ -223,49 +224,49 @@ class Asserto:
     def __getattr__(self, item: str) -> typing.Callable:
         """
         Adds the capability to object class or instance attributes dynamically.  Supports user defined
-        object types as well as built in mapping types.  In the case of a mapping type the attribute 
+        object types as well as built in mapping types.  In the case of a mapping type the attribute
         name will be the key in the dictionary and value called its value to check for equality.
-        
+
         :param item: The attribute name to lookup
         """
+        self._state.triggered = True  # Debatable 'side effects' in attr access?
         if not item.endswith("_is"):
-            # Todo: [unit test #1]
             raise AttributeError(f"unknown assertion method: {item}")
         keyattr = item[:-3]
         is_namedtuple = self._is_namedtuple(self.actual)
         is_map_like = isinstance(self.actual, typing.Iterable) and hasattr(self.actual, "__getitem__")
         failure = None
-        
+
         if not hasattr(self.actual, keyattr):
             if not is_namedtuple and is_map_like:
                 if keyattr not in self.actual:
-                    failure = f"{self.actual!r} does not contain the key: {keyattr}"
+                    failure = f"{self.actual!r} missing key: {keyattr}"
             else:
-                failure = f"{self.actual!r} does not have a {keyattr} attribute"
-                
+                failure = f"{self.actual!r} missing attribute: {keyattr}"
+
         def _wrap_it(*args):
             if failure:
                 self.error(failure)
             if len(args) != 1:
-                # Todo: Copy pytests `__new__` for error message.
-                raise TypeError(f"Dynamic assertions only support a single argument, but {len(args)} was given, {args}")
+                raise TypeError(f"Dynamic assertion takes 1 argument but {len(args)} was given. {args}")
             value = self.actual[keyattr] if not is_namedtuple and is_map_like else getattr(self.actual, keyattr)
             if callable(value):
                 try:
                     lookup = value()
                 except TypeError:
-                    # lookup is not a bound method / callable etc
-                    raise TypeError(...)
+                    # Todo: no zero arg method/callable found; Error + unit tests.
+                    raise
             else:
                 lookup = value
             expected = args[0]
             if lookup != expected:
                 self.error(f"{lookup} was not equal to: {expected}")
             return self
+
         return _wrap_it
-        
-    def _is_namedtuple(self, obj) -> bool:
-        # Todo: [unit test #2]
+
+    @staticmethod
+    def _is_namedtuple(obj) -> bool:
         t = type(obj)
         bases = t.__bases__
         if len(bases) != 1 and bases[0] != tuple:
@@ -274,7 +275,6 @@ class Asserto:
         if not isinstance(fields, tuple):
             return False
         return all(type(f) == str for f in fields)
-        
 
     def __repr__(self) -> str:
         return f"Asserto(value={self.actual}, type_of={self.type_of}, category={self._reason.category})"
