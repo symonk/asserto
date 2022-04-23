@@ -1,0 +1,23 @@
+name: Automatic Poetry & Pre-commit dependency management.
+
+on:
+  schedule:
+    - cron: "0 8 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # Update poetry and pre-commit dependencies
+      - name: Enter the poetry shell
+        run: poetry shell
+      - name: Update poetry dependencies
+        run: poetry update
+      - name: Install the poetry dependencies
+        run: poetry install
+      - name: Install pre-commit
+        run: pre-commit install
+      - name: Update pre-commit hooks to bleeding edge
+        run: pre-commit autoupdate --bleeding-edge
+      # Todo: Automatically create a pull request with the diff.
