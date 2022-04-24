@@ -1,7 +1,7 @@
 import pytest
 
 from asserto import AssertTypes
-from asserto import UntriggeredAssertoWarning
+from asserto import NoAssertAttemptedWarning
 
 from .markers import NO_UNTRIGGERED_WARNINGS
 
@@ -31,21 +31,21 @@ def test_category_is_set(asserto) -> None:
 
 def test_triggered(asserto) -> None:
     x = asserto(50)
-    asserto(x._state.triggered).is_false()
+    asserto(x.triggered).is_false()
     x.is_equal_to(50)
-    asserto(x._state.triggered).is_true()
+    asserto(x.triggered).is_true()
 
 
 @NO_UNTRIGGERED_WARNINGS
 def test_context_triggered_warning(asserto) -> None:
-    with pytest.warns(UntriggeredAssertoWarning, match="Asserto instance was created and never used"):
+    with pytest.warns(NoAssertAttemptedWarning, match="Asserto instance was created and never used"):
         with asserto(100) as _:
             pass
 
 
 @NO_UNTRIGGERED_WARNINGS
 def test_non_context_triggered_warning(asserto) -> None:
-    with pytest.warns(UntriggeredAssertoWarning, match="Asserto instance was created and never used"):
+    with pytest.warns(NoAssertAttemptedWarning, match="Asserto instance was created and never used"):
         asserto(100)
 
 

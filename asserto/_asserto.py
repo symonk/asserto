@@ -6,12 +6,12 @@ import typing
 import warnings
 
 from ._constants import AssertTypes
-from ._decorators import triggered
+from ._decorators import update_triggered
 from ._exceptions import ExpectedTypeError
 from ._messaging import ComposedFailure
 from ._messaging import Reason
 from ._states import State
-from ._warnings import UntriggeredAssertoWarning
+from ._warnings import NoAssertAttemptedWarning
 
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
@@ -34,8 +34,27 @@ class Asserto:
         self.actual = actual
         self.type_of = type_of
         self._state = state()
+        self._triggered = False
         self._reason = reason_supplier()
         self._soft_failures = ComposedFailure()
+
+    @property
+    def triggered(self) -> bool:
+        """
+        Check if the instance has invoked any methods that could have raised an `AssertionError`.
+        :return: boolean indicating if a method has been invoked.
+        """
+        return self._triggered
+
+    @triggered.setter
+    def triggered(self, _) -> None:
+        """
+        Consider the asserto instance as `triggered`.  Instances which are instantiated but do not
+        invoke any assertion methods will omit a warning as this usually indicates user error and
+        helps to reduce mistakes in test code leading to misguided confidence in the test suite.
+        :return: The `Asserto` instance for fluency.
+        """
+        self._triggered = True
 
     def with_category(self, category: str) -> Asserto:
         """
@@ -62,7 +81,7 @@ class Asserto:
         self._reason.description = description
         return self
 
-    @triggered
+    @update_triggered
     def ends_with(self, suffix: str) -> Asserto:
         """
         Asserts that the value provided begins with the suffix.
@@ -71,19 +90,19 @@ class Asserto:
             self.error(f"{self.actual} did not end with {suffix}")
         return self
 
-    @triggered
+    @update_triggered
     def starts_with(self, prefix: str) -> Asserto:
         if not self.actual.startswith(prefix):
             self.error(f"{self.actual} did not start with {prefix}")
         return self
 
-    @triggered
+    @update_triggered
     def matches(self, pattern: str, flags: typing.Union[int, re.RegexFlag] = 0) -> Asserto:
         if re.match(rf"{pattern}", self.actual, flags) is None:
             self.error(f"{pattern} did not match the value: {self.actual}")
         return self
 
-    @triggered
+    @update_triggered
     def is_true(self) -> Asserto:
         """
         Checks the actual value is True.
@@ -93,7 +112,7 @@ class Asserto:
             self.error(f"{self.actual!r} was not True")
         return self
 
-    @triggered
+    @update_triggered
     def is_false(self) -> Asserto:
         """
         Checks the actual value is False.
@@ -103,7 +122,7 @@ class Asserto:
             self.error(f"{self.actual!r} was not False")
         return self
 
-    @triggered
+    @update_triggered
     def is_equal_to(self, other: typing.Any) -> Asserto:
         """
         Compares the value against `other` for equality.
@@ -115,7 +134,7 @@ class Asserto:
             self.error(f"{self.actual!r} was not equal to: {other!r}")
         return self
 
-    @triggered
+    @update_triggered
     def is_not_equal_to(self, other: typing.Any) -> Asserto:
         """
         Compares the value against `other` for non equality.
@@ -127,7 +146,7 @@ class Asserto:
             self.error(f"{self.actual!r} is equal to: {other!r}")
         return self
 
-    @triggered
+    @update_triggered
     def has_length(self, expected: int) -> Asserto:
         """
         A simple check that the actual value is equal to expected utilising the built in `len(...)`
@@ -142,7 +161,7 @@ class Asserto:
             self.error(f"Length of: {self.actual!r} was not equal to: {expected!r}")
         return self
 
-    @triggered
+    @update_triggered
     def is_instance(self, cls_or_tuple: typing.Union[typing.Any, typing.Iterable[typing.Any]]) -> Asserto:
         """
         Checks if the value provided is either:
@@ -157,7 +176,7 @@ class Asserto:
             self.error(f"[{self.actual!r}]: {type(self.actual)} was not an instance of: {cls_or_tuple}")
         return self
 
-    @triggered
+    @update_triggered
     def refers_to(self, other: typing.Any) -> Asserto:
         """
         Checks that the value refers to the same object in memory as `other`.`
@@ -168,7 +187,7 @@ class Asserto:
             self.error(f"{self.actual!r} is not: {other!r}")
         return self
 
-    @triggered
+    @update_triggered
     def does_not_refer_to(self, other: typing.Any) -> Asserto:
         """
         Checks that the value does not refer to the same object in memory as `other`.
@@ -179,7 +198,7 @@ class Asserto:
             self.error(f"{self.actual!r} points to the same memory location as: {other!r}")
         return self
 
-    @triggered
+    @update_triggered
     def is_none(self) -> Asserto:
         """
         Checks the actual value is None.  Python `NoneType` is a singleton so `is` checks
@@ -190,7 +209,7 @@ class Asserto:
             self.error(f"{self.actual!r} is not {None}")
         return self
 
-    @triggered
+    @update_triggered
     def is_not_none(self) -> Asserto:
         """
         Checks the actual value is not None .  Python `None` is a singleton so `is not` checks are
@@ -207,10 +226,10 @@ class Asserto:
         Triggers a warning if an asserto instance was created and no assertion methods was called
         to highlight potential user errors.
         """
-        warnings.warn("Asserto instance was created and never used", UntriggeredAssertoWarning, 2)
+        warnings.warn("Asserto instance was created and never used", NoAssertAttemptedWarning, 2)
 
     def __del__(self) -> None:
-        if not self._state.triggered:
+        if not self.triggered:
             self._warn_not_triggered()
 
     def error(self, reason: str) -> Asserto:
@@ -235,27 +254,28 @@ class Asserto:
 
         :param item: The attribute name to lookup
         """
-        self._state.triggered = True  # Debatable 'side effects' in attr access?
         if not item.endswith("_is"):
             raise AttributeError(f"unknown assertion method: {item}")
-        keyattr = item[:-3]
+        key_attr = item[:-3]
         is_namedtuple = self._is_namedtuple(self.actual)
         is_map_like = isinstance(self.actual, typing.Iterable) and hasattr(self.actual, "__getitem__")
         failure = None
 
-        if not hasattr(self.actual, keyattr):
+        if not hasattr(self.actual, key_attr):
+            # It's not an attribute on the wrapped `actual` value.
             if not is_namedtuple and is_map_like:
-                if keyattr not in self.actual:
-                    failure = f"{self.actual!r} missing key: {keyattr}"
+                if key_attr not in self.actual:
+                    failure = f"{self.actual!r} missing key: {key_attr}"
             else:
-                failure = f"{self.actual!r} missing attribute: {keyattr}"
+                failure = f"{self.actual!r} missing attribute: {key_attr}"
 
-        def _wrap_it(*args):
+        def _dynamic_callable(*args):
+            self.triggered = True  # Dynamic wrapper has been invoked!
             if failure:
                 self.error(failure)
             if len(args) != 1:
                 raise TypeError(f"Dynamic assertion takes 1 argument but {len(args)} was given. {args}")
-            value = self.actual[keyattr] if not is_namedtuple and is_map_like else getattr(self.actual, keyattr)
+            value = self.actual[key_attr] if not is_namedtuple and is_map_like else getattr(self.actual, key_attr)
             if callable(value):
                 try:
                     lookup = value()
@@ -269,7 +289,7 @@ class Asserto:
                 self.error(f"{lookup} was not equal to: {expected}")
             return self
 
-        return _wrap_it
+        return _dynamic_callable
 
     @staticmethod
     def _is_namedtuple(obj) -> bool:
@@ -304,7 +324,7 @@ class Asserto:
         exc_tb: typing.Optional[types.TracebackType] = None,
     ):
         self._state.context = False
-        if not self._state.triggered:
+        if not self.triggered:
             self._warn_not_triggered()
         if self._soft_failures:
             # There was a compilation of assertion errors

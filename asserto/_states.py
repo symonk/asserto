@@ -7,5 +7,4 @@ class State:
     """
 
     def __init__(self) -> None:
-        self.triggered = False
         self.context = False

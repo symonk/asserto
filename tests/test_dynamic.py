@@ -26,6 +26,7 @@ def test_attr_value_wrong(asserto) -> None:
     asserto(error.value.args[0]).is_equal_to("9 was not equal to: 10")
 
 
+@pytest.mark.filterwarnings("ignore::asserto._warnings.NoAssertAttemptedWarning")
 def test_no_attr_raises_attribute_error(asserto) -> None:
     with pytest.raises(AttributeError):
         # dynamic dispatch without ending in `_is`
@@ -38,6 +39,7 @@ def test_single_argument(asserto) -> None:
     asserto(error.value.args[0]).is_equal_to("Dynamic assertion takes 1 argument but 2 was given. (1, 2)")
 
 
+@pytest.mark.filterwarnings("ignore::asserto._warnings.NoAssertAttemptedWarning")
 def test_namedtuple_types(asserto) -> None:
     t = namedtuple("t", "a b c")
     assert asserto(None)._is_namedtuple({}) is False

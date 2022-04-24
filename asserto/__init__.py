@@ -1,5 +1,5 @@
 from ._api import asserto
 from ._constants import AssertTypes
-from ._warnings import UntriggeredAssertoWarning
+from ._warnings import NoAssertAttemptedWarning
 
-__all__ = ["asserto", "AssertTypes", "UntriggeredAssertoWarning"]
+__all__ = ["asserto", "AssertTypes", "NoAssertAttemptedWarning"]
