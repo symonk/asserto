@@ -25,7 +25,7 @@ The main features of asserto are (and will be):
 from asserto import asserto
 
 def test_foo() -> None:
-    asserto("Hello").has_length(5).matches(r"\w{4}$").ends_with("lo").starts_with("Hel")
+    asserto("Hello").has_length(5).matches(r"\w{5}$").ends_with("lo").starts_with("Hel")
 ```
 
 If you use pytest; a fixture is available for an `Asserto` factory function:
