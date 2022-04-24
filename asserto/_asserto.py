@@ -323,9 +323,10 @@ class Asserto:
         exc_val: typing.Optional[BaseException] = None,
         exc_tb: typing.Optional[types.TracebackType] = None,
     ):
+        __tracebackhide__ = True
         self._state.context = False
         if not self.triggered:
             self._warn_not_triggered()
         if self._soft_failures:
             # There was a compilation of assertion errors
-            raise AssertionError(self._soft_failures)
+            raise AssertionError(self._soft_failures) from None

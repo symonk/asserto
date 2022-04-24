@@ -19,6 +19,8 @@ class ComposedFailure:
         return bool(self.errors)
 
     def __repr__(self) -> str:
+        # Todo: Outline the passes as well as the failures.
+        # Todo: Improved tracebacks etc.
         return f"{len(self.errors)} Soft Assertion Failures\n" + pprint.pformat(self.errors, indent=4)
 
 
