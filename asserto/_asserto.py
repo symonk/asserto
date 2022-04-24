@@ -217,8 +217,8 @@ class Asserto:
         """
         The single point of assertion failing.  All functions delegate here to raise the underlying
         assertion errors.
-        :param reason:
-        :return:
+        :param reason: A reason for the failure. if self.description was set; it takes precedence.
+        :return: The `Asserto` instance for fluency
         """
         __tracebackhide__ = True
         error = AssertionError(self._reason.format(reason))
