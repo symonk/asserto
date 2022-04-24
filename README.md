@@ -12,14 +12,14 @@ in your framework (non-test) code is also fine as well!
 
 The main features of asserto are (and will be):
 
-    - Chaining and assertion fluency using a builder-esque API.
-    - Hard assertions by default; but soft when used in a python context.
-    - Clean, rich diffs to highlight problems and improve debuggability.
-    - Dynamicism, access underlying attributes and methods on pretty much any object using `attr_is(expected)` syntax.
-    - A robust set of APIs including all builtin types; files; regex and much, much more.
-    - Extensibility; registering your own assertion functions is easy! consider sending us a patch for useful ones.
-    - Automatic warnings in some cases of human error for assertions; i.e creating an instance but never checking anything.
-    - Much much more.
+- Chaining and assertion fluency using a builder-esque API.
+- Hard assertions by default; but soft when used in a python context.
+- Clean, rich diffs to highlight problems and improve debuggability.
+- Dynamicism, access underlying attributes and methods on pretty much any object using `attr_is(expected)` syntax.
+- A robust set of APIs including all builtin types; files; regex and much, much more.
+- Extensibility; registering your own assertion functions is easy! consider sending us a patch for useful ones.
+- Automatic warnings in some cases of human error for assertions; i.e creating an instance but never checking anything.
+- Much much more.
 
 ```python
 from asserto import asserto
@@ -35,7 +35,7 @@ def test_bar(asserto) -> None:  # No imports; just use the fixture.
     asserto("Hello").has_length(5).matches(r"\w{4}$").ends_with("lo").starts_with("Hel")
 ```
 
-If you want to check many assertions in a single test without failing instance:
+If you want to check many assertions in a single test without failing until after all:
 
 ```python
 def test_baz(asserto) -> None:
