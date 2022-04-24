@@ -89,7 +89,7 @@ class Asserto:
         Checks the actual value is True.
         :return: The `Asserto` instance for fluency.
         """
-        if not self.actual:
+        if self.actual is False:
             self.error(f"{self.actual!r} was not True")
         return self
 
@@ -99,7 +99,7 @@ class Asserto:
         Checks the actual value is False.
         :return: The `Asserto` instance for fluency.
         """
-        if self.actual:
+        if self.actual is True:
             self.error(f"{self.actual!r} was not False")
         return self
 
@@ -214,6 +214,12 @@ class Asserto:
             self._warn_not_triggered()
 
     def error(self, reason: str) -> Asserto:
+        """
+        The single point of assertion failing.  All functions delegate here to raise the underlying
+        assertion errors.
+        :param reason:
+        :return:
+        """
         __tracebackhide__ = True
         error = AssertionError(self._reason.format(reason))
         if self._state.context:
