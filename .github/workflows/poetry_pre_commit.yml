@@ -2,16 +2,16 @@ name: Automatic Poetry & Pre-commit dependency management.
 
 on:
   schedule:
-    - cron: "0 8 * * *"
+    - cron: "5 * * * *"  # Test.
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      # Update poetry and pre-commit dependencies
-      - name: Enter the poetry shell
-        run: poetry shell
+      - uses: actions/setup-python@v2
+      - name: Poetry install
+        run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
       - name: Update poetry dependencies
         run: poetry update
       - name: Install the poetry dependencies
