@@ -1,7 +1,7 @@
 exclude: ^(.tox|doc|ci/templates|)(/|$)
 repos:
   - repo: https://github.com/ambv/black
-    rev: 7f7673d941a947a8d392c8c0866d3d588affc174
+    rev: 8ed3e3d07ea3e6d62e3e533e69f96a0ff148cd5d
     hooks:
       - id: black
         args:
@@ -30,7 +30,7 @@ repos:
       - id: mypy
         files: asserto/
   - repo: https://github.com/PyCQA/flake8
-    rev: 463d9b1ce9ee44665f2c6825edd7010ef5dff760
+    rev: aff9c854aec265fc5bde42b824914609e0f636e6
     hooks:
       - id: flake8
         args: ["--max-line-length=120"]
@@ -39,7 +39,7 @@ repos:
     hooks:
       - id: pdb-vars
   - repo: https://github.com/hadialqattan/pycln
-    rev: v1.3.1
+    rev: 7047e29b0255bb1062aba6c05080023084c3494c
     hooks:
       - id: pycln
         args: [--config=pyproject.toml]
