@@ -2,7 +2,7 @@ name: Automatic Poetry & Pre-commit dependency management.
 
 on:
   schedule:
-    - cron: "5 * * * *"  # Test.
+    - cron: "* 8 * * *"  # Test.
 
 jobs:
   build:
