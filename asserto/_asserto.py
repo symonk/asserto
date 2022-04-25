@@ -5,12 +5,14 @@ import types
 import typing
 import warnings
 
+from ._callable import Raises
 from ._constants import AssertTypes
 from ._decorators import update_triggered
 from ._exceptions import ExpectedTypeError
 from ._messaging import ComposedFailure
 from ._messaging import Reason
 from ._states import State
+from ._types import EXC_TYPES_ALIAS
 from ._warnings import NoAssertAttemptedWarning
 
 # Todo: base: `tidy up docstrings`
@@ -80,6 +82,16 @@ class Asserto:
         """
         self._reason.description = description
         return self
+
+    def should_raise(self, exceptions: EXC_TYPES_ALIAS) -> Raises:
+        """
+        Wraps the actual value into a callable if it is callable itself;
+        :param exceptions: The type of exception expected.
+        :return: The `Asserto` instance for fluency
+        """
+        return Raises(exc_types=exceptions, value=self.actual, _referent=self)
+
+    # Todo: should_not_raise
 
     @update_triggered
     def ends_with(self, suffix: str) -> Asserto:

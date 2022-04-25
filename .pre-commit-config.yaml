@@ -10,7 +10,7 @@ repos:
           - '--line-length=120'
         language_version: python3.10
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: 5d1ab6d7f3e8f928c896232d2fb0ff95b3563ca6
+    rev: f5c26753e4c8a1f45b9d7edefa976fe4ea932e26
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
