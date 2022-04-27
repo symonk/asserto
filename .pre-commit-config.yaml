@@ -30,7 +30,7 @@ repos:
       - id: mypy
         files: asserto/
   - repo: https://github.com/PyCQA/flake8
-    rev: aff9c854aec265fc5bde42b824914609e0f636e6
+    rev: 59574795721e3cbb4f439cbe29b531d603038cc0
     hooks:
       - id: flake8
         args: ["--max-line-length=120"]
@@ -39,7 +39,7 @@ repos:
     hooks:
       - id: pdb-vars
   - repo: https://github.com/hadialqattan/pycln
-    rev: 7047e29b0255bb1062aba6c05080023084c3494c
+    rev: v1.3.2
     hooks:
       - id: pycln
         args: [--config=pyproject.toml]

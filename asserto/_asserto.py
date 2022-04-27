@@ -5,12 +5,12 @@ import types
 import typing
 import warnings
 
-from ._callable import Raises
 from ._constants import AssertTypes
 from ._decorators import update_triggered
 from ._exceptions import ExpectedTypeError
 from ._messaging import ComposedFailure
 from ._messaging import Reason
+from ._raising_handler import Raises
 from ._states import State
 from ._types import EXC_TYPES_ALIAS
 from ._warnings import NoAssertAttemptedWarning

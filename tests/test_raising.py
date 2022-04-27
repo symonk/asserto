@@ -2,14 +2,17 @@ from __future__ import annotations
 
 import pytest
 
+from .markers import NO_UNTRIGGERED_WARNINGS
+
 
 def test_raises_without_exception(asserto) -> None:
-    asserto(_raiser).should_raise(ValueError).when_called_with(True)
+    asserto(_raiser).should_raise(ValueError).when_called_with(x=True)
 
 
+@NO_UNTRIGGERED_WARNINGS
 def test_errors_when_no_exc(asserto) -> None:
     with pytest.raises(AssertionError) as error:
-        asserto(_raiser).should_raise((ValueError, RuntimeError)).when_called_with(False)
+        asserto(_raiser).should_raise((ValueError, RuntimeError)).when_called_with(x=False)
     asserto(error.value.args[0]).matches(
         r"^<function _raiser at .*> never raised any of: \(<class 'ValueError'>, <class 'RuntimeError'>\)$"
     )

@@ -21,17 +21,22 @@ class Raises:
         self._proxy_val = value
         self.asserto_ref = _referent  # Todo: investigate weakref here.
 
-    def when_called_with(self, *args, **kwargs) -> None:
+    def when_called_with(self, *, reason: typing.Optional[str] = None, **kwargs) -> None:
         """
         Call the underlying function with the user supplied arguments;  This returns the result
         of the function back to the asserto instance to enforce error handling & assertion errors
         there.
+
+        If reason is provided; asserto will enforce the exception message is explicitly equal to.
+
+        # Todo: In future support a pattern match.
+        # Todo: limitations in this API; what if the called arg has a `reason` attribute?
         """
         try:
             # update 'triggered' status to avoid unnecessary warnings
             self.asserto_ref.triggered = True
-            _ = self._proxy_val(*args, **kwargs)
+            _ = self._proxy_val(**kwargs)
             self.asserto_ref.error(f"{self._proxy_val} never raised any of: {self.exc_types}")
-        except self.exc_types:
-            # exception was raised as expected; no-op
-            ...
+        except self.exc_types as e:
+            if reason and str(e) != reason:
+                self.asserto_ref.error(f"Exception did not have expected message, was: {str(e)}")

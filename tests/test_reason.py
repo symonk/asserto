@@ -2,6 +2,8 @@ import pytest
 
 from asserto._asserto import Reason
 
+from .markers import NO_UNTRIGGERED_WARNINGS
+
 
 @pytest.mark.parametrize(
     "reason_obj, reason_txt, expected",
@@ -21,7 +23,7 @@ def test_described_as(asserto) -> None:
     asserto(error.value.args[0]).is_equal_to("foo!")
 
 
-@pytest.mark.filterwarnings("ignore::asserto._warnings.NoAssertAttemptedWarning")
+@NO_UNTRIGGERED_WARNINGS
 def test_described_updates_reason(asserto) -> None:
     foo = "foo"
     x = asserto(1).described_as(foo)
