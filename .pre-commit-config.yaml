@@ -1,7 +1,7 @@
 exclude: ^(.tox|doc|ci/templates|)(/|$)
 repos:
   - repo: https://github.com/ambv/black
-    rev: 8ed3e3d07ea3e6d62e3e533e69f96a0ff148cd5d
+    rev: fb8dfdeec5fd76cc0c30f881d6fc75851139d80a
     hooks:
       - id: black
         args:
@@ -25,7 +25,7 @@ repos:
     hooks:
       - id: isort
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.942
+    rev: v0.950
     hooks:
       - id: mypy
         files: asserto/
