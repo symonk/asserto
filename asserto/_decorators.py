@@ -16,7 +16,6 @@ def update_triggered(fn: typing.Callable[[typing.Any, ...], typing.Any]) -> typi
             result = fn(*args, **kwargs)
         finally:
             instance.triggered = True
-        instance._state.update_triggered = True
         return result
 
     return wrapper
