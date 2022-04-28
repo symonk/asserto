@@ -15,7 +15,7 @@ class Raises:
     _proxy_val = IsCallable()
 
     def __init__(
-        self, exc_types: EXC_TYPES_ALIAS, value: typing.Callable[[typing.Any, ...], typing.Any], _referent
+        self, exc_types: EXC_TYPES_ALIAS, value: typing.Callable[[typing.Any], typing.Any], _referent
     ) -> None:
         self.exc_types = to_iterable(exc_types)
         self._proxy_val = value
