@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        python-version: [ '3.8', '3.9', '3.10', '3.11-dev' ]
+        python-version: [ '3.8', '3.9', '3.10'] # 3.11-dev later.
     steps:
       - uses: actions/checkout@v3
       - name: 'Set up Python ${{ matrix.python-version }}'
@@ -28,11 +28,4 @@ jobs:
           poetry --version
       - name: Execute tests
         run: |
-          tox
-          tox -e report_cov
-      - uses: actions/checkout@master
-      - uses: codecov/codecov-action@v2
-        with:
-          flags: asserto unit tests
-          fail_ci_if_error: true
-          verbose: true
+          tox -e ${{ matrix.toxenv }}
