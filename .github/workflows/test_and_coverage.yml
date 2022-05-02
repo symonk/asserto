@@ -46,12 +46,12 @@ jobs:
       - name: Test without coverage
         if: "! matrix.do_cov"
         run: |
-          tox -e ${{ matrix.toxenv }}
+          tox -e ${{ matrix.tox_env }}
 
       - name: Test with coverage
         if: "matrix.do_cov"
         run: |
-          tox -e ${{ matrix.toxenv }}
+          tox -e ${{ matrix.tox_env }}
 
       - name: Generate cov report
         if: "matrix.do_cov"
