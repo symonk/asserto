@@ -10,7 +10,7 @@ Asserto is a clean, fluent and powerful assertion library for python.  We recomm
 runner but asserto will work well with any test runner.
 
 >Asserto was developed using pytest as it's test runner and has a `pytest-asserto` plugin that exposes asserto
->through a fixture.  Asserto will work on any runner or even without one.  Note: It is common practice for a 
+>through a fixture.  Asserto will work on any runner or even without one.  Note: It is common practice for a
 >test runner to apply assertion rewriting to change the behaviour of the `assert` keyword under the hood.
 
 The main features of asserto are (and will be):

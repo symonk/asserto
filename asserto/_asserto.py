@@ -13,14 +13,16 @@ from ._messaging import Reason
 from ._raising_handler import Raises
 from ._states import State
 from ._types import EXC_TYPES_ALIAS
-from ._warnings import NoAssertAttemptedWarning
 from ._util import is_namedtuple_like
+from ._warnings import NoAssertAttemptedWarning
 
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
 
 
-def register_assert(func: typing.Callable[[Asserto, typing.Any], typing.Any]) -> typing.Callable[[typing.Any], typing.Any]:
+def register_assert(
+    func: typing.Callable[[Asserto, typing.Any], typing.Any]
+) -> typing.Callable[[typing.Any], typing.Any]:
     """
     # Todo: There is a lot of edge cases here that I'm not (yet) aware of.
     Automatically registers a user defined callable (function) to all future instances of Asserto.

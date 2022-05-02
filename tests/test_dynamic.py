@@ -38,11 +38,3 @@ def test_single_argument(asserto) -> None:
     with pytest.raises(TypeError) as error:
         asserto(dict(a=1)).a_is(1, 2)
     asserto(error.value.args[0]).is_equal_to("Dynamic assertion takes 1 argument but 2 was given. (1, 2)")
-
-
-@NO_UNTRIGGERED_WARNINGS
-def test_namedtuple_types(asserto) -> None:
-    t = namedtuple("t", "a b c")
-    assert asserto(None).is_namedtuple_like({}) is False
-    assert asserto(None).is_namedtuple_like((1, 2, 3)) is False
-    assert asserto(None).is_namedtuple_like(t(1, 2, 3)) is True
