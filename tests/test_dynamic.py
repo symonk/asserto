@@ -43,6 +43,6 @@ def test_single_argument(asserto) -> None:
 @NO_UNTRIGGERED_WARNINGS
 def test_namedtuple_types(asserto) -> None:
     t = namedtuple("t", "a b c")
-    assert asserto(None)._is_namedtuple({}) is False
-    assert asserto(None)._is_namedtuple((1, 2, 3)) is False
-    assert asserto(None)._is_namedtuple(t(1, 2, 3)) is True
+    assert asserto(None).is_namedtuple_like({}) is False
+    assert asserto(None).is_namedtuple_like((1, 2, 3)) is False
+    assert asserto(None).is_namedtuple_like(t(1, 2, 3)) is True

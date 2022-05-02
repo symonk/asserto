@@ -14,6 +14,7 @@ from ._raising_handler import Raises
 from ._states import State
 from ._types import EXC_TYPES_ALIAS
 from ._warnings import NoAssertAttemptedWarning
+from ._util import is_namedtuple_like
 
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
@@ -312,13 +313,13 @@ class Asserto:
         if not item.endswith("_is"):
             raise AttributeError(f"unknown assertion method: {item}")
         key_attr = item[:-3]
-        is_namedtuple = self._is_namedtuple(self.actual)
-        is_map_like = isinstance(self.actual, typing.Iterable) and hasattr(self.actual, "__getitem__")
+        named_tuple_like = self.is_namedtuple_like(self.actual)
+        mapping_like = isinstance(self.actual, typing.Iterable) and hasattr(self.actual, "__getitem__")
         failure = None
 
         if not hasattr(self.actual, key_attr):
             # It's not an attribute on the wrapped `actual` value.
-            if not is_namedtuple and is_map_like:
+            if not named_tuple_like and mapping_like:
                 if key_attr not in self.actual:
                     failure = f"{self.actual!r} missing key: {key_attr}"
             else:
@@ -330,7 +331,7 @@ class Asserto:
                 self.error(failure)
             if len(args) != 1:
                 raise TypeError(f"Dynamic assertion takes 1 argument but {len(args)} was given. {args}")
-            value = self.actual[key_attr] if not is_namedtuple and is_map_like else getattr(self.actual, key_attr)
+            value = self.actual[key_attr] if not named_tuple_like and mapping_like else getattr(self.actual, key_attr)
             if callable(value):
                 try:
                     lookup = value()
@@ -345,17 +346,6 @@ class Asserto:
             return self
 
         return _dynamic_callable
-
-    @staticmethod
-    def _is_namedtuple(obj) -> bool:
-        t = type(obj)
-        bases = t.__bases__
-        if len(bases) != 1 and bases[0] != tuple:
-            return False
-        fields = getattr(obj, "_fields", None)
-        if not isinstance(fields, tuple):
-            return False
-        return all(type(f) == str for f in fields)
 
     def __repr__(self) -> str:
         return f"Asserto(value={self.actual}, type_of={self.type_of}, category={self._reason.category})"
