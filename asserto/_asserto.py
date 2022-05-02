@@ -313,7 +313,7 @@ class Asserto:
         if not item.endswith("_is"):
             raise AttributeError(f"unknown assertion method: {item}")
         key_attr = item[:-3]
-        named_tuple_like = self.is_namedtuple_like(self.actual)
+        named_tuple_like = is_namedtuple_like(self.actual)
         mapping_like = isinstance(self.actual, typing.Iterable) and hasattr(self.actual, "__getitem__")
         failure = None
 
