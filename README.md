@@ -4,22 +4,27 @@
 [![codecov](https://codecov.io/gh/symonk/asserto/branch/main/graph/badge.svg)](https://codecov.io/gh/symonk/asserto)
 [![docs](https://img.shields.io/badge/documentation-online-brightgreen.svg)](https://symonk.github.io/asserto/)
 
-## Asserto
+## Asserto:
 
 Asserto is a clean, fluent and powerful assertion library for python.  We recommend using `pytest` as a test
-runner (as asserto has been developed using it internally) however any test runner will work just fine.  Using it
-in your framework (non-test) code is also fine as well!
+runner but asserto will work well with any test runner.
+
+>Asserto was developed using pytest as it's test runner and has a `pytest-asserto` plugin that exposes asserto
+>through a fixture.  Asserto will work on any runner or even without one.  Note: It is common practice for a 
+>test runner to apply assertion rewriting to change the behaviour of the `assert` keyword under the hood.
 
 The main features of asserto are (and will be):
 
-- Chaining and assertion fluency using a builder-esque API.
-- Hard assertions by default; but soft when used in a python context.
-- Clean, rich diffs to highlight problems and improve debuggability.
-- Dynamicism, access underlying attributes and methods on pretty much any object using `attr_is(expected)` syntax.
-- A robust set of APIs including all builtin types; files; regex and much, much more.
-- Extensibility; registering your own assertion functions is easy! consider sending us a patch for useful ones.
-- Automatic warnings in some cases of human error for assertions; i.e creating an instance but never checking anything.
-- Much much more.
++ Chainable and Fluent API.
++ Ability for both `Hard` and `Soft` assertions.
++ Rich diffs to highlight problems, reduce churn and improve effeciency and debuggability.
++ Dynamic assertions; check any obj attribute or invoke any of it's function types.
++ Robust set of methods out of the box for common types.
++ Extensibility.  Bolt on your own assetions at runtime.
++ Human error detection, elaborate warnings when something is amiss.
++ Much more to come.
+
+## Usage:
 
 ```python
 from asserto import asserto
