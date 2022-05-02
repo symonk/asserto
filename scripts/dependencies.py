@@ -10,6 +10,7 @@ def main() -> int:
     return_code += pre_commit_update()
     if not return_code:
         commit_and_push()
+    return return_code
 
 
 def poetry_update():
