@@ -19,6 +19,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"  # Lax this in future; we don't need to be so strict.
+rich = "^12.3.0"
 
 [tool.poetry.dev-dependencies]
 codecov = "^2.1.12"
