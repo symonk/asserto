@@ -19,7 +19,7 @@ from ._warnings import NoAssertAttemptedWarning
 # Todo: base `remove duplication here`
 
 
-def assertable(func: typing.Callable[[Asserto, typing.Any], typing.Any]) -> typing.Callable[[typing.Any], typing.Any]:
+def register_assert(func: typing.Callable[[Asserto, typing.Any], typing.Any]) -> typing.Callable[[typing.Any], typing.Any]:
     """
     # Todo: There is a lot of edge cases here that I'm not (yet) aware of.
     Automatically registers a user defined callable (function) to all future instances of Asserto.

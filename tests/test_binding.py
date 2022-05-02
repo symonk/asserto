@@ -1,7 +1,7 @@
 import pytest
 
 from asserto import Asserto
-from asserto import assertable
+from asserto import register_assert
 
 from .markers import NO_UNTRIGGERED_WARNINGS
 
@@ -20,13 +20,13 @@ def bind_function(request) -> None:
     Bind a function and undo it after.
     :param request:
     """
-    assertable(is_length_five)
+    register_assert(is_length_five)
     request.addfinalizer(lambda: delattr(Asserto, is_length_five.__name__))
 
 
 @pytest.mark.usefixtures("bind_function")
 def test_binding_successful(asserto) -> None:
-    assertable(is_length_five)
+    register_assert(is_length_five)
     asserto([1, 2, 3, 4, 5]).is_length_five()
 
 
@@ -39,7 +39,7 @@ def test_calling_unbound(asserto) -> None:
 
 def test_cannot_register_lambda(asserto) -> None:
     expected = "Binding functions does not support lambdas, they have no name"
-    asserto(assertable).should_raise(ValueError).when_called_with(reason=expected, func=lambda: ...)
+    asserto(register_assert).should_raise(ValueError).when_called_with(reason=expected, func=lambda: ...)
 
 
 def test_no_name(asserto) -> None:
@@ -47,21 +47,21 @@ def test_no_name(asserto) -> None:
         ...
 
     expected = "Binding functions must be of function types."
-    asserto(assertable).should_raise(ValueError).when_called_with(reason=expected, func=C)
+    asserto(register_assert).should_raise(ValueError).when_called_with(reason=expected, func=C)
 
 
 def test_ends_with_is(asserto) -> None:
     def foo_is(self):
         ...
 
-    asserto(assertable).should_raise(ValueError).when_called_with(
+    asserto(register_assert).should_raise(ValueError).when_called_with(
         reason="Binding functions cannot end with `_is`", func=foo_is
     )
 
 
 @pytest.fixture
 def wrapped_fn(request):
-    @assertable
+    @register_assert
     def my_fn(self):
         ...
 
