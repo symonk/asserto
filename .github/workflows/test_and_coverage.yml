@@ -12,18 +12,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10"] # "3.11-dev later.
-        name: [
-          "ubuntu-py38",
-          "ubuntu-py39",
-          "ubuntu-py310"
-        ]
         include:
-          - name: "ubuntu-py38"
+          - name: "py38"
             tox_env: "py38"
             do_cov: false
             python: "3.8"
-          - name: "ubuntu-py39"
+          - name: "py39"
             tox_env: "py39"
             do_cov: false
             python: "3.9"
@@ -33,10 +27,10 @@ jobs:
             do_cov: true
     steps:
       - uses: actions/checkout@v3
-      - name: 'Set up Python ${{ matrix.python-version }}'
+      - name: 'Set up Python ${{ matrix.python }}'
         uses: actions/setup-python@v2
         with:
-          python-version: '${{ matrix.python-version }}'
+          python-version: '${{ matrix.python }}'
 
       - name: Install dependencies
         run: |
