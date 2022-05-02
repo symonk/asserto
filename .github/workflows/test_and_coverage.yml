@@ -10,14 +10,30 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
-        python-version: [ '3.8', '3.9', '3.10'] # 3.11-dev later.
+        name: [
+          "ubuntu-py38",
+          "ubuntu-py39",
+          "ubuntu-py310"
+        ]
+        include:
+          - name: "ubuntu-py38"
+            tox_env: "py38"
+            do_cov: false
+          - name: "ubuntu-py39"
+            tox_env: "py39"
+            do_cov: false
+          - name: "ubuntu-py310"
+            tox_env: "py310"
+            do_cov: true
     steps:
       - uses: actions/checkout@v3
       - name: 'Set up Python ${{ matrix.python-version }}'
         uses: actions/setup-python@v2
         with:
           python-version: '${{ matrix.python-version }}'
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -26,6 +42,26 @@ jobs:
           pip --version
           tox --version
           poetry --version
-      - name: Execute tests
+
+      - name: Test without coverage
+        if: "! matrix.do_cov"
         run: |
           tox -e ${{ matrix.toxenv }}
+
+      - name: Test with coverage
+        if: "matrix.do_cov"
+        run: |
+          tox -e ${{ matrix.toxenv }}
+
+      - name: Generate cov report
+        if: "matrix.do_cov"
+        run: |
+          tox -e report_cov
+
+      - name: Upload to CodeCov
+        if: "matrix.do_cov"
+        uses: codecov/codecov-action@v2
+        with:
+          flags: asserto unit tests
+          fail_ci_if_error: true
+          verbose: true
