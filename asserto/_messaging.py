@@ -1,10 +1,10 @@
 import pprint
 import typing
 
-from ._protocols import Reasonable
+from ._protocols import IErrorTemplate
 
 
-class ComposedFailure:
+class FailureCompilation:
     """
     Capture multiple assertion failures when used in a soft context mode.
     """
@@ -24,7 +24,7 @@ class ComposedFailure:
         return f"{len(self.errors)} Soft Assertion Failures\n" + pprint.pformat(self.errors, indent=4)
 
 
-class Reason(Reasonable):
+class Reason(IErrorTemplate):
     """
     An encapsulation of assertion error messages.
     """

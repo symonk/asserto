@@ -67,10 +67,10 @@ Examples of dynamic assertions on any object type using `attr_is(...)`:
 ```python
 
 class Foo:
-    
+
     def __init__(self, x) -> None:
         self.x = x
-        
+
     def double_x(self) -> int:
         return self.x * 2
 

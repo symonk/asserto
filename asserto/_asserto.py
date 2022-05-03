@@ -5,14 +5,14 @@ import types
 import typing
 import warnings
 
-from ._constants import AssertTypes
 from ._decorators import update_triggered
-from ._exceptions import ExpectedTypeError
+from ._error_handling import ErrorHandler
 from ._exceptions import DynamicCallableWithArgsError
-from ._messaging import ComposedFailure
+from ._exceptions import ExpectedTypeError
 from ._messaging import Reason
+from ._protocols import Assertable
+from ._protocols import IErrorTemplate
 from ._raising_handler import Raises
-from ._states import State
 from ._types import EXC_TYPES_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
@@ -76,16 +76,24 @@ class Asserto:
     def __init__(
         self,
         actual: typing.Any,
-        type_of: str = AssertTypes.HARD,
-        state: typing.Type[State] = State,
-        reason_supplier: typing.Type[Reason] = Reason,
+        reason_supplier: typing.Type[IErrorTemplate] = Reason,
+        error_handler: typing.Type[Assertable] = ErrorHandler,
     ):
         self.actual = actual
-        self.type_of = type_of
-        self._state = state()
         self._triggered = False
         self._reason = reason_supplier()
-        self._soft_failures = ComposedFailure()
+        self._error_handler = error_handler(self._reason)
+
+    def error(self, reason: str) -> Asserto:
+        """
+        The single point of assertion failing.  All functions delegate here to raise the underlying
+        assertion errors.
+        :param reason: A reason for the failure. if self.description was set; it takes precedence.
+        :return: The `Asserto` instance for fluency
+        """
+        __tracebackhide__ = True
+        self._error_handler.error(reason)
+        return self
 
     @property
     def triggered(self) -> bool:
@@ -291,20 +299,6 @@ class Asserto:
         if not self.triggered:
             self._warn_not_triggered()
 
-    def error(self, reason: str) -> Asserto:
-        """
-        The single point of assertion failing.  All functions delegate here to raise the underlying
-        assertion errors.
-        :param reason: A reason for the failure. if self.description was set; it takes precedence.
-        :return: The `Asserto` instance for fluency
-        """
-        __tracebackhide__ = True
-        error = AssertionError(self._reason.format(reason))
-        if self._state.context:
-            self._soft_failures.register_error(error)
-            return self
-        raise error from None
-
     def __getattr__(self, item: str) -> typing.Callable:
         """
         Adds the capability to object class or instance attributes dynamically.  Supports user defined
@@ -350,7 +344,7 @@ class Asserto:
         return _dynamic_callable
 
     def __repr__(self) -> str:
-        return f"Asserto(value={self.actual}, type_of={self.type_of}, category={self._reason.category})"
+        return f"Asserto(value={self.actual}, category={self._reason.category})"
 
     def __enter__(self) -> Asserto:
         """
@@ -360,8 +354,7 @@ class Asserto:
         occurred.
         :return: The instance of `Asserto`.
         """
-        self._state.context = True
-        self._soft_failures = ComposedFailure()  # Force this to be reset.
+        self._error_handler.transition_to_soft()
         return self
 
     def __exit__(
@@ -371,9 +364,9 @@ class Asserto:
         exc_tb: typing.Optional[types.TracebackType] = None,
     ):
         __tracebackhide__ = True
-        self._state.context = False
         if not self.triggered:
             self._warn_not_triggered()
-        if self._soft_failures:
+        if self._error_handler.soft_fails:
             # There was a compilation of assertion errors
-            raise AssertionError(self._soft_failures) from None
+            raise AssertionError(self._error_handler.soft_fails) from None
+        self._error_handler.transition_to_hard()

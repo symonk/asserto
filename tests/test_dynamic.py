@@ -27,6 +27,7 @@ def test_no_arg_callable_not_ok(asserto) -> None:
     class C:
         def bound_with_args(self, x):
             return 10
+
     with pytest.raises(TypeError) as error:
         asserto(C()).bound_with_args_is(10)
     asserto(error.value.args[0]).is_equal_to("bound_with_args expects arguments, this is not supported")

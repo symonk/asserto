@@ -1,24 +1,21 @@
 import pytest
 
-from asserto import AssertTypes
 from asserto import NoAssertAttemptedWarning
 
 from .markers import NO_UNTRIGGERED_WARNINGS
 
 
 @NO_UNTRIGGERED_WARNINGS
-def test_repr_soft(asserto) -> None:
-    asserto(repr(asserto("foo").with_category("n"))).is_equal_to("Asserto(value=foo, type_of=hard, category=n)")
-    asserto(repr(asserto(100))).is_equal_to("Asserto(value=100, type_of=hard, category=None)")
-    asserto(repr(asserto(100, AssertTypes.SOFT))).is_equal_to("Asserto(value=100, type_of=soft, category=None)")
-    asserto(repr(asserto(100, AssertTypes.WARN))).is_equal_to("Asserto(value=100, type_of=warn, category=None)")
+def test_simple_repr(asserto) -> None:
+    asserto(repr(asserto("foo").with_category("n"))).is_equal_to("Asserto(value=foo, category=n)")
+    asserto(repr(asserto(100))).is_equal_to("Asserto(value=100, category=None)")
 
 
 @NO_UNTRIGGERED_WARNINGS
 def test_soft_context_active(asserto) -> None:
     with asserto(1) as soft:
-        asserto(soft._state.context).is_true()
-    asserto(soft._state.context).is_false()
+        asserto(soft._error_handler.soft_context).is_true()
+    asserto(soft._error_handler.soft_context).is_false()
 
 
 @pytest.mark.skip(reason="not implemented yet!")
