@@ -8,7 +8,6 @@ name: asserto testing
       - main
 jobs:
   build:
-    runs-on: ${{ matrix.operating_system }}
     timeout-minutes: 10
     strategy:
       fail-fast: false
@@ -52,6 +51,7 @@ jobs:
             operating_system: "windows-latest"
             tox_env: "py310"
             do_cov: false
+    runs-on: ${{ matrix.operating_system }}
     steps:
       - uses: actions/checkout@v3
       - name: 'Set up Python ${{ matrix.python }}'
