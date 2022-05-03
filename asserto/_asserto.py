@@ -62,8 +62,8 @@ def register_assert(
     if name == "<lambda>":
         raise ValueError("Binding functions does not support lambdas, they have no name")
     # Register a new function to the class.
-    setattr(Asserto, name, func)
-    return update_triggered(func)
+    setattr(Asserto, name, update_triggered(func))
+    return func
 
 
 class Asserto:
