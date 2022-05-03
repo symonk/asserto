@@ -8,6 +8,7 @@ name: asserto testing
       - main
 jobs:
   build:
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 10
     strategy:
       fail-fast: false
@@ -16,42 +17,41 @@ jobs:
           "ubuntu-py38",
           "ubuntu-py39",
           "ubuntu-py310",
-          "win-py38",
-          "win-py39",
-          "win-py310",
+          "windows-py38",
+          "windows-py39",
+          "windows-py310",
         ]
         include:
           - name: "ubuntu-py38"
             python: "3.8"
-            operating_system: "ubuntu-20.04"
+            os: ubuntu-20.04
             tox_env: "py38"
             do_cov: false
           - name: "ubuntu-py39"
             python: "3.9"
-            operating_system: "ubuntu-20.04"
+            os: ubuntu-20.04
             tox_env: "py39"
             do_cov: false
           - name: "ubuntu-py310"
             python: "3.10"
-            operating_system: "ubuntu-20.04"
+            os: ubuntu-20.04
             tox_env: "py310"
             do_cov: true
           - name: "windows-py38"
             python: "3.8"
-            operating_system: "windows-latest"
+            os: windows-latest
             tox_env: "py38"
             do_cov: false
           - name: "windows-py39"
             python: "3.9"
-            operating_system: "windows-latest"
+            os: windows-latest
             tox_env: "py39"
             do_cov: false
           - name: "windows-py310"
             python: "3.10"
-            operating_system: "windows-latest"
+            os: windows-latest
             tox_env: "py310"
             do_cov: false
-    runs-on: ${{ matrix.operating_system }}
     steps:
       - uses: actions/checkout@v3
       - name: 'Set up Python ${{ matrix.python }}'
