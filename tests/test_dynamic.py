@@ -15,6 +15,23 @@ def test_attr_access_works_on_various_types(asserto) -> None:
     asserto(t(1337)).baz_is(1337)
 
 
+def test_no_arg_callable_ok(asserto) -> None:
+    class C:
+        def ok(self):
+            return 10
+
+    asserto(C()).ok_is(10)
+
+
+def test_no_arg_callable_not_ok(asserto) -> None:
+    class C:
+        def bound_with_args(self, x):
+            return 10
+    with pytest.raises(TypeError) as error:
+        asserto(C()).bound_with_args_is(10)
+    asserto(error.value.args[0]).is_equal_to("bound_with_args expects arguments, this is not supported")
+
+
 def test_no_attr(asserto) -> None:
     with pytest.raises(AssertionError) as error:
         asserto(Dynamic()).a_is(10)

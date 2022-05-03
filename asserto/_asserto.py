@@ -8,6 +8,7 @@ import warnings
 from ._constants import AssertTypes
 from ._decorators import update_triggered
 from ._exceptions import ExpectedTypeError
+from ._exceptions import DynamicCallableWithArgsError
 from ._messaging import ComposedFailure
 from ._messaging import Reason
 from ._raising_handler import Raises
@@ -338,8 +339,7 @@ class Asserto:
                 try:
                     lookup = value()
                 except TypeError:
-                    # Todo: no zero arg method/callable found; Error + unit tests.
-                    raise
+                    raise DynamicCallableWithArgsError(f"{key_attr} expects arguments, this is not supported") from None
             else:
                 lookup = value
             expected = args[0]
