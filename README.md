@@ -61,3 +61,20 @@ Results in:
 E       AssertionError: 1 Soft Assertion Failures
 E       [AssertionError("Length of: 'Bar' was not equal to: 2")]
 ```
+
+Examples of dynamic assertions on any object type using `attr_is(...)`:
+
+```python
+
+class Foo:
+    
+    def __init__(self, x) -> None:
+        self.x = x
+        
+    def double_x(self) -> int:
+        return self.x * 2
+
+
+def test_foo_dynamically(asserto) -> None:
+    asserto(Foo(10)).x_is(10).double_x_is(20)
+```
