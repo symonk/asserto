@@ -28,8 +28,14 @@ plugins:
         default_handler: python
         handlers:
           python:
+            selection:
+              docstring_style: sphinx
             rendering:
+              line_length: 88
+              show_if_no_docstring: false
+              merge_init_into_class: true
               show_source: false
+              docstring_section_style: spacy
         watch:
           - asserto/
 markdown_extensions:

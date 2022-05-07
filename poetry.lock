@@ -146,6 +146,17 @@ python-dateutil = ">=2.8.1"
 dev = ["twine", "markdown", "flake8", "wheel"]
 
 [[package]]
+name = "griffe"
+version = "0.19.0"
+description = "Signatures for entire Python programs. Extract the structure, the frame, the skeleton of your project, to generate API documentation or find breaking changes in your API."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+async = ["aiofiles (>=0.7,<1.0)"]
+
+[[package]]
 name = "identify"
 version = "2.5.0"
 description = "File identification library for Python"
@@ -313,6 +324,7 @@ Markdown = ">=3.3"
 MarkupSafe = ">=1.1"
 mkdocs = ">=1.2"
 mkdocs-autorefs = ">=0.3.1"
+mkdocstrings-python = {version = ">=0.5.2", optional = true, markers = "extra == \"python\""}
 mkdocstrings-python-legacy = ">=0.2"
 pymdown-extensions = ">=6.3"
 
@@ -320,6 +332,18 @@ pymdown-extensions = ">=6.3"
 crystal = ["mkdocstrings-crystal (>=0.3.4)"]
 python = ["mkdocstrings-python (>=0.5.2)"]
 python-legacy = ["mkdocstrings-python-legacy (>=0.2.1)"]
+
+[[package]]
+name = "mkdocstrings-python"
+version = "0.6.6"
+description = "A Python handler for mkdocstrings."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+griffe = ">=0.11.1"
+mkdocstrings = ">=0.18"
 
 [[package]]
 name = "mkdocstrings-python-legacy"
@@ -646,7 +670,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"  # Lax this in future; we don't need to be so strict.
-content-hash = "e3c4c8bfb2a34c49043a6e30340efcbb93e490082f6f6951fe411158233230e5"
+content-hash = "89c5df4fb1fffc4f7b22963efbc00d572bb9d6867b8e7514df0518eae0028f99"
 
 [metadata.files]
 atomicwrites = [
@@ -744,6 +768,10 @@ ghp-import = [
     {file = "ghp-import-2.1.0.tar.gz", hash = "sha256:9c535c4c61193c2df8871222567d7fd7e5014d835f97dc7b7439069e2413d343"},
     {file = "ghp_import-2.1.0-py3-none-any.whl", hash = "sha256:8337dd7b50877f163d4c0289bc1f1c7f127550241988d568c1db512c4324a619"},
 ]
+griffe = [
+    {file = "griffe-0.19.0-py3-none-any.whl", hash = "sha256:1bff0dc8692c862780c5c5ab12e19ae70855553b48cab03210c4b14402594c66"},
+    {file = "griffe-0.19.0.tar.gz", hash = "sha256:9fd1ae56b819e0c3c48e2d8d62f768721e39f7290e5e7de8caa010fb77073b4c"},
+]
 identify = [
     {file = "identify-2.5.0-py2.py3-none-any.whl", hash = "sha256:3acfe15a96e4272b4ec5662ee3e231ceba976ef63fd9980ed2ce9cc415df393f"},
     {file = "identify-2.5.0.tar.gz", hash = "sha256:c83af514ea50bf2be2c4a3f2fb349442b59dc87284558ae9ff54191bff3541d2"},
@@ -837,6 +865,10 @@ mkdocs-material-extensions = [
 mkdocstrings = [
     {file = "mkdocstrings-0.18.1-py3-none-any.whl", hash = "sha256:4053929356df8cd69ed32eef71d8f676a472ef72980c9ffd4f933ead1debcdad"},
     {file = "mkdocstrings-0.18.1.tar.gz", hash = "sha256:fb7c91ce7e3ab70488d3fa6c073a4f827cdc319042f682ef8ea95459790d64fc"},
+]
+mkdocstrings-python = [
+    {file = "mkdocstrings-python-0.6.6.tar.gz", hash = "sha256:37281696b9f199624ae420e0625b6659b7fdfbea736618bce7fd978682dea3b1"},
+    {file = "mkdocstrings_python-0.6.6-py3-none-any.whl", hash = "sha256:c118438d3cb4b14c492a51d109f4e5b27ab06ba19b099d624430dfd904926152"},
 ]
 mkdocstrings-python-legacy = [
     {file = "mkdocstrings-python-legacy-0.2.2.tar.gz", hash = "sha256:f0e7ec6a19750581b752acb38f6b32fcd1efe006f14f6703125d2c2c9a5c6f02"},
