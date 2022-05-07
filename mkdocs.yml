@@ -35,7 +35,7 @@ plugins:
               show_if_no_docstring: false
               merge_init_into_class: true
               show_source: false
-              docstring_section_style: spacy
+              docstring_section_style: table
         watch:
           - asserto/
 markdown_extensions:
