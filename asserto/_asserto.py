@@ -16,6 +16,8 @@ from ._raising_handler import Raises
 from ._types import EXC_TYPES_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
+from .handlers import Acceptable
+from .handlers import StringHandler
 
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
@@ -78,11 +80,13 @@ class Asserto:
         actual: typing.Any,
         reason_supplier: typing.Type[IErrorTemplate] = Reason,
         error_handler: typing.Type[Assertable] = ErrorHandler,
+        string_handler: typing.Optional[Acceptable] = None,
     ):
         self.actual = actual
         self._triggered = False
         self._reason = reason_supplier()
         self._error_handler = error_handler(self._reason)
+        self._string_handler = string_handler or StringHandler()
 
     def error(self, reason: str) -> Asserto:
         """
@@ -148,28 +152,39 @@ class Asserto:
 
     # Todo: should_not_raise
 
-    @update_triggered
     def ends_with(self, suffix: str) -> Asserto:
         """
         Asserts that the value provided begins with the suffix.
         """
-        if not self.actual.endswith(suffix):
-            self.error(f"{self.actual} did not end with {suffix}")
-        return self
+        return self._dispatch("string_handler", "ends_with", f"{self.actual} did not end with {suffix}", suffix)
 
-    @update_triggered
     def starts_with(self, prefix: str) -> Asserto:
-        if not self.actual.startswith(prefix):
-            self.error(f"{self.actual} did not start with {prefix}")
-        return self
+        return self._dispatch("string_handler", "starts_with", f"{self.actual} did not start with {prefix}", prefix)
 
     @update_triggered
+    def _dispatch(self, handle_instance: str, assertion_method: str, message: str, *args, **kwargs) -> Asserto:
+        """
+        Delegate a check to an underlying handler instance.
+
+        :param handle_instance: The handler to delegate too.
+        :param assertion_method: The method to invoke on the handler.
+        :param message: The error message to raise on failure.
+
+        Arbitrary args & kwargs to pass through to the handler method.
+        """
+        handle_instance = getattr(self, f"_{handle_instance}")
+        assertion_method = getattr(handle_instance, assertion_method)
+        if assertion_method(self.actual, *args, **kwargs) is False:
+            self.error(message)
+        return self
+
+    @update_triggered  # Todo: Go through dispatch
     def matches(self, pattern: str, flags: typing.Union[int, re.RegexFlag] = 0) -> Asserto:
         if re.match(rf"{pattern}", self.actual, flags) is None:
             self.error(f"{pattern} did not match the value: {self.actual}")
         return self
 
-    @update_triggered
+    @update_triggered  # Todo: Go through dispatch
     def is_true(self) -> Asserto:
         """
         Checks the actual value is True.
@@ -179,7 +194,7 @@ class Asserto:
             self.error(f"{self.actual!r} was not True")
         return self
 
-    @update_triggered
+    @update_triggered  # Todo: Go through dispatch
     def is_false(self) -> Asserto:
         """
         Checks the actual value is False.
@@ -189,7 +204,7 @@ class Asserto:
             self.error(f"{self.actual!r} was not False")
         return self
 
-    @update_triggered
+    @update_triggered  # Todo: Go through dispatch
     def is_equal_to(self, other: typing.Any) -> Asserto:
         """
         Compares the value against `other` for equality.
@@ -201,7 +216,7 @@ class Asserto:
             self.error(f"{self.actual!r} was not equal to: {other!r}")
         return self
 
-    @update_triggered
+    @update_triggered  # Todo: Go through dispatch
     def is_not_equal_to(self, other: typing.Any) -> Asserto:
         """
         Compares the value against `other` for non equality.
@@ -213,7 +228,7 @@ class Asserto:
             self.error(f"{self.actual!r} is equal to: {other!r}")
         return self
 
-    @update_triggered
+    @update_triggered  # Todo: Go through dispatch
     def has_length(self, expected: int) -> Asserto:
         """
         A simple check that the actual value is equal to expected utilising the built in `len(...)`
@@ -228,7 +243,7 @@ class Asserto:
             self.error(f"Length of: {self.actual!r} was not equal to: {expected!r}")
         return self
 
-    @update_triggered
+    @update_triggered  # Todo: Go through dispatch
     def is_instance(self, cls_or_tuple: typing.Union[typing.Any, typing.Iterable[typing.Any]]) -> Asserto:
         """
         Checks if the value provided is either:
@@ -243,7 +258,7 @@ class Asserto:
             self.error(f"[{self.actual!r}]: {type(self.actual)} was not an instance of: {cls_or_tuple}")
         return self
 
-    @update_triggered
+    @update_triggered  # Todo: Go through dispatch
     def refers_to(self, other: typing.Any) -> Asserto:
         """
         Checks that the value refers to the same object in memory as `other`.`
@@ -254,7 +269,7 @@ class Asserto:
             self.error(f"{self.actual!r} is not: {other!r}")
         return self
 
-    @update_triggered
+    @update_triggered  # Todo: Go through dispatch
     def does_not_refer_to(self, other: typing.Any) -> Asserto:
         """
         Checks that the value does not refer to the same object in memory as `other`.
@@ -265,7 +280,7 @@ class Asserto:
             self.error(f"{self.actual!r} points to the same memory location as: {other!r}")
         return self
 
-    @update_triggered
+    @update_triggered  # Todo: Go through dispatch
     def is_none(self) -> Asserto:
         """
         Checks the actual value is None.  Python `NoneType` is a singleton so `is` checks
@@ -276,7 +291,7 @@ class Asserto:
             self.error(f"{self.actual!r} is not {None}")
         return self
 
-    @update_triggered
+    @update_triggered  # Todo: Go through dispatch
     def is_not_none(self) -> Asserto:
         """
         Checks the actual value is not None .  Python `None` is a singleton so `is not` checks are

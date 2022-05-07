@@ -12,10 +12,7 @@ def update_triggered(fn: typing.Callable[[typing.Any], typing.Any]) -> typing.Ca
     @functools.wraps(fn)
     def wrapper(*args, **kwargs) -> typing.Callable[[typing.Any], typing.Any]:
         instance = args[0]
-        try:
-            result = fn(*args, **kwargs)
-        finally:
-            instance.triggered = True
-        return result
+        instance.triggered = True
+        return fn(*args, **kwargs)
 
     return wrapper
