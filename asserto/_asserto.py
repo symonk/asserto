@@ -13,7 +13,7 @@ from ._messaging import Reason
 from ._protocols import Assertable
 from ._protocols import IErrorTemplate
 from ._raising_handler import Raises
-from ._templates import StringErrors
+from ._templates import Errors
 from ._types import EXC_TYPES_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
@@ -159,7 +159,7 @@ class Asserto:
 
         :param suffix: The suffix to compare the tail of the string against.
         """
-        return self._dispatch("string_handler", "ends_with", StringErrors.ends_with.format(self.actual, suffix), suffix)
+        return self._dispatch("string_handler", "ends_with", Errors.strings.ends_with(self.actual, suffix), suffix)
 
     def starts_with(self, prefix: str) -> Asserto:
         """
@@ -167,9 +167,7 @@ class Asserto:
 
         :param prefix: The prefix to compare the head of the string against.
         """
-        return self._dispatch(
-            "string_handler", "starts_with", StringErrors.starts_with.format(self.actual, prefix), prefix
-        )
+        return self._dispatch("string_handler", "starts_with", Errors.strings.starts_with(self.actual, prefix), prefix)
 
     @update_triggered
     def _dispatch(self, handle_instance: str, assertion_method: str, message: str, *args, **kwargs) -> Asserto:
