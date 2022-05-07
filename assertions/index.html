@@ -281,6 +281,41 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.__enter__" class="md-nav__link">
+    __enter__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.__getattr__" class="md-nav__link">
+    __getattr__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto._dispatch" class="md-nav__link">
+    _dispatch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto._warn_not_triggered" class="md-nav__link">
+    _warn_not_triggered()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.described_as" class="md-nav__link">
+    described_as()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#asserto._asserto.Asserto.does_not_refer_to" class="md-nav__link">
     does_not_refer_to()
   </a>
@@ -290,6 +325,13 @@
         <li class="md-nav__item">
   <a href="#asserto._asserto.Asserto.ends_with" class="md-nav__link">
     ends_with()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.error" class="md-nav__link">
+    error()
   </a>
   
 </li>
@@ -358,8 +400,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.should_raise" class="md-nav__link">
+    should_raise()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#asserto._asserto.Asserto.starts_with" class="md-nav__link">
     starts_with()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.triggered" class="md-nav__link">
+    triggered()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.with_category" class="md-nav__link">
+    with_category()
   </a>
   
 </li>
@@ -421,6 +484,41 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.__enter__" class="md-nav__link">
+    __enter__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.__getattr__" class="md-nav__link">
+    __getattr__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto._dispatch" class="md-nav__link">
+    _dispatch()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto._warn_not_triggered" class="md-nav__link">
+    _warn_not_triggered()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.described_as" class="md-nav__link">
+    described_as()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#asserto._asserto.Asserto.does_not_refer_to" class="md-nav__link">
     does_not_refer_to()
   </a>
@@ -430,6 +528,13 @@
         <li class="md-nav__item">
   <a href="#asserto._asserto.Asserto.ends_with" class="md-nav__link">
     ends_with()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.error" class="md-nav__link">
+    error()
   </a>
   
 </li>
@@ -498,8 +603,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.should_raise" class="md-nav__link">
+    should_raise()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#asserto._asserto.Asserto.starts_with" class="md-nav__link">
     starts_with()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.triggered" class="md-nav__link">
+    triggered()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#asserto._asserto.Asserto.with_category" class="md-nav__link">
+    with_category()
   </a>
   
 </li>
@@ -526,8 +652,33 @@
 <a id="asserto._asserto.Asserto"></a>
     <div class="doc doc-contents first">
 
+
       <p>The entrypoint into asserting objects.</p>
-<p>:param actual: The actual value</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>actual</code></td>
+          <td>
+                <code>typing.<span title="typing.Any">Any</span></code>
+          </td>
+          <td><p>The actual value</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
 
 
 
@@ -542,21 +693,312 @@
 
 
 
-  <div class="doc doc-object doc-method">
+
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="asserto._asserto.Asserto.__enter__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__enter__</span><span class="p">()</span></code>
+
+
+<a href="#asserto._asserto.Asserto.__enter__" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Enter a <code>soft</code> context mode;  During this context <code>AssertionErrors</code> are silently
+ignored until the context is exited at which point any assertions will cause test
+failure(s) and raise the sequence of AssertionError's in the order in which they
+occurred.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="asserto._asserto.Asserto" href="#asserto._asserto.Asserto">Asserto</a></code>
+          </td>
+          <td><p>The instance of <code>Asserto</code>.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="asserto._asserto.Asserto.__getattr__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__getattr__</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></code>
+
+
+<a href="#asserto._asserto.Asserto.__getattr__" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Adds the capability to object class or instance attributes dynamically.  Supports user defined
+object types as well as built in mapping types.  In the case of a mapping type the attribute
+name will be the key in the dictionary and value called its value to check for equality.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>item</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The attribute name to lookup</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+
+  </div>
+
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="asserto._asserto.Asserto._dispatch" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">_dispatch</span><span class="p">(</span><span class="n">handle_instance</span><span class="p">,</span> <span class="n">assertion_method</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#asserto._asserto.Asserto._dispatch" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Delegate a check to an underlying handler instance.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>handle_instance</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The handler to delegate too.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>assertion_method</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The method to invoke on the handler.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>message</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The error message to raise on failure.  Arbitrary args &amp; kwargs to pass through to the handler method.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="asserto._asserto.Asserto._warn_not_triggered" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">_warn_not_triggered</span><span class="p">()</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#asserto._asserto.Asserto._warn_not_triggered" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Triggers a warning if an asserto instance was created and no assertion methods was called
+to highlight potential user errors.</p>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="asserto._asserto.Asserto.described_as" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">described_as</span><span class="p">(</span><span class="n">description</span><span class="p">)</span></code>
+
+
+<a href="#asserto._asserto.Asserto.described_as" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Set the full `AssertionError`` message to a custom reason.  If this is
+invoked anything after the category (if also set) will be user defined.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>description</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The reason to display if an <code>AssertionError</code> is raised.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="asserto._asserto.Asserto" href="#asserto._asserto.Asserto">Asserto</a></code>
+          </td>
+          <td><p>The <code>Asserto</code> instance for fluency.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="asserto._asserto.Asserto.does_not_refer_to" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">does_not_refer_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">does_not_refer_to</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></code>
 
 
 <a href="#asserto._asserto.Asserto.does_not_refer_to" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
     <div class="doc doc-contents ">
 
-      <p>Checks that the value does not refer to the same object in memory as <code>other</code>.
-:param other: The other object to compare identity of.
-:return: The instance of <code>Asserto</code> to chain asserts.</p>
+      <p>Checks that the value does not refer to the same object in memory as <code>other</code>.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>other</code></td>
+          <td>
+                <code>typing.<span title="typing.Any">Any</span></code>
+          </td>
+          <td><p>The other object to compare identity of.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="asserto._asserto.Asserto" href="#asserto._asserto.Asserto">Asserto</a></code>
+          </td>
+          <td><p>The instance of <code>Asserto</code> to chain asserts.</p></td>
+        </tr>
+    </tbody>
+  </table>
 
     </div>
 
@@ -564,20 +1006,44 @@
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="asserto._asserto.Asserto.ends_with" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">ends_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">ends_with</span><span class="p">(</span><span class="n">suffix</span><span class="p">)</span></code>
 
 
 <a href="#asserto._asserto.Asserto.ends_with" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
     <div class="doc doc-contents ">
 
       <p>Asserts that the actual value ends with suffix.</p>
-<p>:param suffix: The suffix to compare the tail of the string against.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>suffix</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The suffix to compare the tail of the string against.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
 
     </div>
 
@@ -585,21 +1051,126 @@
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="asserto._asserto.Asserto.error" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">error</span><span class="p">(</span><span class="n">reason</span><span class="p">)</span></code>
+
+
+<a href="#asserto._asserto.Asserto.error" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+      <p>The single point of assertion failing.  All functions delegate here to raise the underlying
+assertion errors.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>reason</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>A reason for the failure. if self.description was set; it takes precedence.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="asserto._asserto.Asserto" href="#asserto._asserto.Asserto">Asserto</a></code>
+          </td>
+          <td><p>The <code>Asserto</code> instance for fluency</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="asserto._asserto.Asserto.has_length" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">has_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">has_length</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span></code>
 
 
 <a href="#asserto._asserto.Asserto.has_length" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
     <div class="doc doc-contents ">
 
       <p>A simple check that the actual value is equal to expected utilising the built in <code>len(...)</code></p>
-<p>:param expected: An int to compare the length against.
-:return: The instance of <code>Asserto</code> to chain asserts.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>expected</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>An int to compare the length against.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="asserto._asserto.Asserto" href="#asserto._asserto.Asserto">Asserto</a></code>
+          </td>
+          <td><p>The instance of <code>Asserto</code> to chain asserts.</p></td>
+        </tr>
+    </tbody>
+  </table>
 
     </div>
 
@@ -607,21 +1178,62 @@
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="asserto._asserto.Asserto.is_equal_to" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">is_equal_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">is_equal_to</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></code>
 
 
 <a href="#asserto._asserto.Asserto.is_equal_to" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
     <div class="doc doc-contents ">
 
       <p>Compares the value against <code>other</code> for equality.</p>
-<p>:param other: The other object to compare against.
-:return: The instance of <code>Asserto</code> to chain asserts.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>other</code></td>
+          <td>
+                <code>typing.<span title="typing.Any">Any</span></code>
+          </td>
+          <td><p>The other object to compare against.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="asserto._asserto.Asserto" href="#asserto._asserto.Asserto">Asserto</a></code>
+          </td>
+          <td><p>The instance of <code>Asserto</code> to chain asserts.</p></td>
+        </tr>
+    </tbody>
+  </table>
 
     </div>
 
@@ -629,20 +1241,38 @@
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="asserto._asserto.Asserto.is_false" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">is_false</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">is_false</span><span class="p">()</span></code>
 
 
 <a href="#asserto._asserto.Asserto.is_false" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
     <div class="doc doc-contents ">
 
-      <p>Checks the actual value is False.
-:return: The <code>Asserto</code> instance for fluency.</p>
+      <p>Checks the actual value is False.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="asserto._asserto.Asserto" href="#asserto._asserto.Asserto">Asserto</a></code>
+          </td>
+          <td><p>The <code>Asserto</code> instance for fluency.</p></td>
+        </tr>
+    </tbody>
+  </table>
 
     </div>
 
@@ -650,15 +1280,16 @@
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="asserto._asserto.Asserto.is_instance" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">is_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls_or_tuple</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">is_instance</span><span class="p">(</span><span class="n">cls_or_tuple</span><span class="p">)</span></code>
 
 
 <a href="#asserto._asserto.Asserto.is_instance" class="headerlink" title="Permanent link">&para;</a></h2>
+
 
     <div class="doc doc-contents ">
 
@@ -667,7 +1298,30 @@
 :: An indirect subclass.
 :: A virtual subclass registered via the abc.
 </code></pre></div>
-<p>:param cls_or_tuple: A single Type, or iterable of types to check the object against.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>cls_or_tuple</code></td>
+          <td>
+                <code>typing.<span title="typing.Union">Union</span>[typing.<span title="typing.Any">Any</span>, typing.<span title="typing.Iterable">Iterable</span>[typing.<span title="typing.Any">Any</span>]]</code>
+          </td>
+          <td><p>A single Type, or iterable of types to check the object against.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
 
     </div>
 
@@ -675,21 +1329,39 @@
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="asserto._asserto.Asserto.is_none" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">is_none</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">is_none</span><span class="p">()</span></code>
 
 
 <a href="#asserto._asserto.Asserto.is_none" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
     <div class="doc doc-contents ">
 
       <p>Checks the actual value is None.  Python <code>NoneType</code> is a singleton so <code>is</code> checks
-are used
-:return: The <code>Asserto</code> instance for fluency.</p>
+are used</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="asserto._asserto.Asserto" href="#asserto._asserto.Asserto">Asserto</a></code>
+          </td>
+          <td><p>The <code>Asserto</code> instance for fluency.</p></td>
+        </tr>
+    </tbody>
+  </table>
 
     </div>
 
@@ -697,21 +1369,62 @@ are used
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="asserto._asserto.Asserto.is_not_equal_to" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">is_not_equal_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">is_not_equal_to</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></code>
 
 
 <a href="#asserto._asserto.Asserto.is_not_equal_to" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
     <div class="doc doc-contents ">
 
       <p>Compares the value against <code>other</code> for non equality.</p>
-<p>:param other: The other object to compare against.
-:return: The instance of <code>Asserto</code> to chain asserts.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>other</code></td>
+          <td>
+                <code>typing.<span title="typing.Any">Any</span></code>
+          </td>
+          <td><p>The other object to compare against.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="asserto._asserto.Asserto" href="#asserto._asserto.Asserto">Asserto</a></code>
+          </td>
+          <td><p>The instance of <code>Asserto</code> to chain asserts.</p></td>
+        </tr>
+    </tbody>
+  </table>
 
     </div>
 
@@ -719,21 +1432,39 @@ are used
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="asserto._asserto.Asserto.is_not_none" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">is_not_none</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">is_not_none</span><span class="p">()</span></code>
 
 
 <a href="#asserto._asserto.Asserto.is_not_none" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
     <div class="doc doc-contents ">
 
       <p>Checks the actual value is not None .  Python <code>None</code> is a singleton so <code>is not</code> checks are
-used.
-:return: The <code>Asserto</code> instance for fluency</p>
+used.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="asserto._asserto.Asserto" href="#asserto._asserto.Asserto">Asserto</a></code>
+          </td>
+          <td><p>The <code>Asserto</code> instance for fluency</p></td>
+        </tr>
+    </tbody>
+  </table>
 
     </div>
 
@@ -741,20 +1472,38 @@ used.
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="asserto._asserto.Asserto.is_true" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">is_true</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">is_true</span><span class="p">()</span></code>
 
 
 <a href="#asserto._asserto.Asserto.is_true" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
     <div class="doc doc-contents ">
 
-      <p>Checks the actual value is True.
-:return: The <code>Asserto</code> instance for fluency.</p>
+      <p>Checks the actual value is True.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="asserto._asserto.Asserto" href="#asserto._asserto.Asserto">Asserto</a></code>
+          </td>
+          <td><p>The <code>Asserto</code> instance for fluency.</p></td>
+        </tr>
+    </tbody>
+  </table>
 
     </div>
 
@@ -763,20 +1512,62 @@ used.
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="asserto._asserto.Asserto.refers_to" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">refers_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">refers_to</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></code>
 
 
 <a href="#asserto._asserto.Asserto.refers_to" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
     <div class="doc doc-contents ">
 
-      <p>Checks that the value refers to the same object in memory as <code>other</code>.<code>:param other: The other object to compare identity of.
-:return: The instance of</code>Asserto` to chain asserts.</p>
+      <p>Checks that the value refers to the same object in memory as <code>other</code>.`</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>other</code></td>
+          <td>
+                <code>typing.<span title="typing.Any">Any</span></code>
+          </td>
+          <td><p>The other object to compare identity of.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="asserto._asserto.Asserto" href="#asserto._asserto.Asserto">Asserto</a></code>
+          </td>
+          <td><p>The instance of <code>Asserto</code> to chain asserts.</p></td>
+        </tr>
+    </tbody>
+  </table>
 
     </div>
 
@@ -784,20 +1575,179 @@ used.
 
 
 
-  <div class="doc doc-object doc-method">
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="asserto._asserto.Asserto.should_raise" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">should_raise</span><span class="p">(</span><span class="n">exceptions</span><span class="p">)</span></code>
+
+
+<a href="#asserto._asserto.Asserto.should_raise" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Wraps the actual value into a callable if it is callable itself;</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>exceptions</code></td>
+          <td>
+                <code><span title="asserto._types.EXC_TYPES_ALIAS">EXC_TYPES_ALIAS</span></code>
+          </td>
+          <td><p>The type of exception expected.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="asserto._raising_handler.Raises">Raises</span></code>
+          </td>
+          <td><p>The <code>Asserto</code> instance for fluency</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
 
 
 
 <h2 id="asserto._asserto.Asserto.starts_with" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">starts_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prefix</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">starts_with</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span></code>
 
 
 <a href="#asserto._asserto.Asserto.starts_with" class="headerlink" title="Permanent link">&para;</a></h2>
 
+
     <div class="doc doc-contents ">
 
       <p>Asserts that the actual value ends with prefix.</p>
-<p>:param prefix: The prefix to compare the head of the string against.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>prefix</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>The prefix to compare the head of the string against.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="asserto._asserto.Asserto.triggered" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">triggered</span><span class="p">()</span></code>
+
+  <span class="doc doc-properties">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+      <small class="doc doc-label doc-label-writable"><code>writable</code></small>
+  </span>
+
+<a href="#asserto._asserto.Asserto.triggered" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Check if the instance has invoked any methods that could have raised an <code>AssertionError</code>.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>boolean indicating if a method has been invoked.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="asserto._asserto.Asserto.with_category" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">with_category</span><span class="p">(</span><span class="n">category</span><span class="p">)</span></code>
+
+
+<a href="#asserto._asserto.Asserto.with_category" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+      <p>Set the category for the assertion.  Categories are prefixed to the assertion
+messages, for example:</p>
+<div class="highlight"><pre><span></span><code>Example:
+    Usage::
+        asserto(25).with_category(&quot;foo&quot;).is_equal_to(26)
+        `AssertionError([&quot;foo&quot;] 25 was not equal to: 26)`
+</code></pre></div>
+<p>Args:
+    category: The Category to group the assertion under.</p>
 
     </div>
 
