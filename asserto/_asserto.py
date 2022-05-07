@@ -181,7 +181,7 @@ class Asserto:
         Arbitrary args & kwargs to pass through to the handler method.
         """
         handle_instance = getattr(self, f"_{handle_instance}")
-        assertion_method = getattr(handle_instance, assertion_method)
+        assertion_method: types.MethodType = getattr(handle_instance, assertion_method)
         if assertion_method(self.actual, *args, **kwargs) is False:
             self.error(message)
         return self

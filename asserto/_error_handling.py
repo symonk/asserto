@@ -1,3 +1,5 @@
+import typing
+
 from ._messaging import FailureCompilation
 from ._protocols import IErrorTemplate
 
@@ -12,7 +14,7 @@ class ErrorHandler:
     def __init__(self, reasonable: IErrorTemplate):
         self.reasonable = reasonable
         self.soft_context = False
-        self.soft_fails = None
+        self.soft_fails: typing.Optional[FailureCompilation] = None
 
     def error(self, reason: str) -> None:
         """
