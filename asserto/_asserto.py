@@ -13,10 +13,11 @@ from ._messaging import Reason
 from ._protocols import Assertable
 from ._protocols import IErrorTemplate
 from ._raising_handler import Raises
+from ._templates import StringErrors
 from ._types import EXC_TYPES_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
-from .handlers import Acceptable
+from .handlers import AcceptsStrings
 from .handlers import StringHandler
 
 # Todo: base: `tidy up docstrings`
@@ -80,7 +81,7 @@ class Asserto:
         actual: typing.Any,
         reason_supplier: typing.Type[IErrorTemplate] = Reason,
         error_handler: typing.Type[Assertable] = ErrorHandler,
-        string_handler: typing.Optional[Acceptable] = None,
+        string_handler: typing.Optional[AcceptsStrings] = None,
     ):
         self.actual = actual
         self._triggered = False
@@ -154,12 +155,21 @@ class Asserto:
 
     def ends_with(self, suffix: str) -> Asserto:
         """
-        Asserts that the value provided begins with the suffix.
+        Asserts that the actual value ends with suffix.
+
+        :param suffix: The suffix to compare the tail of the string against.
         """
-        return self._dispatch("string_handler", "ends_with", f"{self.actual} did not end with {suffix}", suffix)
+        return self._dispatch("string_handler", "ends_with", StringErrors.ends_with.format(self.actual, suffix), suffix)
 
     def starts_with(self, prefix: str) -> Asserto:
-        return self._dispatch("string_handler", "starts_with", f"{self.actual} did not start with {prefix}", prefix)
+        """
+        Asserts that the actual value ends with prefix.
+
+        :param prefix: The prefix to compare the head of the string against.
+        """
+        return self._dispatch(
+            "string_handler", "starts_with", StringErrors.starts_with.format(self.actual, prefix), prefix
+        )
 
     @update_triggered
     def _dispatch(self, handle_instance: str, assertion_method: str, message: str, *args, **kwargs) -> Asserto:

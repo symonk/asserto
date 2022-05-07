@@ -15,3 +15,15 @@ class Acceptable:
     @abc.abstractmethod
     def accepts(self, actual: typing.Any) -> None:
         raise NotImplementedError
+
+
+class AcceptsStrings(Acceptable):
+    @abc.abstractmethod
+    def accepts(self, actual: typing.Any) -> None:
+        raise NotImplementedError
+
+    def ends_with(self, actual: typing.Any, suffix: str) -> bool:
+        ...
+
+    def starts_with(self, actual: typing.Any, prefix: str) -> bool:
+        ...
