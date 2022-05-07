@@ -1,5 +1,6 @@
 """ Error message templates. """
 import string
+import typing
 from dataclasses import dataclass
 
 
@@ -11,8 +12,8 @@ class CallableTemplate:
     def __init__(self, template: str) -> None:
         self.template = string.Template(template)
 
-    def __call__(self, *args, **kwargs):
-        return self.template.substitute(*args, **kwargs)
+    def __call__(self, **kwargs):
+        return self.template.substitute(**kwargs)
 
 
 @dataclass(frozen=True)
