@@ -17,7 +17,7 @@ from ._templates import Errors
 from ._types import EXC_TYPES_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
-from .handlers import AcceptsStrings
+from .handlers import CanValidateStrings
 from .handlers import StringHandler
 
 # Todo: base: `tidy up docstrings`
@@ -74,6 +74,9 @@ class Asserto:
     The entrypoint into asserting objects.
 
     :param actual: The actual value
+    :param reason_supplier: ...
+    :param error_handler: ...
+    :param str_handler: ...
     """
 
     def __init__(
@@ -81,13 +84,13 @@ class Asserto:
         actual: typing.Any,
         reason_supplier: typing.Type[IErrorTemplate] = Reason,
         error_handler: typing.Type[Assertable] = ErrorHandler,
-        string_handler: typing.Optional[AcceptsStrings] = None,
+        str_handler: typing.Optional[CanValidateStrings] = None,
     ):
         self.actual = actual
         self._triggered = False
         self._reason = reason_supplier()
         self._error_handler = error_handler(self._reason)
-        self._string_handler = string_handler or StringHandler()
+        self._string_handler = str_handler or StringHandler()
 
     def error(self, reason: str) -> Asserto:
         """
@@ -159,7 +162,12 @@ class Asserto:
 
         :param suffix: The suffix to compare the tail of the string against.
         """
-        return self._dispatch("string_handler", "ends_with", Errors.strings.ends_with(actual=self.actual, expected=suffix), suffix)
+        return self._dispatch(
+            "string_handler",
+            "ends_with",
+            Errors.strings.ends_with(actual=self.actual, expected=suffix),
+            suffix,
+        )
 
     def starts_with(self, prefix: str) -> Asserto:
         """
@@ -167,9 +175,27 @@ class Asserto:
 
         :param prefix: The prefix to compare the head of the string against.
         """
-        return self._dispatch("string_handler", "starts_with", Errors.strings.starts_with(actual=self.actual, expected=prefix), prefix)
+        return self._dispatch(
+            "string_handler",
+            "starts_with",
+            Errors.str.starts_with(actual=self.actual, expected=prefix),
+            prefix,
+        )
 
-    @update_triggered
+    def is_digit(self) -> Asserto:
+        """
+        Asserts that the actual value contains only unicode letters and that the string has
+        at least a single character.
+        """
+        return self._dispatch("string_handler", "is_digit", Errors.str.is_digit(actual=self.actual))
+
+    def is_alpha(self) -> Asserto:
+        """
+        Asserts that the actual value contains only unicode letters and that the string has
+        at least a single character.
+        """
+        return self._dispatch("string_handler", "is_alpha", Errors.str.is_alpha(actual=self.actual))
+
     def _dispatch(self, handle_instance: str, assertion_method: str, message: str, *args, **kwargs) -> Asserto:
         """
         Delegate a check to an underlying handler instance.
@@ -180,8 +206,13 @@ class Asserto:
 
         Arbitrary args & kwargs to pass through to the handler method.
         """
+        self.triggered = True
         handle_instance = getattr(self, f"_{handle_instance}")
-        assertion_method: types.MethodType = getattr(handle_instance, assertion_method)
+        assertion_method: typing.Optional[types.MethodType] = getattr(handle_instance, assertion_method)
+        if assertion_method is None or not callable(assertion_method):
+            raise TypeError(f"assertion method was not a bound method on the handler {handle_instance}")
+        # Enforce the guarding for the Handler.  Todo: I don't think this should be the responsibility here;
+        handle_instance.accepts(self.actual)
         if assertion_method(self.actual, *args, **kwargs) is False:
             self.error(message)
         return self

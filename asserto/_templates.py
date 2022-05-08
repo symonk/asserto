@@ -1,6 +1,5 @@
 """ Error message templates. """
 import string
-import typing
 from dataclasses import dataclass
 
 
@@ -20,6 +19,8 @@ class CallableTemplate:
 class StringErrors:
     ends_with: CallableTemplate = CallableTemplate("$actual did not end with $expected")
     starts_with: CallableTemplate = CallableTemplate("$actual did not start with $expected")
+    is_alpha: CallableTemplate = CallableTemplate("$actual did not contain only unicode letters")
+    is_digit: CallableTemplate = CallableTemplate("$actual did not contain only numeric digits")
 
 
 class Errors:
@@ -27,4 +28,4 @@ class Errors:
     A Facade to access the underlying errors via chained API.
     """
 
-    strings = StringErrors
+    strings = str = StringErrors
