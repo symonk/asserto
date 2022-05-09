@@ -1,7 +1,7 @@
 exclude: ^(.tox|doc|ci/templates|)(/|$)
 repos:
   - repo: https://github.com/ambv/black
-    rev: 20d8ccb54253f8a66321f6708d53e2a05a54079b
+    rev: fc2a16433e7da705793122dd0c66fcde83b305d5
     hooks:
       - id: black
         args:
