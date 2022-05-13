@@ -19,6 +19,7 @@ from ._types import EXC_TYPES_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
 from .handlers import StringHandler
+from .handlers import Matchable
 
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
@@ -31,7 +32,7 @@ class Asserto(metaclass=RouteMeta):
     :param actual: The actual value
     """
 
-    _routes: typing.Dict[str, typing.Any] = {}
+    _routes: typing.Dict[str, typing.Type[Matchable]] = {}
 
     def __init__(
         self,
