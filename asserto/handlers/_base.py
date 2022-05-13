@@ -1,5 +1,5 @@
 from .interfaces import ValidatesBaseTypes
 
 
-class NumericHandler(ValidatesBaseTypes):
+class BaseHandler(ValidatesBaseTypes):
     ...
