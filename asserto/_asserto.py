@@ -39,7 +39,8 @@ class Asserto(metaclass=RouteMeta):
     ):
         self.actual = actual
         self._triggered = False
-        self._error_handler = ErrorHandler(Reason())
+        self._reason = Reason()
+        self._error_handler = ErrorHandler(self._reason)
 
     def error(self, reason: str) -> Asserto:
         """
@@ -129,19 +130,21 @@ class Asserto(metaclass=RouteMeta):
             prefix,
         )
 
+    @handled_by(handler=StringHandler)
     def is_digit(self) -> Asserto:
         """
         Asserts that the actual value contains only unicode letters and that the string has
         at least a single character.
         """
-        return self._dispatch("string_handler", "is_digit", Errors.str.is_digit(actual=self.actual))
+        return self._dispatch(Errors.str.is_digit(actual=self.actual))
 
+    @handled_by(handler=StringHandler)
     def is_alpha(self) -> Asserto:
         """
         Asserts that the actual value contains only unicode letters and that the string has
         at least a single character.
         """
-        return self._dispatch("string_handler", "is_alpha", Errors.str.is_alpha(actual=self.actual))
+        return self._dispatch(Errors.str.is_alpha(actual=self.actual))
 
     def _dispatch(self, on_fail: str, *args, **kwargs) -> Asserto:
         """
@@ -158,7 +161,11 @@ class Asserto(metaclass=RouteMeta):
         """
         caller = inspect.stack()[1][3]  # Todo: We need a better solution than this for future.
         self.triggered = True
-        handle_instance = self._routes[caller]()
+        # for now allow this to be bypassed as not all methods have a handler defined.
+        try:
+            handle_instance = self._routes[caller]()
+        except KeyError:
+            raise KeyError(f"{caller} does not have a dedicated handler.") from None
         assertion_method: typing.Optional[types.MethodType] = getattr(handle_instance, caller)
         if assertion_method is None or not callable(assertion_method):
             raise TypeError(f"assertion method was not a bound method on the handler {handle_instance}")
