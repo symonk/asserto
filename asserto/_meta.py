@@ -19,7 +19,7 @@ class RouteMeta(type):
         return instance
 
 
-def handled_by(handler: typing.Any):
+def handled_by(*, handler: typing.Any):
     """
     Assigns an attribute on asserto functions that allow the metaclass to autopopulate the
     delegating handlers for each individual function.

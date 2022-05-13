@@ -29,7 +29,6 @@ class Asserto(metaclass=RouteMeta):
     The entrypoint into asserting objects.
 
     :param actual: The actual value
-    :param reason_supplier: ...
     """
 
     _routes: typing.Dict[str, typing.Any] = {}
@@ -106,7 +105,7 @@ class Asserto(metaclass=RouteMeta):
 
     # Todo: should_not_raise
 
-    @handled_by(StringHandler)
+    @handled_by(handler=StringHandler)
     def ends_with(self, suffix: str) -> Asserto:
         """
         Asserts that the actual value ends with suffix.
@@ -118,7 +117,7 @@ class Asserto(metaclass=RouteMeta):
             suffix,
         )
 
-    @handled_by(StringHandler)
+    @handled_by(handler=StringHandler)
     def starts_with(self, prefix: str) -> Asserto:
         """
         Asserts that the actual value ends with prefix.
