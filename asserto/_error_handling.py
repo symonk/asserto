@@ -25,7 +25,7 @@ class ErrorHandler:
         if self.soft_context:
             self.soft_fails.register_error(error)
             return
-        raise error from None
+        raise error
 
     def transition_to_soft(self) -> None:
         """
