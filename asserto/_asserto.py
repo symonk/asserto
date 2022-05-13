@@ -24,6 +24,13 @@ from .handlers import StringHandler
 # Todo: base `remove duplication here`
 
 
+def handled_by(_type: str):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            ...
+
+
 class Asserto:
     """
     The entrypoint into asserting objects.
@@ -51,7 +58,7 @@ class Asserto:
         """
         The single point of assertion failing.  All functions delegate here to raise the underlying
         assertion errors.
-        :param reason: A reason for the failure. if self.description was set; it takes precedence.
+        :param reason: A reason for the failure. if description was set; it takes precedence.
         :return: The `Asserto` instance for fluency
         """
         __tracebackhide__ = True
