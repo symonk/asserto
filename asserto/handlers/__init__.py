@@ -1,4 +1,6 @@
 from ._strings import StringHandler
-from .interfaces import ValidatesStringTypes
+from ._regex import RegexHandler
+from ._object import ObjectHandler
+from ._numeric import NumericHandler
 
-__all__ = ["StringHandler", "ValidatesStringTypes"]
+__all__ = ["StringHandler", "RegexHandler", "ObjectHandler", "NumericHandler"]
