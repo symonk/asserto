@@ -13,7 +13,7 @@ from ._exceptions import ExpectedTypeError
 from ._messaging import Reason
 from ._meta import RouteMeta
 from ._meta import handled_by
-from ._raising_handler import Raises
+from ._raising import Raises
 from ._templates import Errors
 from ._types import EXC_TYPES_ALIAS
 from ._util import is_namedtuple_like
