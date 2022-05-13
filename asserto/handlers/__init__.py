@@ -1,4 +1,4 @@
 from ._strings import StringHandler
-from .abstract import CanValidateStrings
+from .interfaces import ValidatesStringTypes
 
-__all__ = ["StringHandler", "CanValidateStrings"]
+__all__ = ["StringHandler", "ValidatesStringTypes"]

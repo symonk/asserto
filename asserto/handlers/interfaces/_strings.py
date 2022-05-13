@@ -1,10 +1,10 @@
 import abc
 
-from ._acceptable import Acceptable
+from ._acceptable import Matchable
 
 
-class CanValidateStrings(Acceptable):
-    def matches_criterion(self, actual: str) -> None:
+class ValidatesStringTypes(Matchable):
+    def matches(self, actual: str) -> None:
         """
         Check if this handler can validate the data provided.
         """

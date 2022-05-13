@@ -2,7 +2,7 @@ import abc
 import typing
 
 
-class Acceptable:
+class Matchable:
     """
     Interface for type handlers to verify if they can accept
     the target value or not.  Handlers which cannot accept
@@ -11,5 +11,5 @@ class Acceptable:
     """
 
     @abc.abstractmethod
-    def matches_criterion(self, actual: typing.Any) -> None:
+    def matches(self, actual: typing.Any) -> None:
         raise NotImplementedError

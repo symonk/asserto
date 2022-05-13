@@ -1,7 +1,7 @@
-from .abstract import CanValidateStrings
+from .interfaces import ValidatesStringTypes
 
 
-class StringHandler(CanValidateStrings):
+class StringHandler(ValidatesStringTypes):
     """
     A handler responsible for all string based checks.
     """
