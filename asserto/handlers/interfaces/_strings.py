@@ -4,7 +4,7 @@ from ._acceptable import Matchable
 
 
 class ValidatesStringTypes(Matchable):
-    def matches(self, actual: str) -> None:
+    def matches_criteria(self, actual: str) -> None:
         """
         Check if this handler can validate the data provided.
         """

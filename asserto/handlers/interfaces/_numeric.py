@@ -6,5 +6,5 @@ from ._acceptable import Matchable
 class ValidatesNumericTypes(Matchable):
     """Todo: Implement"""
 
-    def matches(self, actual: typing.Any) -> None:
+    def matches_criteria(self, actual: typing.Any) -> None:
         pass

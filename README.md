@@ -29,15 +29,16 @@ The main features of asserto are (and will be):
 ```python
 from asserto import asserto
 
+
 def test_foo() -> None:
-    asserto("Hello").has_length(5).matches(r"\w{5}$").ends_with("lo").starts_with("Hel")
+    asserto("Hello").has_length(5).matches_criteria(r"\w{5}$").ends_with("lo").starts_with("Hel")
 ```
 
 If you use pytest; a fixture is available for an `Asserto` factory function:
 
 ```python
 def test_bar(asserto) -> None:  # No imports; just use the fixture.
-    asserto("Hello").has_length(5).matches(r"\w{4}$").ends_with("lo").starts_with("Hel")
+    asserto("Hello").has_length(5).matches_criteria(r"\w{4}$").ends_with("lo").starts_with("Hel")
 ```
 
 If you want to check many assertions in a single test without failing until after all:

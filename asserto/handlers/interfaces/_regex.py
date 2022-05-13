@@ -9,5 +9,5 @@ class ValidatesRegexTypes(Matchable):
         pass
 
     @abc.abstractmethod
-    def matches(self, *args, **kw):
+    def matches_criteria(self, actual: typing.Any) -> None:
         """Todo: Implement properly"""

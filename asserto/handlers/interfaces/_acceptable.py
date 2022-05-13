@@ -11,5 +11,5 @@ class Matchable:
     """
 
     @abc.abstractmethod
-    def matches(self, actual: typing.Any) -> None:
+    def matches_criteria(self, actual: typing.Any) -> None:
         raise NotImplementedError
