@@ -1,6 +1,6 @@
 import abc
 
-from ._acceptable import Matchable
+from ._matchable import Matchable
 
 
 class ValidatesStringTypes(Matchable):

@@ -1,6 +1,6 @@
 import typing
 
-from ._acceptable import Matchable
+from ._matchable import Matchable
 
 
 class ValidatesNumericTypes(Matchable):
