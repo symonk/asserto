@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import re
 import types
 import typing
@@ -10,49 +11,36 @@ from ._error_handling import ErrorHandler
 from ._exceptions import DynamicCallableWithArgsError
 from ._exceptions import ExpectedTypeError
 from ._messaging import Reason
-from ._protocols import Assertable
-from ._protocols import IErrorTemplate
+from ._meta import RouteMeta
+from ._meta import handled_by
 from ._raising_handler import Raises
 from ._templates import Errors
 from ._types import EXC_TYPES_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
-from .handlers import CanValidateStrings
 from .handlers import StringHandler
 
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
 
 
-def handled_by(_type: str):
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            ...
-
-
-class Asserto:
+class Asserto(metaclass=RouteMeta):
     """
     The entrypoint into asserting objects.
 
     :param actual: The actual value
     :param reason_supplier: ...
-    :param error_handler: ...
-    :param str_handler: ...
     """
+
+    _routes: typing.Dict[str, typing.Any] = {}
 
     def __init__(
         self,
         actual: typing.Any,
-        reason_supplier: typing.Type[IErrorTemplate] = Reason,
-        error_handler: typing.Type[Assertable] = ErrorHandler,
-        str_handler: typing.Optional[CanValidateStrings] = None,
     ):
         self.actual = actual
         self._triggered = False
-        self._reason = reason_supplier()
-        self._error_handler = error_handler(self._reason)
-        self._string_handler = str_handler or StringHandler()
+        self._error_handler = ErrorHandler(Reason())
 
     def error(self, reason: str) -> Asserto:
         """
@@ -118,6 +106,7 @@ class Asserto:
 
     # Todo: should_not_raise
 
+    @handled_by(StringHandler)
     def ends_with(self, suffix: str) -> Asserto:
         """
         Asserts that the actual value ends with suffix.
@@ -125,12 +114,11 @@ class Asserto:
         :param suffix: The suffix to compare the tail of the string against.
         """
         return self._dispatch(
-            "string_handler",
-            "ends_with",
             Errors.strings.ends_with(actual=self.actual, expected=suffix),
             suffix,
         )
 
+    @handled_by(StringHandler)
     def starts_with(self, prefix: str) -> Asserto:
         """
         Asserts that the actual value ends with prefix.
@@ -138,8 +126,6 @@ class Asserto:
         :param prefix: The prefix to compare the head of the string against.
         """
         return self._dispatch(
-            "string_handler",
-            "starts_with",
             Errors.str.starts_with(actual=self.actual, expected=prefix),
             prefix,
         )
@@ -158,25 +144,29 @@ class Asserto:
         """
         return self._dispatch("string_handler", "is_alpha", Errors.str.is_alpha(actual=self.actual))
 
-    def _dispatch(self, handle_instance: str, assertion_method: str, message: str, *args, **kwargs) -> Asserto:
+    def _dispatch(self, on_fail: str, *args, **kwargs) -> Asserto:
         """
         Delegate a check to an underlying handler instance.
 
         :param handle_instance: The handler to delegate too.
         :param assertion_method: The method to invoke on the handler.
-        :param message: The error message to raise on failure.
+        :param on_fail: The error message to raise on failure.
 
         Arbitrary args & kwargs to pass through to the handler method.
+
+        Note: Debugging this with an IDE can yield unrealistic as debugging tends to insert
+        arbitrary code into the stack and this relies on
         """
+        caller = inspect.stack()[1][3]  # Todo: We need a better solution than this for future.
         self.triggered = True
-        handle_instance = getattr(self, f"_{handle_instance}")
-        assertion_method: typing.Optional[types.MethodType] = getattr(handle_instance, assertion_method)
+        handle_instance = self._routes[caller]()
+        assertion_method: typing.Optional[types.MethodType] = getattr(handle_instance, caller)
         if assertion_method is None or not callable(assertion_method):
             raise TypeError(f"assertion method was not a bound method on the handler {handle_instance}")
         # Enforce the guarding for the Handler.  Todo: I don't think this should be the responsibility here;
         handle_instance.accepts(self.actual)
         if assertion_method(self.actual, *args, **kwargs) is False:
-            self.error(message)
+            self.error(on_fail)
         return self
 
     @update_triggered  # Todo: Go through dispatch
