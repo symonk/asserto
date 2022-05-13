@@ -1,4 +1,4 @@
-from interfaces import ValidatesObjectTypes
+from .interfaces import ValidatesObjectTypes
 
 
 class NumericHandler(ValidatesObjectTypes):

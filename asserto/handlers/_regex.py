@@ -1,4 +1,4 @@
-from interfaces import ValidatesRegexTypes
+from .interfaces import ValidatesRegexTypes
 
 
 class RegexHandler(ValidatesRegexTypes):
