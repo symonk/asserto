@@ -170,7 +170,7 @@ class Asserto(metaclass=RouteMeta):
         if assertion_method is None or not callable(assertion_method):
             raise TypeError(f"assertion method was not a bound method on the handler {handle_instance}")
         # Enforce the guarding for the Handler.  Todo: I don't think this should be the responsibility here;
-        handle_instance.accepts(self.actual)
+        handle_instance.matches_criterion(self.actual)
         if assertion_method(self.actual, *args, **kwargs) is False:
             self.error(on_fail)
         return self

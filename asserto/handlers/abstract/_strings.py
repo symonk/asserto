@@ -4,7 +4,7 @@ from ._acceptable import Acceptable
 
 
 class CanValidateStrings(Acceptable):
-    def accepts(self, actual: str) -> None:
+    def matches_criterion(self, actual: str) -> None:
         """
         Check if this handler can validate the data provided.
         """

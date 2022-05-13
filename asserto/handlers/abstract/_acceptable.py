@@ -11,5 +11,5 @@ class Acceptable:
     """
 
     @abc.abstractmethod
-    def accepts(self, actual: typing.Any) -> None:
+    def matches_criterion(self, actual: typing.Any) -> None:
         raise NotImplementedError
