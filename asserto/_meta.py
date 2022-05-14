@@ -5,7 +5,7 @@ from collections import namedtuple
 MetaData = namedtuple("MetaData", "handler, error")
 
 
-class RouteMeta(type):
+class AssertoMeta(type):
     """
     A Meta class for implicitly mapping callable methods against their handlers.  Bolts on an
     arbitrary dictionary into the instance that maps method names to handlers and appropriate

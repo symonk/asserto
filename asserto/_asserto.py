@@ -12,7 +12,7 @@ from ._exceptions import DynamicCallableWithArgsError
 from ._exceptions import ExpectedTypeError
 from ._messaging import Reason
 from ._meta import MetaData
-from ._meta import RouteMeta
+from ._meta import AssertoMeta
 from ._meta import handled_by
 from ._raising import Raises
 from ._templates import Errors
@@ -25,7 +25,7 @@ from .handlers import StringHandler
 # Todo: base `remove duplication here`
 
 
-class Asserto(metaclass=RouteMeta):
+class Asserto(metaclass=AssertoMeta):
     """
     The entrypoint into asserting objects.
 
