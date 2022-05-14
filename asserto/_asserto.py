@@ -11,6 +11,7 @@ from ._error_handling import ErrorHandler
 from ._exceptions import DynamicCallableWithArgsError
 from ._exceptions import ExpectedTypeError
 from ._messaging import Reason
+from ._meta import MetaData
 from ._meta import RouteMeta
 from ._meta import handled_by
 from ._raising import Raises
@@ -19,7 +20,6 @@ from ._types import EXC_TYPES_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
 from .handlers import StringHandler
-from .handlers import Matchable
 
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
@@ -32,7 +32,7 @@ class Asserto(metaclass=RouteMeta):
     :param actual: The actual value
     """
 
-    _routes: typing.Dict[str, typing.Type[Matchable]] = {}
+    _metadata: typing.Dict[str, MetaData] = {}
 
     def __init__(
         self,
@@ -107,7 +107,7 @@ class Asserto(metaclass=RouteMeta):
 
     # Todo: should_not_raise
 
-    @handled_by(handler=StringHandler)
+    @handled_by(handler=StringHandler, error=Errors.strings.ends_with)
     def ends_with(self, suffix: str) -> Asserto:
         """
         Asserts that the actual value ends with suffix.
@@ -115,65 +115,63 @@ class Asserto(metaclass=RouteMeta):
         :param suffix: The suffix to compare the tail of the string against.
         """
         return self._dispatch(
-            Errors.strings.ends_with(actual=self.actual, expected=suffix),
             suffix,
         )
 
-    @handled_by(handler=StringHandler)
+    @handled_by(handler=StringHandler, error=Errors.strings.starts_with)
     def starts_with(self, prefix: str) -> Asserto:
         """
         Asserts that the actual value ends with prefix.
 
         :param prefix: The prefix to compare the head of the string against.
         """
-        return self._dispatch(
-            Errors.str.starts_with(actual=self.actual, expected=prefix),
-            prefix,
-        )
+        return self._dispatch(prefix)
 
-    @handled_by(handler=StringHandler)
+    @handled_by(handler=StringHandler, error=Errors.strings.is_digit)
     def is_digit(self) -> Asserto:
         """
         Asserts that the actual value contains only unicode letters and that the string has
         at least a single character.
         """
-        return self._dispatch(Errors.str.is_digit(actual=self.actual))
+        return self._dispatch()
 
-    @handled_by(handler=StringHandler)
+    @handled_by(handler=StringHandler, error=Errors.strings.is_alpha)
     def is_alpha(self) -> Asserto:
         """
         Asserts that the actual value contains only unicode letters and that the string has
         at least a single character.
         """
-        return self._dispatch(Errors.str.is_alpha(actual=self.actual))
+        return self._dispatch()
 
-    def _dispatch(self, on_fail: str, *args, **kwargs) -> Asserto:
+    def _dispatch(self, *args, **kwargs) -> Asserto:
         """
         Delegate a check to an underlying handler instance.
 
-        :param handle_instance: The handler to delegate too.
-        :param assertion_method: The method to invoke on the handler.
-        :param on_fail: The error message to raise on failure.
+        :param error_template: (Optional) The error message to raise on failure.
 
         Arbitrary args & kwargs to pass through to the handler method.
 
         Note: Debugging this with an IDE can yield unrealistic as debugging tends to insert
-        arbitrary code into the stack and this relies on
+        arbitrary code into the stack and this relies on frame inspection.
         """
+        __tracebackhide__ = True
         caller = inspect.stack()[1][3]  # Todo: We need a better solution than this for future.
         self.triggered = True
         # for now allow this to be bypassed as not all methods have a handler defined.
         try:
-            handle_instance = self._routes[caller]()
+            handler_clazz, deco_error = self._metadata[caller]
+            handler_instance = handler_clazz()
         except KeyError:
             raise KeyError(f"{caller} does not have a dedicated handler.") from None
-        assertion_method: typing.Optional[types.MethodType] = getattr(handle_instance, caller)
+        assertion_method: typing.Optional[types.MethodType] = getattr(handler_instance, caller)
         if assertion_method is None or not callable(assertion_method):
-            raise TypeError(f"assertion method was not a bound method on the handler {handle_instance}")
+            raise TypeError(f"assertion method was not a bound method on the handler {handler_instance}")
         # Enforce the guarding for the Handler.  Todo: I don't think this should be the responsibility here;
-        handle_instance.matches_criteria(self.actual)
+        handler_instance.matches_criteria(self.actual)
         if assertion_method(self.actual, *args, **kwargs) is False:
-            self.error(on_fail)
+            # Todo: Error handling?
+            error_callable = kwargs.pop("error_template", None) or deco_error
+            self.error(error_callable(self.actual, *args, **kwargs))
         return self
 
     @update_triggered  # Todo: Go through dispatch
