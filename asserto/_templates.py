@@ -19,16 +19,15 @@ class CallableTemplate:
 
 @dataclass(frozen=True)
 class StringErrors:
-    """
-    These should match the assert function names as dispatch will attempt to resolve
-    the correct error message implicitly if one is not explicitly passed and shovel
-    actual and expected arguments into it.
-    """
-
     ends_with: CallableTemplate = CallableTemplate("$actual did not end with $expected")
     starts_with: CallableTemplate = CallableTemplate("$actual did not start with $expected")
     is_alpha: CallableTemplate = CallableTemplate("$actual did not contain only unicode letters")
     is_digit: CallableTemplate = CallableTemplate("$actual did not contain only numeric digits")
+
+
+@dataclass(frozen=True)
+class RegexErrors:
+    matches_beginning: CallableTemplate = CallableTemplate("$actual did not begin with $expected")
 
 
 class Errors:
@@ -37,3 +36,4 @@ class Errors:
     """
 
     strings = StringErrors
+    regex = RegexErrors

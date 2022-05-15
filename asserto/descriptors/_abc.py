@@ -1,9 +1,8 @@
+import abc
 import typing
-from abc import ABC
-from abc import abstractmethod
 
 
-class Validatable(ABC):
+class Validatable(abc.ABC):
     """
     Base class for custom validation descriptors.
     """
@@ -18,13 +17,7 @@ class Validatable(ABC):
         self.validate(value)
         setattr(obj, self.private_name, value)
 
-    @abstractmethod
+    @abc.abstractmethod
     def validate(self, value: typing.Any) -> None:
+        """Raise a ValueError if validation fails."""
         raise NotImplementedError
-
-
-class IsCallable(Validatable):
-    # Todo: handle `update_triggered` here; its omitting warnings.
-    def validate(self, value: typing.Any) -> None:
-        if not callable(value):
-            raise ValueError(f"{value} was not callable; it must be a callable type.")

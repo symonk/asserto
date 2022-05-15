@@ -1,13 +1,13 @@
 import typing
 
-from ._descriptors import IsCallable
 from ._types import EXC_TYPES_ALIAS
 from ._util import to_iterable
+from .descriptors import IsCallable
 
 __tracebackhide__ = True
 
 
-class Raises:
+class ExceptionChecker:
     """
     Encapsulation of the asserto callable exception handling syntax.
     """

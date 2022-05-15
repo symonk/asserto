@@ -11,14 +11,15 @@ from ._error_handling import ErrorHandler
 from ._exceptions import DynamicCallableWithArgsError
 from ._exceptions import ExpectedTypeError
 from ._messaging import Reason
-from ._meta import MetaData
 from ._meta import AssertoMeta
+from ._meta import MetaData
 from ._meta import handled_by
-from ._raising import Raises
+from ._raising import ExceptionChecker
 from ._templates import Errors
 from ._types import EXC_TYPES_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
+from .handlers import RegexHandler
 from .handlers import StringHandler
 
 # Todo: base: `tidy up docstrings`
@@ -72,7 +73,7 @@ class Asserto(metaclass=AssertoMeta):
         """
         self._triggered = True
 
-    def with_category(self, category: str) -> Asserto:
+    def set_category(self, category: str) -> Asserto:
         """
         Set the category for the assertion.  Categories are prefixed to the assertion
         messages, for example:
@@ -97,13 +98,13 @@ class Asserto(metaclass=AssertoMeta):
         self._reason.description = description
         return self
 
-    def should_raise(self, exceptions: EXC_TYPES_ALIAS) -> Raises:
+    def should_raise(self, exceptions: EXC_TYPES_ALIAS) -> ExceptionChecker:
         """
         Wraps the actual value into a callable if it is callable itself;
         :param exceptions: The type of exception expected.
         :return: The `Asserto` instance for fluency
         """
-        return Raises(exc_types=exceptions, value=self.actual, _referent=self)
+        return ExceptionChecker(exc_types=exceptions, value=self.actual, _referent=self)
 
     # Todo: should_not_raise
 
@@ -160,25 +161,27 @@ class Asserto(metaclass=AssertoMeta):
         # for now allow this to be bypassed as not all methods have a handler defined.
         try:
             handler_clazz, deco_error = self._metadata[caller]
-            handler_instance = handler_clazz()
+            handler_instance = handler_clazz(self.actual)
         except KeyError:
             raise KeyError(f"{caller} does not have a dedicated handler.") from None
         assertion_method: typing.Optional[types.MethodType] = getattr(handler_instance, caller)
         if assertion_method is None or not callable(assertion_method):
             raise TypeError(f"assertion method was not a bound method on the handler {handler_instance}")
         # Enforce the guarding for the Handler.  Todo: I don't think this should be the responsibility here;
-        handler_instance.matches_criteria(self.actual)
-        if assertion_method(self.actual, *args, **kwargs) is False:
+        if assertion_method(*args, **kwargs) is False:
             # Todo: Error handling?
             error_callable = kwargs.pop("error_template", None) or deco_error
-            self.error(error_callable(self.actual, *args, **kwargs))
+            self.error(error_callable(self.actual, args[0]))  # Todo: Error handling isn't good enough for robust cases.
         return self
 
-    @update_triggered  # Todo: Go through dispatch
-    def matches(self, pattern: str, flags: typing.Union[int, re.RegexFlag] = 0) -> Asserto:
-        if re.match(rf"{pattern}", self.actual, flags) is None:
-            self.error(f"{pattern} did not match the value: {self.actual}")
-        return self
+    @handled_by(handler=RegexHandler, error=Errors.regex.matches_beginning)
+    def matches_beginning(
+        self, pattern: typing.Union[str, re.Pattern], flags: typing.Union[int, re.RegexFlag] = 0
+    ) -> Asserto:
+        """
+        Matches the beginning of a string for a given pattern.
+        """
+        return self._dispatch(pattern, flags)
 
     @update_triggered  # Todo: Go through dispatch
     def is_true(self) -> Asserto:

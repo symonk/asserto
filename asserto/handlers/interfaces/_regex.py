@@ -1,13 +1,9 @@
 import abc
+import re
 import typing
 
-from ._matchable import Matchable
 
-
-class ValidatesRegexTypes(Matchable):
-    def matches(self, actual: typing.Any) -> None:
-        pass
-
+class ValidateRegex:
     @abc.abstractmethod
-    def matches_criteria(self, actual: typing.Any) -> None:
-        """Todo: Implement properly"""
+    def matches_beginning(self, expected: typing.Any, flags: typing.Union[int, re.RegexFlag] = 0) -> bool:
+        raise NotImplementedError

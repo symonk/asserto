@@ -1,7 +1,7 @@
-from ._matchable import Matchable
+from ._checkable import AcceptsType
 from ._numeric import ValidatesNumericTypes
 from ._object import ValidatesBaseTypes
-from ._regex import ValidatesRegexTypes
-from ._strings import ValidatesStringTypes
+from ._regex import ValidateRegex
+from ._strings import ValidateString
 
-__all__ = ["ValidatesStringTypes", "ValidatesNumericTypes", "ValidatesRegexTypes", "ValidatesBaseTypes", "Matchable"]
+__all__ = ["ValidateString", "ValidatesNumericTypes", "ValidateRegex", "ValidatesBaseTypes", "AcceptsType"]

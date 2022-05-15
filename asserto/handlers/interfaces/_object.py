@@ -1,10 +1,10 @@
 import typing
 
-from ._matchable import Matchable
+from ._checkable import AcceptsType
 
 
-class ValidatesBaseTypes(Matchable):
+class ValidatesBaseTypes(AcceptsType):
     """Todo: Implement"""
 
-    def matches_criteria(self, actual: typing.Any) -> None:
+    def check_value(self, actual: typing.Any) -> None:
         pass

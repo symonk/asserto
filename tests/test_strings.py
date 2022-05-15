@@ -24,9 +24,7 @@ def test_starts_with_failure(asserto) -> None:
 def test_invalid_type_raises(asserto) -> None:
     with pytest.raises(ValueError) as error:
         asserto(1).starts_with("foo")
-    asserto(error.value.args[0]).is_equal_to(
-        "'StringHandler' cannot perform checks using: <class 'int'>.  Must be a string."
-    )
+    asserto(error.value.args[0]).is_equal_to("1 was not an instance of any of: (<class 'str'>,)")
 
 
 def test_is_digit(asserto) -> None:
