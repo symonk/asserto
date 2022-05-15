@@ -10,11 +10,12 @@ def main() -> int:
     return_code += pre_commit_update()
     if not return_code:
         commit_and_push()
+    print(f"Exited: {return_code}")
     return return_code
 
 
 def remove_lock_if_exists():
-    return _run_command(("rm", "poetry.lock"))
+    return _run_command(("rm", "-f", "poetry.lock"))
 
 
 def poetry_update():
