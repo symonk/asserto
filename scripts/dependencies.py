@@ -5,11 +5,16 @@ import typing
 
 def main() -> int:
     return_code = 0
+    return_code += remove_lock_if_exists()
     return_code += poetry_update()
     return_code += pre_commit_update()
     if not return_code:
         commit_and_push()
     return return_code
+
+
+def remove_lock_if_exists():
+    return _run_command(("rm", "poetry.lock"))
 
 
 def poetry_update():
