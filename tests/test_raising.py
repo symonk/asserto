@@ -13,7 +13,7 @@ def test_raises_without_exception(asserto) -> None:
 def test_errors_when_no_exc(asserto) -> None:
     with pytest.raises(AssertionError) as error:
         asserto(_raiser).should_raise((ValueError, RuntimeError)).when_called_with(x=False)
-    asserto(error.value.args[0]).matches_beginning(
+    asserto(error.value.args[0]).match(
         r"^<function _raiser at .*> never raised any of: \(<class 'ValueError'>, <class 'RuntimeError'>\)$"
     )
 

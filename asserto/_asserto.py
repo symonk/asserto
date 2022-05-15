@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import inspect
-import re
 import types
 import typing
 import warnings
@@ -15,6 +14,8 @@ from ._meta import AssertoMeta
 from ._meta import handled_by
 from ._raising import ExceptionChecker
 from ._types import EXC_TYPES_ALIAS
+from ._types import RE_FLAGS_ALIAS
+from ._types import RE_PATTERN_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
 from .handlers import RegexHandler
@@ -173,13 +174,49 @@ class Asserto(metaclass=AssertoMeta):
         return self
 
     @handled_by(RegexHandler)
-    def matches_beginning(
-        self, pattern: typing.Union[str, re.Pattern], flags: typing.Union[int, re.RegexFlag] = 0
-    ) -> Asserto:
+    def match(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS = 0) -> Asserto:
         """
-        Matches the beginning of a string for a given pattern.
+        Asserts that the actual value provided matches (at least in part) from the beginning of it
+        the pattern provided.  This is only a 'begins with' partial match.  Opt for `fullmatch` to
+        perform a pattern match on the entirety of the actual value.
+
+        :param pattern: The regular expression pattern to use; r"" is encouraged.
+        :param flags: An integer (or RegexFlag) representing flags to apply.
         """
         return self._dispatch(pattern, flags)
+
+    @handled_by(RegexHandler)
+    def search(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS = 0) -> Asserto:
+        """
+        Asserts that the actual value provided has at least one single match of the pattern
+        at some point within it.
+
+        :param pattern: The regular expression pattern to use; r"" is encouraged.
+        :param flags: An integer (or RegexFlag) representing flags to apply.
+        """
+        return self._dispatch(pattern, flags)
+
+    @handled_by(RegexHandler)
+    def fullmatch(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS = 0) -> Asserto:
+        """
+        Asserts that the actual value provided wholly matches the pattern provided. Providing
+        `^` & `$` is not necessary as they are implicitly inferred.
+
+        :param pattern: The regular expression pattern to use; r"" is encouraged.
+        :param flags: An integer (or RegexFlag) representing flags to apply.
+        """
+        return self._dispatch(pattern, flags)
+
+    @handled_by(RegexHandler)
+    def findall(self, pattern: RE_PATTERN_ALIAS, count: int, flags: RE_FLAGS_ALIAS = 0) -> Asserto:
+        """
+        Asserts that the total count of non overlapping occurrences of pattern is equal to count.
+
+        :param pattern: The regular expression pattern to use; r"" is encouraged.
+        :param count: The expected number of elements expected in the fullmatch returned sequence.
+        :param flags: An integer (or RegexFlag) representing flags to apply.
+        """
+        return self._dispatch(pattern, count, flags)
 
     @update_triggered  # Todo: Go through dispatch
     def is_true(self) -> Asserto:

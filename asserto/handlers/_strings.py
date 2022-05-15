@@ -1,10 +1,9 @@
 import typing
 
 from ..descriptors import IsInstanceOf
-from .interfaces import ValidateString
 
 
-class StringHandler(ValidateString):
+class StringHandler:
     """
     A handler responsible for all string based checks.
     """

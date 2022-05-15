@@ -36,7 +36,7 @@ from asserto import asserto
 
 
 def test_multiple_assert_fluency() -> None:
-    asserto("Hello").has_length(5).matches_beginning(r"\w{5}$").ends_with("lo").starts_with("Hel")
+    asserto("Hello").has_length(5).match(r"\w{5}$").ends_with("lo").starts_with("Hel")
 ```
 
 ----
@@ -107,7 +107,7 @@ class Foo:
 
 def test_foo_dynamically() -> None:
      # dynamically looking up `x` (attr) or `double_x` bound method & invoking it!
-    asserto(Foo(10)).x_is(10).double_x_is(20) 
+    asserto(Foo(10)).x_is(10).double_x_is(20)
 ```
 
 -----
@@ -124,10 +124,10 @@ from asserto import register_assert
 def custom_assert(self):
     if self.actual != 5:
         self.error(f"{self.actual} did not equal five!")
-        
+
 register_assert(custom_assert)  # Option 2
-        
-        
+
+
 def test_user_defined_callables() -> None:
     asserto(6).custom_assert()
 ```

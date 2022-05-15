@@ -1,11 +1,12 @@
 import re
 import typing
 
+from .._types import RE_FLAGS_ALIAS
+from .._types import RE_PATTERN_ALIAS
 from ..descriptors import IsInstanceOf
-from .interfaces import ValidateRegex
 
 
-class RegexHandler(ValidateRegex):
+class RegexHandler:
     """
     Regular expression handler.
     """
@@ -15,11 +16,17 @@ class RegexHandler(ValidateRegex):
     def __init__(self, actual: typing.Any) -> None:
         self.actual = actual
 
-    def matches_beginning(self, expected: typing.Any, flags: typing.Union[int, re.RegexFlag] = 0) -> bool:
+    def match(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS = 0) -> bool:
         """Matches the beginning of a string"""
-        if not re.match(expected, self.actual, flags):
-            raise AssertionError(f"{self.actual} did not begin with pattern: {expected}")
-        return re.match(expected, self.actual, flags) is not None
+        if not re.match(pattern, self.actual, flags):
+            raise AssertionError(f"{self.actual} did not begin with pattern: {pattern}")
+        return re.match(pattern, self.actual, flags) is not None
 
-    def contains_match(self, expected: typing.Any, flags: typing.Union[int, re.RegexFlag] = 0) -> bool:
-        ...
+    def search(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS) -> None:
+        raise NotImplementedError
+
+    def full_match(self, pattern: RE_PATTERN_ALIAS, count: int, flags: RE_FLAGS_ALIAS) -> None:
+        raise NotImplementedError
+
+    def findall(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS):
+        raise NotImplementedError

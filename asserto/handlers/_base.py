@@ -1,5 +1,2 @@
-from .interfaces import ValidatesBaseTypes
-
-
-class BaseHandler(ValidatesBaseTypes):
+class BaseHandler:
     ...
