@@ -1,8 +1,5 @@
 import inspect
 import typing
-from collections import namedtuple
-
-MetaData = namedtuple("MetaData", "handler, error")
 
 
 class AssertoMeta(type):
@@ -24,19 +21,19 @@ class AssertoMeta(type):
 
         methods = inspect.getmembers(clazz, has_asserto_handler)
         for methodname, methodobj in methods:
-            clazz._metadata[methodname] = MetaData(**methodobj.__asserto__)
+            clazz._routing[methodname] = methodobj.__asserto__["handler"]
         return clazz
 
 
-def handled_by(*, handler: typing.Any, error: typing.Optional[typing.Any] = None):
+def handled_by(handler: typing.Type[typing.Any]):
     """
     Assigns an attribute on asserto functions that allow the metaclass populates the
     delegating handlers for each individual function.
     """
 
     def decorator(func):
-        temp = {k: v for k, v in {"handler": handler, "error": error}.items() if v is not None}
-        func.__asserto__ = temp
+
+        func.__asserto__ = {"handler": handler}
         return func
 
     return decorator

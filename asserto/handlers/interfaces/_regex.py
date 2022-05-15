@@ -5,5 +5,5 @@ import typing
 
 class ValidateRegex:
     @abc.abstractmethod
-    def matches_beginning(self, expected: typing.Any, flags: typing.Union[int, re.RegexFlag] = 0) -> bool:
+    def matches_beginning(self, expected: typing.Any, flags: typing.Union[int, re.RegexFlag] = 0) -> None:
         raise NotImplementedError

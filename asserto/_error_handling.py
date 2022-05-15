@@ -16,16 +16,17 @@ class ErrorHandler:
         self.soft_context = False
         self.soft_fails: typing.Optional[FailureCompilation] = None
 
-    def error(self, reason: str) -> None:
+    def error(self, cause: typing.Union[AssertionError, str]) -> None:
         """
         Raise the AssertionError or build on the list of soft assertions which
-        will be automatically raised when the context exits.
+        will be automatically raised when the context exits.  Error can except
+        an Assertion error or a string used as message for a newly created one.
         """
-        error = AssertionError(self.reasonable.format(reason))
+        error = cause if not isinstance(cause, str) else AssertionError(self.reasonable.format(cause))
         if self.soft_context:
             self.soft_fails.register_error(error)
             return
-        raise error
+        raise error from None
 
     def transition_to_soft(self) -> None:
         """

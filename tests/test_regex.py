@@ -8,4 +8,4 @@ def test_regex_matches(asserto) -> None:
 def test_regex_non_match_raises(asserto) -> None:
     with pytest.raises(AssertionError) as error:
         asserto("Hello World").matches_beginning(r"^F$")
-    asserto(error.value.args[0]).is_equal_to("Hello World did not begin with ^F$")
+    asserto(error.value.args[0]).is_equal_to("Hello World did not begin with pattern: ^F$")

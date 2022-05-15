@@ -6,9 +6,8 @@ def test_ends_with_success(asserto) -> None:
 
 
 def test_ends_with_failures(asserto) -> None:
-    with pytest.raises(AssertionError) as error:
+    with pytest.raises(AssertionError, match="foo did not end with suffix='baz'"):
         asserto("foo").ends_with("baz")
-    asserto(error.value.args[0]).is_equal_to("foo did not end with baz")
 
 
 def test_starts_with_success(asserto) -> None:
@@ -16,9 +15,8 @@ def test_starts_with_success(asserto) -> None:
 
 
 def test_starts_with_failure(asserto) -> None:
-    with pytest.raises(AssertionError) as error:
+    with pytest.raises(AssertionError, match="baz did not begin with prefix='az'"):
         asserto("baz").starts_with("az")
-    asserto(error.value.args[0]).is_equal_to("baz did not start with az")
 
 
 def test_invalid_type_raises(asserto) -> None:

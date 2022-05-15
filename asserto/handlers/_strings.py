@@ -14,14 +14,18 @@ class StringHandler(ValidateString):
     def __init__(self, actual: typing.Any) -> None:
         self.actual = actual
 
-    def is_alpha(self) -> bool:
-        return self.actual.isalpha()
+    def is_alpha(self) -> None:
+        if not self.actual.isalpha():
+            raise AssertionError(f"{self.actual} did not contain only alpha numeric characters.")
 
-    def is_digit(self) -> bool:
-        return self.actual.isdigit()
+    def is_digit(self) -> None:
+        if not self.actual.isdigit():
+            raise AssertionError(f"{self.actual} did not contain only numeric digits.")
 
-    def ends_with(self, suffix: str) -> bool:
-        return self.actual.endswith(suffix)
+    def ends_with(self, suffix: str) -> None:
+        if not self.actual.endswith(suffix):
+            raise AssertionError(f"{self.actual} did not end with {suffix=}")
 
-    def starts_with(self, prefix: str) -> bool:
-        return self.actual.startswith(prefix)
+    def starts_with(self, prefix: str) -> None:
+        if not self.actual.startswith(prefix):
+            raise AssertionError(f"{self.actual} did not begin with {prefix=}")

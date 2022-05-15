@@ -17,6 +17,8 @@ class RegexHandler(ValidateRegex):
 
     def matches_beginning(self, expected: typing.Any, flags: typing.Union[int, re.RegexFlag] = 0) -> bool:
         """Matches the beginning of a string"""
+        if not re.match(expected, self.actual, flags):
+            raise AssertionError(f"{self.actual} did not begin with pattern: {expected}")
         return re.match(expected, self.actual, flags) is not None
 
     def contains_match(self, expected: typing.Any, flags: typing.Union[int, re.RegexFlag] = 0) -> bool:

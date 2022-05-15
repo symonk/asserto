@@ -12,10 +12,8 @@ from ._exceptions import DynamicCallableWithArgsError
 from ._exceptions import ExpectedTypeError
 from ._messaging import Reason
 from ._meta import AssertoMeta
-from ._meta import MetaData
 from ._meta import handled_by
 from ._raising import ExceptionChecker
-from ._templates import Errors
 from ._types import EXC_TYPES_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
@@ -33,7 +31,7 @@ class Asserto(metaclass=AssertoMeta):
     :param actual: The actual value
     """
 
-    _metadata: typing.Dict[str, MetaData] = {}
+    _routing: typing.Dict[str, typing.Type[typing.Any]] = {}
 
     def __init__(
         self,
@@ -44,15 +42,15 @@ class Asserto(metaclass=AssertoMeta):
         self._reason = Reason()
         self._error_handler = ErrorHandler(self._reason)
 
-    def error(self, reason: str) -> Asserto:
+    def error(self, cause: typing.Union[AssertionError, str]) -> Asserto:
         """
         The single point of assertion failing.  All functions delegate here to raise the underlying
         assertion errors.
-        :param reason: A reason for the failure. if description was set; it takes precedence.
+        :param cause: A reason for the failure. if description was set; it takes precedence.
         :return: The `Asserto` instance for fluency
         """
         __tracebackhide__ = True
-        self._error_handler.error(reason)
+        self._error_handler.error(cause)
         return self
 
     @property
@@ -108,7 +106,7 @@ class Asserto(metaclass=AssertoMeta):
 
     # Todo: should_not_raise
 
-    @handled_by(handler=StringHandler, error=Errors.strings.ends_with)
+    @handled_by(StringHandler)
     def ends_with(self, suffix: str) -> Asserto:
         """
         Asserts that the actual value ends with suffix.
@@ -119,7 +117,7 @@ class Asserto(metaclass=AssertoMeta):
             suffix,
         )
 
-    @handled_by(handler=StringHandler, error=Errors.strings.starts_with)
+    @handled_by(StringHandler)
     def starts_with(self, prefix: str) -> Asserto:
         """
         Asserts that the actual value ends with prefix.
@@ -128,7 +126,7 @@ class Asserto(metaclass=AssertoMeta):
         """
         return self._dispatch(prefix)
 
-    @handled_by(handler=StringHandler, error=Errors.strings.is_digit)
+    @handled_by(StringHandler)
     def is_digit(self) -> Asserto:
         """
         Asserts that the actual value contains only unicode letters and that the string has
@@ -136,7 +134,7 @@ class Asserto(metaclass=AssertoMeta):
         """
         return self._dispatch()
 
-    @handled_by(handler=StringHandler, error=Errors.strings.is_alpha)
+    @handled_by(StringHandler)
     def is_alpha(self) -> Asserto:
         """
         Asserts that the actual value contains only unicode letters and that the string has
@@ -160,21 +158,21 @@ class Asserto(metaclass=AssertoMeta):
         self.triggered = True
         # for now allow this to be bypassed as not all methods have a handler defined.
         try:
-            handler_clazz, deco_error = self._metadata[caller]
-            handler_instance = handler_clazz(self.actual)
+            handler = self._routing[caller](self.actual)  # descriptors enforce types here.
         except KeyError:
             raise KeyError(f"{caller} does not have a dedicated handler.") from None
-        assertion_method: typing.Optional[types.MethodType] = getattr(handler_instance, caller)
+        assertion_method: typing.Optional[types.MethodType] = getattr(handler, caller)
         if assertion_method is None or not callable(assertion_method):
-            raise TypeError(f"assertion method was not a bound method on the handler {handler_instance}")
-        # Enforce the guarding for the Handler.  Todo: I don't think this should be the responsibility here;
-        if assertion_method(*args, **kwargs) is False:
-            # Todo: Error handling?
-            error_callable = kwargs.pop("error_template", None) or deco_error
-            self.error(error_callable(self.actual, args[0]))  # Todo: Error handling isn't good enough for robust cases.
+            raise TypeError(f"assertion method was not a bound method on the handler {handler}")
+        try:
+            _ = assertion_method(*args, **kwargs)
+        except AssertionError as e:
+            self.error(e)
+        # Fall through type & value errors; we don't need to do anything in particular for them, just bubble em up.
+        # (for now anyway).
         return self
 
-    @handled_by(handler=RegexHandler, error=Errors.regex.matches_beginning)
+    @handled_by(RegexHandler)
     def matches_beginning(
         self, pattern: typing.Union[str, re.Pattern], flags: typing.Union[int, re.RegexFlag] = 0
     ) -> Asserto:
