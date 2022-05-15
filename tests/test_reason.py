@@ -18,9 +18,8 @@ def test_basic_reason(asserto, reason_obj, reason_txt, expected) -> None:
 
 
 def test_described_as(asserto) -> None:
-    with pytest.raises(AssertionError) as error:
+    with pytest.raises(AssertionError, match="foo!"):
         asserto(1).described_as("foo!").is_equal_to(2)
-    asserto(error.value.args[0]).is_equal_to("foo!")
 
 
 @NO_UNTRIGGERED_WARNINGS

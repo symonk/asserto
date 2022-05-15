@@ -7,12 +7,10 @@ def test_is_none_or_not_none_works_successfully(asserto) -> None:
 
 
 def test_is_none_incorrect_raises(asserto) -> None:
-    with pytest.raises(AssertionError) as error:
+    with pytest.raises(AssertionError, match="1 is not None"):
         asserto(1).is_none()
-    asserto(error.value.args[0]).is_equal_to("1 is not None")
 
 
 def test_is_not_none_incorrect_raises(asserto) -> None:
-    with pytest.raises(AssertionError) as error:
+    with pytest.raises(AssertionError, match="None is None"):
         asserto(None).is_not_none()
-    asserto(error.value.args[0]).is_equal_to("None is None")
