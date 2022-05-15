@@ -38,12 +38,12 @@ def register_assert(
 
             from asserto import assertable
 
-            @assertable  # Option 1.
+            @register_assert  # Option 1.
             def custom_assert(self):
                 if not isinstance(self.actual, MyClass):
                     self.error("my assertion error message")
 
-            assertable(custom_assert)  # Option 2.
+            register_assert(custom_assert)  # Option 2.
     """
     if not isinstance(func, types.FunctionType):
         raise ValueError("Binding functions must be of function types.")
