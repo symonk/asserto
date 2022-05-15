@@ -54,7 +54,7 @@ def test_baz() -> None:
     with asserto("Baz") as context:
         # asserto when used in a python context is run in 'soft' mode;
         # upon exiting the context; congregated errors are subsequently raised (if any)
-        context.starts_with("B").ends_with("z").is_equal_to("Baz").is_length(2)  # Ends in a failure.
+        context.starts_with("B").ends_with("z").is_equal_to("Baz").has_length(2)  # Ends in a failure.
 ```
 
 Will result in the following:
