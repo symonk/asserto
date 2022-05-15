@@ -32,4 +32,6 @@ class RegexHandler:
     def findall(self, pattern: RE_PATTERN_ALIAS, count: int, flags: RE_FLAGS_ALIAS) -> None:
         matches = re.findall(pattern, self.actual, flags)
         if len(matches) != count:
-            raise AssertionError(f"{self.actual} had: {len(matches)} non overlapping occurrences for pattern: {pattern}, not: {count}")
+            raise AssertionError(
+                f"{self.actual} had: {len(matches)} non overlapping occurrences for pattern: {pattern}, not: {count}"
+            )

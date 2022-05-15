@@ -18,3 +18,7 @@ class DynamicCallableWithArgsError(TypeError):
     Asserto currently only supports 0-arg callables as part of its dynamic lookup and
     invocations.
     """
+
+
+class InvalidHandlerTypeException(ValueError):
+    """Raised when the actual value provided is not supported by the assertion method invoked by the caller."""

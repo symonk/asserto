@@ -9,6 +9,7 @@ from ._decorators import update_triggered
 from ._error_handling import ErrorHandler
 from ._exceptions import DynamicCallableWithArgsError
 from ._exceptions import ExpectedTypeError
+from ._exceptions import InvalidHandlerTypeException
 from ._messaging import Reason
 from ._meta import AssertoMeta
 from ._meta import handled_by
@@ -160,6 +161,8 @@ class Asserto(metaclass=AssertoMeta):
         # for now allow this to be bypassed as not all methods have a handler defined.
         try:
             handler = self._routing[caller](self.actual)  # descriptors enforce types here.
+        except ValueError:
+            raise InvalidHandlerTypeException(f"function: {caller} does not support type: {type(self.actual)}")
         except KeyError:
             raise KeyError(f"{caller} does not have a dedicated handler.") from None
         assertion_method: typing.Optional[types.MethodType] = getattr(handler, caller)
