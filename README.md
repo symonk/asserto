@@ -125,6 +125,8 @@ def custom_assert(self):
     if self.actual != 5:
         self.error(f"{self.actual} did not equal five!")
         
+register_assert(custom_assert)  # Option 2
+        
         
 def test_user_defined_callables() -> None:
     asserto(6).custom_assert()
