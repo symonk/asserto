@@ -20,9 +20,8 @@ def test_starts_with_failure(asserto) -> None:
 
 
 def test_invalid_type_raises(asserto) -> None:
-    with pytest.raises(ValueError) as error:
+    with pytest.raises(ValueError, match="function: starts_with does not support type: <class 'int'>") as error:
         asserto(1).starts_with("foo")
-    asserto(error.value.args[0]).is_equal_to("1 was not an instance of any of: (<class 'str'>,)")
 
 
 def test_is_digit(asserto) -> None:

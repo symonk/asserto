@@ -41,7 +41,7 @@ def test_fullmatch(asserto):
 
 
 def test_fullmatch_fail(asserto):
-    with pytest.raises(AssertionError, match="hello world was not matched entirely by: pattern='hello world'"):
+    with pytest.raises(AssertionError, match="hello world was not matched entirely by: pattern='hello worl'"):
         asserto("hello world").fullmatch(r"hello worl")
 
 
