@@ -11,7 +11,7 @@ from ._exceptions import DynamicCallableWithArgsError
 from ._exceptions import ExpectedTypeError
 from ._exceptions import InvalidHandlerTypeException
 from ._messaging import Reason
-from ._meta import AssertoMeta
+from ._meta import AssertoBase
 from ._meta import handled_by
 from ._raising import ExceptionChecker
 from ._types import EXC_TYPES_ALIAS
@@ -26,14 +26,12 @@ from .handlers import StringHandler
 # Todo: base `remove duplication here`
 
 
-class Asserto(metaclass=AssertoMeta):
+class Asserto(AssertoBase):
     """
     The entrypoint into asserting objects.
 
     :param actual: The actual value
     """
-
-    _routing: typing.Dict[str, typing.Type[typing.Any]] = {}
 
     def __init__(
         self,
@@ -160,7 +158,7 @@ class Asserto(metaclass=AssertoMeta):
         self.triggered = True
         # for now allow this to be bypassed as not all methods have a handler defined.
         try:
-            handler = self._routing[caller](self.actual)  # descriptors enforce types here.
+            handler = self._routes[caller](self.actual)  # descriptors enforce types here.
         except ValueError:
             raise InvalidHandlerTypeException(f"function: {caller} does not support type: {type(self.actual)}")
         except KeyError:

@@ -11,7 +11,10 @@ def test_raises_without_exception(asserto) -> None:
 
 @NO_UNTRIGGERED_WARNINGS
 def test_errors_when_no_exc(asserto) -> None:
-    with pytest.raises(AssertionError, match=r"^<function _raiser at .*> never raised any of: \(<class 'ValueError'>, <class 'RuntimeError'>\)$"):
+    with pytest.raises(
+        AssertionError,
+        match=r"^<function _raiser at .*> never raised any of: \(<class 'ValueError'>, <class 'RuntimeError'>\)$",
+    ):
         asserto(_raiser).should_raise((ValueError, RuntimeError)).when_called_with(x=False)
 
 

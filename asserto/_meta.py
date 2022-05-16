@@ -2,27 +2,19 @@ import inspect
 import typing
 
 
-class AssertoMeta(type):
+class AssertoBase:
     """
-    A Meta class for implicitly mapping callable methods against their handlers.  Bolts on an
-    arbitrary dictionary into the instance that maps method names to handlers and appropriate
-    error messages.
+    Implicitly populates a `_routes` class attribute with all methods decorated by the
+    @handled_by decorator for subsequent lookups via _dispatch(...).
     """
 
-    @staticmethod
-    def __new__(cls, name, bases, attrs):
-        # Bolton the _routes to the class of `Asserto`.
-        clazz = super().__new__(cls, name, bases, attrs)
-        # Resolve all decorated methods and update the instance dictionary for dispatch.
+    _routes: typing.Dict[str, typing.Type[typing.Any]] = {}
 
-        def has_asserto_handler(m):
-            metadata = getattr(m, "__asserto__", None)  # was decorated with @handled_by
-            return metadata is not None and "handler" in metadata
-
-        methods = inspect.getmembers(clazz, has_asserto_handler)
-        for methodname, methodobj in methods:
-            clazz._routing[methodname] = methodobj.__asserto__["handler"]
-        return clazz
+    @classmethod
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        method_info = inspect.getmembers(cls, predicate=lambda m: getattr(m, "__handler__", None))
+        cls._routes = dict(method_info)
 
 
 def handled_by(handler: typing.Type[typing.Any]):
@@ -32,8 +24,7 @@ def handled_by(handler: typing.Type[typing.Any]):
     """
 
     def decorator(func):
-
-        func.__asserto__ = {"handler": handler}
+        func.__handler__ = handler
         return func
 
     return decorator
