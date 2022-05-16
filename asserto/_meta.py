@@ -1,5 +1,6 @@
 import inspect
 import typing
+from .handlers import Handler
 
 
 class AssertoBase:
@@ -8,7 +9,7 @@ class AssertoBase:
     @handled_by decorator for subsequent lookups via _dispatch(...).
     """
 
-    _routes: typing.Dict[str, typing.Type[typing.Any]] = {}
+    _routes: typing.Dict[str, typing.Type[Handler]] = {}
 
     @classmethod
     def __init_subclass__(cls, **kwargs):
@@ -17,10 +18,12 @@ class AssertoBase:
         cls._routes = {name: obj.__handler__ for name, obj in method_info}
 
 
-def handled_by(handler: typing.Type[typing.Any]):
+def handled_by(handler: typing.Type[Handler]):
     """
     Assigns an attribute on asserto functions that allow the metaclass populates the
     delegating handlers for each individual function.
+
+    :param handler: A Handler class instance to be registered for the given method.
     """
 
     def decorator(func):
