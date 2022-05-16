@@ -3,10 +3,11 @@ import typing
 
 from .._types import RE_FLAGS_ALIAS
 from .._types import RE_PATTERN_ALIAS
+from ._handler import Handler
 from ..descriptors import IsInstanceOf
 
 
-class RegexHandler:
+class RegexHandler(Handler):
     """
     Regular expression handler.
     """
@@ -20,6 +21,13 @@ class RegexHandler:
         """Matches the beginning of a string"""
         if not re.match(pattern, self.actual, flags):
             raise AssertionError(f"{self.actual} did not begin with pattern: {pattern=}")
+
+    def does_not_match(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS = 0) -> None:
+        try:
+            self.match(pattern, flags)
+            raise AssertionError(f"{self.actual} was a match with pattern: {pattern=}")
+        except AssertionError:
+            pass
 
     def search(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS) -> None:
         if re.search(pattern, self.actual, flags) is None:

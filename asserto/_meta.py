@@ -13,8 +13,8 @@ class AssertoBase:
     @classmethod
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
-        method_info = inspect.getmembers(cls, predicate=lambda m: getattr(m, "__handler__", None))
-        cls._routes = dict(method_info)
+        method_info = inspect.getmembers(cls, predicate=lambda m: hasattr(m, "__handler__"))
+        cls._routes = {name: obj.__handler__ for name, obj in method_info}
 
 
 def handled_by(handler: typing.Type[typing.Any]):
