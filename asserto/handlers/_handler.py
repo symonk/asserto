@@ -1,4 +1,14 @@
+import typing
+
+
 class Handler:
+    """
+    Useful utility functions for all kinds of handlers.
+    """
+
+    def __init__(self, actual: typing.Any) -> None:
+        self.actual = actual
+
     @staticmethod
     def dispatch_and_raise(fn, expected, error, *args, **kwargs):
         """
@@ -7,3 +17,10 @@ class Handler:
         """
         if fn(*args, **kwargs) != expected:
             raise AssertionError(error)
+
+    def raise_if_length_equals(self, length: int = 0) -> typing.Literal[True]:
+        """Checks the length of a Sized implementation and raises a ValueError if it is zero.
+        Returns `True` if it succeeds to allow chaining of checks in handler subclasses."""
+        if len(self.actual) == length:
+            raise ValueError(f"{self.actual} is empty.")
+        return True

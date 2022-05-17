@@ -12,14 +12,14 @@ class StringHandler(Handler):
     actual: str = IsInstanceOf(str)
 
     def __init__(self, actual: typing.Any) -> None:
-        self.actual = actual
+        super().__init__(actual)
 
     def is_alpha(self) -> None:
-        if not self.actual.isalpha():
+        if self.raise_if_length_equals() and not self.actual.isalpha():
             raise AssertionError(f"{self.actual} did not contain only alpha numeric characters.")
 
     def is_digit(self) -> None:
-        if not self.actual.isdigit():
+        if self.raise_if_length_equals() and not self.actual.isdigit():
             raise AssertionError(f"{self.actual} did not contain only numeric digits.")
 
     def ends_with(self, suffix: str) -> None:

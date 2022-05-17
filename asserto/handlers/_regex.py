@@ -3,8 +3,8 @@ import typing
 
 from .._types import RE_FLAGS_ALIAS
 from .._types import RE_PATTERN_ALIAS
-from ._handler import Handler
 from ..descriptors import IsInstanceOf
+from ._handler import Handler
 
 
 class RegexHandler(Handler):
@@ -15,7 +15,7 @@ class RegexHandler(Handler):
     actual: typing.Any = IsInstanceOf(str, re.Pattern)
 
     def __init__(self, actual: typing.Any) -> None:
-        self.actual = actual
+        super().__init__(actual)
 
     def match(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS = 0) -> None:
         """Matches the beginning of a string"""
