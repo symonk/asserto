@@ -24,4 +24,4 @@ def test_virtual_instance_of(asserto) -> None:
 def test_not_an_instance(asserto) -> None:
     with pytest.raises(AssertionError) as error:
         asserto(25).is_instance(Klazz)
-    asserto(error.value.args[0]).match(r"^\[25\]: <class 'int'> was not an instance of:\s.*Klazz'>$")
+    asserto(error.value.args[0]).match(r"25 was not an instance of.*instance_checks.Klazz.*")

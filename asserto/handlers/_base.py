@@ -36,4 +36,4 @@ class BaseHandler(Handler):
 
     def is_instance(self, *other: typing.Any) -> None:
         if not isinstance(self.actual, other):
-            raise AssertionError(f"{self.actual} was an not an instance of: {other}")
+            raise AssertionError(f"{self.actual} was not an instance of: {other}")

@@ -267,7 +267,7 @@ class Asserto(AssertoBase):
         """
         return self._dispatch(expected)
 
-    @update_triggered  # Todo: Go through dispatch
+    @handled_by(BaseHandler)
     def is_instance(self, cls_or_tuple: typing.Union[typing.Any, typing.Iterable[typing.Any]]) -> Asserto:
         """
         Checks if the value provided is either:
@@ -278,9 +278,7 @@ class Asserto(AssertoBase):
 
         :param cls_or_tuple: A single Type, or iterable of types to check the object against.
         """
-        if not isinstance(self.actual, cls_or_tuple):
-            self.error(f"[{self.actual!r}]: {type(self.actual)} was not an instance of: {cls_or_tuple}")
-        return self
+        return self._dispatch(cls_or_tuple)
 
     @update_triggered  # Todo: Go through dispatch
     def refers_to(self, other: typing.Any) -> Asserto:
