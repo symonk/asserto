@@ -287,9 +287,7 @@ class Asserto(AssertoBase):
         :param other: The other object to compare identity of.
         :return: The instance of `Asserto` to chain asserts.
         """
-        if self.actual is not other:
-            self.error(f"{self.actual!r} is not: {other!r}")
-        return self
+        return self._dispatch(other)
 
     @handled_by(BaseHandler)
     def does_not_have_same_identity_as(self, other: typing.Any) -> Asserto:
@@ -298,9 +296,7 @@ class Asserto(AssertoBase):
         :param other: The other object to compare identity of.
         :return: The instance of `Asserto` to chain asserts.
         """
-        if self.actual is other:
-            self.error(f"{self.actual!r} points to the same memory location as: {other!r}")
-        return self
+        return self._dispatch(other)
 
     @update_triggered  # Todo: Go through dispatch
     def is_none(self) -> Asserto:
