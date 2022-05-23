@@ -280,8 +280,8 @@ class Asserto(AssertoBase):
         """
         return self._dispatch(cls_or_tuple)
 
-    @update_triggered  # Todo: Go through dispatch
-    def refers_to(self, other: typing.Any) -> Asserto:
+    @handled_by(BaseHandler)
+    def has_same_identity_as(self, other: typing.Any) -> Asserto:
         """
         Checks that the value refers to the same object in memory as `other`.`
         :param other: The other object to compare identity of.
@@ -291,8 +291,8 @@ class Asserto(AssertoBase):
             self.error(f"{self.actual!r} is not: {other!r}")
         return self
 
-    @update_triggered  # Todo: Go through dispatch
-    def does_not_refer_to(self, other: typing.Any) -> Asserto:
+    @handled_by(BaseHandler)
+    def does_not_have_same_identity_as(self, other: typing.Any) -> Asserto:
         """
         Checks that the value does not refer to the same object in memory as `other`.
         :param other: The other object to compare identity of.

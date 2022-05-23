@@ -37,3 +37,11 @@ class BaseHandler(Handler):
     def is_instance(self, *other: typing.Any) -> None:
         if not isinstance(self.actual, other):
             raise AssertionError(f"{self.actual} was not an instance of: {other}")
+
+    def has_same_identity_as(self, other: typing.Any) -> None:
+        if self.actual is not other:
+            raise AssertionError(f"{self.actual} does not share identity with: {other}")
+
+    def does_not_have_same_identity_as(self, other: typing.Any) -> None:
+        if self.actual is other:
+            raise AssertionError(f"{self.actual} shares identity with: {other}")
