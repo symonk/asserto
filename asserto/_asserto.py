@@ -5,7 +5,6 @@ import types
 import typing
 import warnings
 
-from ._decorators import update_triggered
 from ._error_handling import ErrorHandler
 from ._exceptions import DynamicCallableWithArgsError
 from ._exceptions import InvalidHandlerTypeException
@@ -298,27 +297,23 @@ class Asserto(AssertoBase):
         """
         return self._dispatch(other)
 
-    @update_triggered  # Todo: Go through dispatch
+    @handled_by(BaseHandler)
     def is_none(self) -> Asserto:
         """
         Checks the actual value is None.  Python `NoneType` is a singleton so `is` checks
         are used
         :return: The `Asserto` instance for fluency.
         """
-        if self.actual is not None:
-            self.error(f"{self.actual!r} is not {None}")
-        return self
+        return self._dispatch()
 
-    @update_triggered  # Todo: Go through dispatch
+    @handled_by(BaseHandler)
     def is_not_none(self) -> Asserto:
         """
         Checks the actual value is not None .  Python `None` is a singleton so `is not` checks are
         used.
         :return: The `Asserto` instance for fluency
         """
-        if self.actual is None:
-            self.error(f"{self.actual!r} is {None}")
-        return self
+        return self._dispatch()
 
     @staticmethod
     def _warn_not_triggered() -> None:

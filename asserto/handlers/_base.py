@@ -45,3 +45,11 @@ class BaseHandler(Handler):
     def does_not_have_same_identity_as(self, other: typing.Any) -> None:
         if self.actual is other:
             raise AssertionError(f"{self.actual} shares identity with: {other}")
+
+    def is_none(self) -> None:
+        if self.actual is not None:
+            raise AssertionError(f"{self.actual} is not None")
+
+    def is_not_none(self) -> None:
+        if self.actual is None:
+            raise AssertionError(f"{self.actual} is None")
