@@ -21,3 +21,8 @@ def test_length_mismatch(asserto) -> None:
 def test_length_fails(asserto) -> None:
     with pytest.raises(AssertionError, match=re.escape("Length of: DunderLen(x=100) was not equal to: 99")):
         asserto(DunderLen(100)).has_length(99)
+
+
+def test_length_below_zero(asserto) -> None:
+    with pytest.raises(ValueError, match="-5 must be an int and greater than 0"):
+        asserto(-5).has_length(-5)

@@ -8,7 +8,6 @@ import warnings
 from ._decorators import update_triggered
 from ._error_handling import ErrorHandler
 from ._exceptions import DynamicCallableWithArgsError
-from ._exceptions import ExpectedTypeError
 from ._exceptions import InvalidHandlerTypeException
 from ._messaging import Reason
 from ._meta import AssertoBase
@@ -258,7 +257,7 @@ class Asserto(AssertoBase):
         """
         return self._dispatch(other)
 
-    @update_triggered  # Todo: Go through dispatch
+    @handled_by(BaseHandler)
     def has_length(self, expected: int) -> Asserto:
         """
         A simple check that the actual value is equal to expected utilising the built in `len(...)`
@@ -266,12 +265,7 @@ class Asserto(AssertoBase):
         :param expected: An int to compare the length against.
         :return: The instance of `Asserto` to chain asserts.
         """
-        if not isinstance(expected, int) or expected < 0:
-            raise ExpectedTypeError(f"{expected!r} must be an int and greater than 0")
-
-        if len(self.actual) != expected:
-            self.error(f"Length of: {self.actual!r} was not equal to: {expected!r}")
-        return self
+        return self._dispatch(expected)
 
     @update_triggered  # Todo: Go through dispatch
     def is_instance(self, cls_or_tuple: typing.Union[typing.Any, typing.Iterable[typing.Any]]) -> Asserto:
