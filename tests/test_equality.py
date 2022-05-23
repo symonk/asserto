@@ -13,6 +13,5 @@ def test_equality_works_as_expected(asserto) -> None:
 
 
 def test_equality_fails_as_expected(asserto) -> None:
-    with pytest.raises(AssertionError) as err:
+    with pytest.raises(AssertionError, match=r"EqualObj\(x=500\) is not equal to: 200"):
         asserto(EqualObj(500)).is_equal_to(200)
-    asserto(err.value.args[0]).is_equal_to("EqualObj(x=500) was not equal to: 200")

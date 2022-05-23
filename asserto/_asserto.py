@@ -170,6 +170,8 @@ class Asserto(AssertoBase):
         try:
             _ = assertion_method(*args, **kwargs)
         except AssertionError as e:
+            if description := self._reason.description:
+                e = AssertionError(description)
             self.error(e)
         # Fall through type & value errors; we don't need to do anything in particular for them, just bubble em up.
         # (for now anyway).
@@ -236,7 +238,7 @@ class Asserto(AssertoBase):
         """
         return self._dispatch()
 
-    @update_triggered  # Todo: Go through dispatch
+    @handled_by(BaseHandler)
     def is_equal_to(self, other: typing.Any) -> Asserto:
         """
         Compares the value against `other` for equality.
@@ -244,11 +246,9 @@ class Asserto(AssertoBase):
         :param other: The other object to compare against.
         :return: The instance of `Asserto` to chain asserts.
         """
-        if self.actual != other:
-            self.error(f"{self.actual!r} was not equal to: {other!r}")
-        return self
+        return self._dispatch(other)
 
-    @update_triggered  # Todo: Go through dispatch
+    @handled_by(BaseHandler)
     def is_not_equal_to(self, other: typing.Any) -> Asserto:
         """
         Compares the value against `other` for non equality.
@@ -256,9 +256,7 @@ class Asserto(AssertoBase):
         :param other: The other object to compare against.
         :return: The instance of `Asserto` to chain asserts.
         """
-        if self.actual == other:
-            self.error(f"{self.actual!r} is equal to: {other!r}")
-        return self
+        return self._dispatch(other)
 
     @update_triggered  # Todo: Go through dispatch
     def has_length(self, expected: int) -> Asserto:
