@@ -19,6 +19,7 @@ from ._types import RE_FLAGS_ALIAS
 from ._types import RE_PATTERN_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
+from .handlers import BaseHandler
 from .handlers import RegexHandler
 from .handlers import StringHandler
 
@@ -219,25 +220,21 @@ class Asserto(AssertoBase):
         """
         return self._dispatch(pattern, count, flags)
 
-    @update_triggered  # Todo: Go through dispatch
+    @handled_by(BaseHandler)
     def is_true(self) -> Asserto:
         """
         Checks the actual value is True.
         :return: The `Asserto` instance for fluency.
         """
-        if self.actual is False:
-            self.error(f"{self.actual!r} was not True")
-        return self
+        return self._dispatch()
 
-    @update_triggered  # Todo: Go through dispatch
+    @handled_by(BaseHandler)
     def is_false(self) -> Asserto:
         """
         Checks the actual value is False.
         :return: The `Asserto` instance for fluency.
         """
-        if self.actual is True:
-            self.error(f"{self.actual!r} was not False")
-        return self
+        return self._dispatch()
 
     @update_triggered  # Todo: Go through dispatch
     def is_equal_to(self, other: typing.Any) -> Asserto:
