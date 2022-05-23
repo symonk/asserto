@@ -33,3 +33,7 @@ class BaseHandler(Handler):
 
         if len(self.actual) != expected:
             raise AssertionError(f"Length of: {self.actual!r} was not equal to: {expected!r}")
+
+    def is_instance(self, *other: typing.Any) -> None:
+        if not isinstance(self.actual, other):
+            raise AssertionError(f"{self.actual} was an not an instance of: {other}")
