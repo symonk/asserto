@@ -10,7 +10,7 @@ repos:
           - '--line-length=120'
         language_version: python3.10
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: 08792de8d1c685bbfb442dbbbacef2f3e6f4a546
+    rev: 2b6a48674428e9c50bdb6a184b88be77f108b831
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -30,7 +30,7 @@ repos:
       - id: mypy
         files: asserto/
   - repo: https://github.com/PyCQA/flake8
-    rev: 1c85f3d07c3aadf597db205dff597da2987745f7
+    rev: 52b7807ea5e4c79f19c93d8ffc6632dc2759e8f4
     hooks:
       - id: flake8
         args: ["--max-line-length=120"]
