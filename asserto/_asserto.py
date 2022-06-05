@@ -391,5 +391,6 @@ class Asserto(AssertoBase):
             self._warn_not_triggered()
         if self._error_handler.soft_errors:
             # There was a compilation of assertion errors
-            raise AssertionError(self._error_handler.soft_errors) from None
+            errors = self._error_handler.soft_errors
+            raise AssertionError(f"{len(errors)} Soft Assertion Failures, {errors}") from None
         self._error_handler.transition_to_hard()

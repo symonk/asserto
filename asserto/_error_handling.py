@@ -18,7 +18,7 @@ class ErrorHandler:
 
     @property
     def soft_errors(self) -> typing.List[AssertionError]:
-        if self.soft_fail_compiler is None or self.soft_fail_compiler.errors:
+        if not self.soft_context or self.soft_fail_compiler is None:
             raise ValueError("Cannot access soft errors outside of a soft context.")
         return self.soft_fail_compiler.errors
 
