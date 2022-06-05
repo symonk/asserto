@@ -13,7 +13,10 @@ class IsCallable(Validatable):
             raise ValueError(f"{value} is not callable.")
 
 
-class IsInstanceOf(Validatable):
+T = typing.TypeVar("T")
+
+
+class IsInstanceOf(Validatable, typing.Generic[T]):
     """Check if the value is an instance of multiple types."""
 
     def __init__(self, *types) -> None:

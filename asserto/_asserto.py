@@ -322,7 +322,7 @@ class Asserto(AssertoBase):
         """
         warnings.warn("Asserto instance was created and never used", NoAssertAttemptedWarning, 2)
 
-    def __getattr__(self, item: str) -> typing.Callable:
+    def __getattr__(self, item: str) -> typing.Callable[[typing.Any], typing.Any]:
         """
         Adds the capability to object class or instance attributes dynamically.  Supports user defined
         object types as well as built in mapping types.  In the case of a mapping type the attribute
@@ -389,7 +389,7 @@ class Asserto(AssertoBase):
         __tracebackhide__ = True
         if self.warn_unused and not self.triggered:
             self._warn_not_triggered()
-        if self._error_handler.soft_fails:
+        if self._error_handler.soft_errors:
             # There was a compilation of assertion errors
-            raise AssertionError(self._error_handler.soft_fails) from None
+            raise AssertionError(self._error_handler.soft_errors) from None
         self._error_handler.transition_to_hard()

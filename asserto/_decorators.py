@@ -2,7 +2,7 @@ import functools
 import typing
 
 
-def update_triggered(fn: typing.Callable[[typing.Any], typing.Any]) -> typing.Callable:
+def update_triggered(fn: typing.Callable[[typing.Any], typing.Any]) -> typing.Callable[[typing.Any], typing.Any]:
     """
     Track the triggered state on any asserto calls to ensure no instances were created
     and used without calling any assertable methods.
