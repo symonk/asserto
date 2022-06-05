@@ -223,32 +223,33 @@ class Asserto(AssertoBase):
     @handled_by(BaseHandler)
     def is_true(self) -> Asserto:
         """
-        Asserts that the value provided as the actual value (self.actual) is explicitly referencing
-        the single `True`.  This does NOT perform a 'truthy' check but instead the value is checked
-        using the `is` identity check.  In order to check if a value is considered 'truthy' use the
-        `.truthy()` method instead.
+        Asserts that the actual value is explicitly True.  This uses identity checks internally, to
+        check if a value is considered `truthy` use `is_truthy()` instead.
         """
         return self._dispatch()
 
     @handled_by(BaseHandler)
     def is_truthy(self) -> Asserto:
         """
-        Asserts that the truthy-ness of the value provided as the actual value (self.actual) is `True`
-        when converted to a boolean value.
+        Asserts that the actual value is True in a boolean context.  bool(actual) is called internally
+        and the outcome is asserted to be `True`.
         """
         return self._dispatch()
 
     @handled_by(BaseHandler)
     def is_false(self) -> Asserto:
         """
-        Checks the actual value is False.
-        :return: The `Asserto` instance for fluency.
+        Asserts that the actual value is explicitly False.  This uses identity checks internally, to
+        check if a value is considered `falsy` use `is_falsy()` instead.
         """
         return self._dispatch()
 
     @handled_by(BaseHandler)
     def is_falsy(self) -> Asserto:
-        """ Todo: Docs."""
+        """
+        Asserts that the actual value is False in a boolean context.  bool(actual) is called internally
+        and the outcome is asserted to be `False`.
+        """
 
     @handled_by(BaseHandler)
     def is_equal_to(self, other: typing.Any) -> Asserto:
