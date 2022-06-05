@@ -12,12 +12,24 @@ class BaseHandler(Handler):
         super().__init__(actual)
 
     def is_true(self) -> None:
+        """
+        Asserts the value set as this instances actual value is explicitly the singleton true.
+        This uses an identity check.
+        """
         if self.actual is False:
             raise AssertionError(f"{self.actual} was not True")
+
+    def is_truthy(self) -> None:
+        if bool(self.actual) is False:
+            raise AssertionError(f"{self.actual} was not truthy")
 
     def is_false(self) -> None:
         if self.actual is True:
             raise AssertionError(f"{self.actual} was not False")
+
+    def is_falsy(self) -> None:
+        if bool(self.actual) is True:
+            raise AssertionError(f"{self.actual} was not falsy")
 
     def is_equal_to(self, other: typing.Any) -> None:
         if self.actual != other:

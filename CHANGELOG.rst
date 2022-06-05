@@ -1,7 +1,7 @@
-asserto 0.0.1 (2022-04-20)
-==========================
+asserto 0.0.5-alpha (2022-06-05)
+================================
 
 Features
 --------
 
-- Add your info here (#123)
+- Added new ``is_truthy`` and ``is_falsy`` to distinguish between ``is_true`` && ``is_false``. (#29)
