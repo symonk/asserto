@@ -5,14 +5,14 @@ build-backend = "poetry.core.masonry.api"
 [tool.towncrier]
 directory = "changes"
 filename = "CHANGELOG.rst"
-version = "0.0.4-alpha"
+version = "0.0.5-alpha"
 name = "asserto"
 underlines = "=-~"
 all_bullets = true
 
 [tool.poetry]
 name = "asserto"
-version = "0.0.4-alpha"
+version = "0.0.5-alpha"
 description = "A fluent DSL for python assertions."
 authors = ["symonk <jackofspaces@gmail.com>"]
 readme = "README.md"
