@@ -4,7 +4,6 @@ from types import SimpleNamespace
 
 import pytest
 
-from .markers import NO_UNTRIGGERED_WARNINGS
 from .utility.dynamic import Dynamic
 
 
@@ -43,7 +42,6 @@ def test_attr_value_wrong(asserto) -> None:
         asserto(Dynamic(a=9)).a_is(10)
 
 
-@NO_UNTRIGGERED_WARNINGS
 def test_no_attr_raises_attribute_error(asserto) -> None:
     with pytest.raises(AttributeError):
         # dynamic dispatch without ending in `_is`

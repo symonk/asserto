@@ -3,8 +3,6 @@ import pytest
 from asserto import Asserto
 from asserto import register_assert
 
-from .markers import NO_UNTRIGGERED_WARNINGS
-
 
 def is_length_five(self):
     try:
@@ -30,7 +28,6 @@ def test_binding_successful(asserto) -> None:
     asserto([1, 2, 3, 4, 5]).is_length_five()
 
 
-@NO_UNTRIGGERED_WARNINGS
 def test_calling_unbound(asserto) -> None:
     with pytest.raises(AttributeError) as error:
         asserto(5).is_length_five()

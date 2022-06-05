@@ -5,13 +5,14 @@ from ._asserto import Asserto
 from ._decorators import update_triggered
 
 
-def asserto(actual: typing.Any) -> Asserto:
+def asserto(actual: typing.Any, warn_unused: bool = False) -> Asserto:
     """
     Retrieve an appropriate asserter for the type of value.
     :param actual: The value to compare against later and defer a type specific asserter from.
+    :param warn_unused: Emit a warning if not a single assertion was performed to detect user errors.
     :return: An instance of an asserter
     """
-    return Asserto(actual)
+    return Asserto(actual, warn_unused)
 
 
 def register_assert(
