@@ -14,7 +14,13 @@ class ErrorHandler:
     def __init__(self, reasonable: IErrorTemplate):
         self.reasonable = reasonable
         self.soft_context = False
-        self.soft_fails: typing.Optional[FailureCompilation] = None
+        self.soft_fail_compiler: typing.Optional[FailureCompilation] = None
+
+    @property
+    def soft_errors(self) -> typing.List[AssertionError]:
+        if self.soft_fail_compiler is None or self.soft_fail_compiler.errors:
+            raise ValueError("Cannot access soft errors outside of a soft context.")
+        return self.soft_fail_compiler.errors
 
     def error(self, cause: typing.Union[AssertionError, str]) -> None:
         """
@@ -23,8 +29,9 @@ class ErrorHandler:
         an Assertion error or a string used as message for a newly created one.
         """
         error = cause if not isinstance(cause, str) else AssertionError(self.reasonable.format(cause))
-        if self.soft_context:
-            self.soft_fails.register_error(error)
+        if self.soft_context and self.soft_fail_compiler is not None:
+            # Asserto is being used in a soft fail context.
+            self.soft_fail_compiler.register_error(error)
             return
         raise error from None
 
@@ -33,11 +40,11 @@ class ErrorHandler:
         Convert the instance into `soft` mode.
         """
         self.soft_context = True
-        self.soft_fails = FailureCompilation()
+        self.soft_fail_compiler = FailureCompilation()
 
     def transition_to_hard(self) -> None:
         """
         Convert the instance into `hard` mode.
         """
         self.soft_context = False
-        self.soft_fails = None
+        self.soft_fail_compiler = None
