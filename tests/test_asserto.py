@@ -2,16 +2,12 @@ import pytest
 
 from asserto import NoAssertAttemptedWarning
 
-from .markers import NO_UNTRIGGERED_WARNINGS
 
-
-@NO_UNTRIGGERED_WARNINGS
 def test_simple_repr(asserto) -> None:
     asserto(repr(asserto("foo").set_category("n"))).is_equal_to("Asserto(value=foo, category=n)")
     asserto(repr(asserto(100))).is_equal_to("Asserto(value=100, category=None)")
 
 
-@NO_UNTRIGGERED_WARNINGS
 def test_soft_context_active(asserto) -> None:
     with asserto(1) as soft:
         asserto(soft._error_handler.soft_context).is_true()
@@ -33,17 +29,7 @@ def test_triggered(asserto) -> None:
     asserto(x.triggered).is_true()
 
 
-@NO_UNTRIGGERED_WARNINGS
 def test_context_triggered_warning(asserto) -> None:
     with pytest.warns(NoAssertAttemptedWarning, match="Asserto instance was created and never used"):
-        with asserto(100) as _:
+        with asserto(100, warn_unused=True) as _:
             pass
-
-
-@NO_UNTRIGGERED_WARNINGS
-def test_non_context_triggered_warning(asserto) -> None:
-    with pytest.warns(NoAssertAttemptedWarning, match="Asserto instance was created and never used"):
-        asserto(100)
-
-
-# Test invoking description after triggered raises;

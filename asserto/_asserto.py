@@ -29,17 +29,16 @@ class Asserto(AssertoBase):
     """
     The entrypoint into asserting objects.
 
-    :param actual: The actual value
+    :param actual: ...
+    :param warn_unused: ...
     """
 
-    def __init__(
-        self,
-        actual: typing.Any,
-    ):
+    def __init__(self, actual: typing.Any, warn_unused: bool = False):
         self.actual = actual
         self._triggered = False
         self._reason = Reason()
         self._error_handler = ErrorHandler(self._reason)
+        self.warn_unused = warn_unused
 
     def error(self, cause: typing.Union[AssertionError, str]) -> Asserto:
         """
@@ -323,10 +322,6 @@ class Asserto(AssertoBase):
         """
         warnings.warn("Asserto instance was created and never used", NoAssertAttemptedWarning, 2)
 
-    def __del__(self) -> None:
-        if not self.triggered:
-            self._warn_not_triggered()
-
     def __getattr__(self, item: str) -> typing.Callable:
         """
         Adds the capability to object class or instance attributes dynamically.  Supports user defined
@@ -392,7 +387,7 @@ class Asserto(AssertoBase):
         exc_tb: typing.Optional[types.TracebackType] = None,
     ):
         __tracebackhide__ = True
-        if not self.triggered:
+        if self.warn_unused and not self.triggered:
             self._warn_not_triggered()
         if self._error_handler.soft_fails:
             # There was a compilation of assertion errors

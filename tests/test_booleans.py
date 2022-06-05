@@ -15,9 +15,8 @@ def test_bool_not_bool_works_successfully(asserto) -> None:
 
 
 def test_non_false_raises_for_is_false(asserto) -> None:
-    with pytest.raises(AssertionError) as error:
+    with pytest.raises(AssertionError, match=r"True was not False"):
         asserto(True).is_false()
-    asserto(error.value.args[0]).is_equal_to("True was not False")
 
 
 def test_non_true_raises_for_is_true(asserto) -> None:
