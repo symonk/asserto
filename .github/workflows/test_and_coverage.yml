@@ -88,6 +88,5 @@ jobs:
         uses: codecov/codecov-action@v2
         with:
           flags: asserto unit tests
-          files: ./coverage.json
           fail_ci_if_error: true
           verbose: true
