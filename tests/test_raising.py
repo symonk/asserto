@@ -18,9 +18,10 @@ def test_errors_when_no_exc(asserto) -> None:
         asserto(_raiser).should_raise((ValueError, RuntimeError)).when_called_with(x=False)
 
 
+@NO_UNTRIGGERED_WARNINGS
 def test_non_callable_raises_type_error(asserto) -> None:
     with pytest.raises(ValueError, match=r"1 is not callable."):
-        asserto(1).should_raise(Exception).when_called_with(10)
+        asserto(1).should_raise(ValueError).when_called_with(10)
 
 
 def _raiser(x: bool):
