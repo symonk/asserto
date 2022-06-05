@@ -250,6 +250,7 @@ class Asserto(AssertoBase):
         Asserts that the actual value is False in a boolean context.  bool(actual) is called internally
         and the outcome is asserted to be `False`.
         """
+        return self._dispatch()
 
     @handled_by(BaseHandler)
     def is_equal_to(self, other: typing.Any) -> Asserto:
