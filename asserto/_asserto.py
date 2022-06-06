@@ -1,16 +1,14 @@
 from __future__ import annotations
 
-import inspect
 import types
 import typing
 import warnings
 
+from ._constants import MethodNames
 from ._error_handling import ErrorHandler
 from ._exceptions import DynamicCallableWithArgsError
 from ._exceptions import InvalidHandlerTypeException
 from ._messaging import Reason
-from ._meta import AssertoBase
-from ._meta import handled_by
 from ._raising import ExceptionChecker
 from ._types import EXC_TYPES_ALIAS
 from ._types import RE_FLAGS_ALIAS
@@ -18,6 +16,7 @@ from ._types import RE_PATTERN_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
 from .handlers import BaseHandler
+from .handlers import Handler
 from .handlers import RegexHandler
 from .handlers import StringHandler
 
@@ -26,7 +25,7 @@ from .handlers import StringHandler
 # Todo: Api feels cumbersome with decorators; can we improve DRY-ness?
 
 
-class Asserto(AssertoBase):
+class Asserto:
     """
     The entrypoint into asserting objects.
 
@@ -105,7 +104,6 @@ class Asserto(AssertoBase):
 
     # Todo: should_not_raise
 
-    @handled_by(StringHandler)
     def ends_with(self, suffix: str) -> Asserto:
         """
         Asserts that the actual value ends with suffix.
@@ -113,35 +111,34 @@ class Asserto(AssertoBase):
         :param suffix: The suffix to compare the tail of the string against.
         """
         return self._dispatch(
+            StringHandler,
+            MethodNames.ENDS_WITH,
             suffix,
         )
 
-    @handled_by(StringHandler)
     def starts_with(self, prefix: str) -> Asserto:
         """
         Asserts that the actual value ends with prefix.
 
         :param prefix: The prefix to compare the head of the string against.
         """
-        return self._dispatch(prefix)
+        return self._dispatch(StringHandler, MethodNames.STARTS_WITH, prefix)
 
-    @handled_by(StringHandler)
     def is_digit(self) -> Asserto:
         """
         Asserts that the actual value contains only unicode letters and that the string has
         at least a single character.
         """
-        return self._dispatch()
+        return self._dispatch(StringHandler, MethodNames.IS_DIGIT)
 
-    @handled_by(StringHandler)
     def is_alpha(self) -> Asserto:
         """
         Asserts that the actual value contains only unicode letters and that the string has
         at least a single character.
         """
-        return self._dispatch()
+        return self._dispatch(StringHandler, MethodNames.IS_ALPHA)
 
-    def _dispatch(self, *args, **kwargs) -> Asserto:
+    def _dispatch(self, handler: typing.Type[Handler], method: str, *args, **kwargs) -> Asserto:
         """
         Delegate a check to an underlying handler instance.
 
@@ -153,18 +150,17 @@ class Asserto(AssertoBase):
         arbitrary code into the stack and this relies on frame inspection.
         """
         __tracebackhide__ = True
-        caller = inspect.stack()[1][3]  # Todo: We need a better solution than this for future.
         self.triggered = True
         # for now allow this to be bypassed as not all methods have a handler defined.
         try:
-            handler = self._routes[caller](self.actual)  # descriptors enforce types here.
+            handler_instance = handler(self.actual)  # descriptors enforce types here.
         except ValueError:
-            raise InvalidHandlerTypeException(f"function: {caller} does not support type: {type(self.actual)}")
+            raise InvalidHandlerTypeException(f"function: {method} does not support type: {type(self.actual)}")
         except KeyError:
-            raise KeyError(f"{caller} does not have a dedicated handler.") from None
-        assertion_method: typing.Optional[types.MethodType] = getattr(handler, caller)
+            raise KeyError(f"{method} does not have a dedicated handler.") from None
+        assertion_method: typing.Optional[types.MethodType] = getattr(handler_instance, method)
         if assertion_method is None or not callable(assertion_method):
-            raise TypeError(f"assertion method was not a bound method on the handler {handler}")
+            raise TypeError(f"assertion method was not a bound method on the handler {handler_instance}")
         try:
             _ = assertion_method(*args, **kwargs)
         except AssertionError as e:
@@ -175,7 +171,6 @@ class Asserto(AssertoBase):
         # (for now anyway).
         return self
 
-    @handled_by(RegexHandler)
     def match(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS = 0) -> Asserto:
         """
         Asserts that the actual value provided matches (at least in part) from the beginning of it
@@ -185,9 +180,8 @@ class Asserto(AssertoBase):
         :param pattern: The regular expression pattern to use; r"" is encouraged.
         :param flags: An integer (or RegexFlag) representing flags to apply.
         """
-        return self._dispatch(pattern, flags)
+        return self._dispatch(RegexHandler, MethodNames.MATCH, pattern, flags)
 
-    @handled_by(RegexHandler)
     def search(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS = 0) -> Asserto:
         """
         Asserts that the actual value provided has at least one single match of the pattern
@@ -196,9 +190,8 @@ class Asserto(AssertoBase):
         :param pattern: The regular expression pattern to use; r"" is encouraged.
         :param flags: An integer (or RegexFlag) representing flags to apply.
         """
-        return self._dispatch(pattern, flags)
+        return self._dispatch(RegexHandler, MethodNames.SEARCH, pattern, flags)
 
-    @handled_by(RegexHandler)
     def fullmatch(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS = 0) -> Asserto:
         """
         Asserts that the actual value provided wholly matches the pattern provided. Providing
@@ -207,9 +200,8 @@ class Asserto(AssertoBase):
         :param pattern: The regular expression pattern to use; r"" is encouraged.
         :param flags: An integer (or RegexFlag) representing flags to apply.
         """
-        return self._dispatch(pattern, flags)
+        return self._dispatch(RegexHandler, MethodNames.FULLMATCH, pattern, flags)
 
-    @handled_by(RegexHandler)
     def findall(self, pattern: RE_PATTERN_ALIAS, count: int, flags: RE_FLAGS_ALIAS = 0) -> Asserto:
         """
         Asserts that the total count of non overlapping occurrences of pattern is equal to count.
@@ -218,41 +210,36 @@ class Asserto(AssertoBase):
         :param count: The expected number of elements expected in the fullmatch returned sequence.
         :param flags: An integer (or RegexFlag) representing flags to apply.
         """
-        return self._dispatch(pattern, count, flags)
+        return self._dispatch(RegexHandler, MethodNames.FINDALL, pattern, count, flags)
 
-    @handled_by(BaseHandler)
     def is_true(self) -> Asserto:
         """
         Asserts that the actual value is explicitly True.  This uses identity checks internally, to
         check if a value is considered `truthy` use `is_truthy()` instead.
         """
-        return self._dispatch()
+        return self._dispatch(BaseHandler, MethodNames.IS_TRUE)
 
-    @handled_by(BaseHandler)
     def is_truthy(self) -> Asserto:
         """
         Asserts that the actual value is True in a boolean context.  bool(actual) is called internally
         and the outcome is asserted to be `True`.
         """
-        return self._dispatch()
+        return self._dispatch(BaseHandler, MethodNames.IS_TRUTHY)
 
-    @handled_by(BaseHandler)
     def is_false(self) -> Asserto:
         """
         Asserts that the actual value is explicitly False.  This uses identity checks internally, to
         check if a value is considered `falsy` use `is_falsy()` instead.
         """
-        return self._dispatch()
+        return self._dispatch(BaseHandler, MethodNames.IS_FALSE)
 
-    @handled_by(BaseHandler)
     def is_falsy(self) -> Asserto:
         """
         Asserts that the actual value is False in a boolean context.  bool(actual) is called internally
         and the outcome is asserted to be `False`.
         """
-        return self._dispatch()
+        return self._dispatch(BaseHandler, MethodNames.IS_FALSY)
 
-    @handled_by(BaseHandler)
     def is_equal_to(self, other: typing.Any) -> Asserto:
         """
         Compares the value against `other` for equality.
@@ -260,9 +247,8 @@ class Asserto(AssertoBase):
         :param other: The other object to compare against.
         :return: The instance of `Asserto` to chain asserts.
         """
-        return self._dispatch(other)
+        return self._dispatch(BaseHandler, MethodNames.IS_EQUAL_TO, other)
 
-    @handled_by(BaseHandler)
     def is_not_equal_to(self, other: typing.Any) -> Asserto:
         """
         Compares the value against `other` for non equality.
@@ -270,9 +256,8 @@ class Asserto(AssertoBase):
         :param other: The other object to compare against.
         :return: The instance of `Asserto` to chain asserts.
         """
-        return self._dispatch(other)
+        return self._dispatch(BaseHandler, MethodNames.IS_NOT_EQUAL_TO, other)
 
-    @handled_by(BaseHandler)
     def has_length(self, expected: int) -> Asserto:
         """
         A simple check that the actual value is equal to expected utilising the built in `len(...)`
@@ -280,9 +265,8 @@ class Asserto(AssertoBase):
         :param expected: An int to compare the length against.
         :return: The instance of `Asserto` to chain asserts.
         """
-        return self._dispatch(expected)
+        return self._dispatch(BaseHandler, MethodNames.HAS_LENGTH, expected)
 
-    @handled_by(BaseHandler)
     def is_instance(self, cls_or_tuple: typing.Union[typing.Any, typing.Iterable[typing.Any]]) -> Asserto:
         """
         Checks if the value provided is either:
@@ -293,43 +277,39 @@ class Asserto(AssertoBase):
 
         :param cls_or_tuple: A single Type, or iterable of types to check the object against.
         """
-        return self._dispatch(cls_or_tuple)
+        return self._dispatch(BaseHandler, MethodNames.IS_INSTANCE, cls_or_tuple)
 
-    @handled_by(BaseHandler)
     def has_same_identity_as(self, other: typing.Any) -> Asserto:
         """
         Checks that the value refers to the same object in memory as `other`.`
         :param other: The other object to compare identity of.
         :return: The instance of `Asserto` to chain asserts.
         """
-        return self._dispatch(other)
+        return self._dispatch(BaseHandler, MethodNames.HAS_SAME_IDENTITY_AS, other)
 
-    @handled_by(BaseHandler)
     def does_not_have_same_identity_as(self, other: typing.Any) -> Asserto:
         """
         Checks that the value does not refer to the same object in memory as `other`.
         :param other: The other object to compare identity of.
         :return: The instance of `Asserto` to chain asserts.
         """
-        return self._dispatch(other)
+        return self._dispatch(BaseHandler, MethodNames.DOES_NOT_HAVE_SAME_IDENTITY_AS, other)
 
-    @handled_by(BaseHandler)
     def is_none(self) -> Asserto:
         """
         Checks the actual value is None.  Python `NoneType` is a singleton so `is` checks
         are used
         :return: The `Asserto` instance for fluency.
         """
-        return self._dispatch()
+        return self._dispatch(BaseHandler, MethodNames.IS_NONE)
 
-    @handled_by(BaseHandler)
     def is_not_none(self) -> Asserto:
         """
         Checks the actual value is not None .  Python `None` is a singleton so `is not` checks are
         used.
         :return: The `Asserto` instance for fluency
         """
-        return self._dispatch()
+        return self._dispatch(BaseHandler, MethodNames.IS_NOT_NONE)
 
     @staticmethod
     def _warn_not_triggered() -> None:

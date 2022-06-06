@@ -26,7 +26,9 @@ def test_non_true_raises_for_is_true(asserto) -> None:
 
 
 def test_truthy_is_true(asserto) -> None:
-    class C: ...
+    class C:
+        ...
+
     asserto([1]).is_truthy()
     asserto(C()).is_truthy()
     asserto(dict(a=1)).is_truthy()
