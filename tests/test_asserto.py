@@ -8,10 +8,10 @@ def test_simple_repr(asserto) -> None:
     asserto(repr(asserto(100))).is_equal_to("Asserto(value=100, category=None)")
 
 
-def test_soft_context_active(asserto) -> None:
-    with asserto(1) as soft:
-        asserto(soft._error_handler.soft_context).is_true()
-    asserto(soft._error_handler.soft_context).is_false()
+def test_soft_raises_on_exit(asserto) -> None:
+    with pytest.raises(AssertionError, match="1 Soft Assertion Failures\n.*"):
+        with asserto(1) as soft:
+            soft.is_equal_to(2)
 
 
 @pytest.mark.skip(reason="not implemented yet!")

@@ -7,9 +7,9 @@ from asserto import register_assert
 def is_length_five(self):
     try:
         if len(self.actual) != 5:
-            self.error(f"{self.actual} was not length 5!")
+            self.check_should_raise(f"{self.actual} was not length 5!")
     except TypeError:
-        self.error(f"{self.actual} was not sizable; it had no `__len__`")
+        self.check_should_raise(f"{self.actual} was not sizable; it had no `__len__`")
 
 
 @pytest.fixture(scope="function")

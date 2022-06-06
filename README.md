@@ -120,10 +120,12 @@ def test_foo_dynamically() -> None:
 from asserto import asserto
 from asserto import register_assert
 
+
 @register_assert  # Option 1.
 def custom_assert(self):
     if self.actual != 5:
-        self.error(f"{self.actual} did not equal five!")
+        self.check_should_raise(f"{self.actual} did not equal five!")
+
 
 register_assert(custom_assert)  # Option 2
 

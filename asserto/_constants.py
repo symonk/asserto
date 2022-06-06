@@ -2,6 +2,11 @@ import dataclasses
 
 
 @dataclasses.dataclass(frozen=True)
+class Mode:
+    ...
+
+
+@dataclasses.dataclass(frozen=True)
 class MethodNames:
     """
     Encapsulation of method names.  These are used as part of the dynamic dispatch

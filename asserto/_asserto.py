@@ -6,9 +6,9 @@ import warnings
 
 from ._constants import MethodNames
 from ._error_handling import ErrorHandler
+from ._error_handling import RaisesErrors
 from ._exceptions import DynamicCallableWithArgsError
 from ._exceptions import InvalidHandlerTypeException
-from ._messaging import Reason
 from ._raising import ExceptionChecker
 from ._types import EXC_TYPES_ALIAS
 from ._types import RE_FLAGS_ALIAS
@@ -33,12 +33,19 @@ class Asserto:
     :param warn_unused: ...
     """
 
-    def __init__(self, actual: typing.Any, warn_unused: bool = False):
+    def __init__(
+        self,
+        actual: typing.Any,
+        warn_unused: bool = False,
+        error_handler: typing.Type[RaisesErrors] = ErrorHandler,
+    ):
         self.actual = actual
         self._triggered = False
-        self._reason = Reason()
-        self._error_handler = ErrorHandler(self._reason)
         self.warn_unused = warn_unused
+        self._in_context = False
+        self._error_handler = error_handler()
+        self.category: typing.Optional[str] = None
+        self.description: typing.Optional[str] = None
 
     def error(self, cause: typing.Union[AssertionError, str]) -> Asserto:
         """
@@ -48,7 +55,7 @@ class Asserto:
         :return: The `Asserto` instance for fluency
         """
         __tracebackhide__ = True
-        self._error_handler.error(cause)
+        self._error_handler.check_should_raise(self._in_context, cause, self.category, self.description)
         return self
 
     @property
@@ -81,7 +88,7 @@ class Asserto:
         Args:
             category: The Category to group the assertion under.
         """
-        self._reason.category = category
+        self.category = category
         return self
 
     def described_as(self, description: str) -> Asserto:
@@ -91,7 +98,7 @@ class Asserto:
         :param description: The reason to display if an `AssertionError` is raised.
         :return: The `Asserto` instance for fluency.
         """
-        self._reason.description = description
+        self.description = description
         return self
 
     def should_raise(self, exceptions: EXC_TYPES_ALIAS) -> ExceptionChecker:
@@ -164,7 +171,7 @@ class Asserto:
         try:
             _ = assertion_method(*args, **kwargs)
         except AssertionError as e:
-            if description := self._reason.description:
+            if description := self.description:
                 e = AssertionError(description)
             self.error(e)
         # Fall through type & value errors; we don't need to do anything in particular for them, just bubble em up.
@@ -364,7 +371,7 @@ class Asserto:
         return _dynamic_callable
 
     def __repr__(self) -> str:
-        return f"Asserto(value={self.actual}, category={self._reason.category})"
+        return f"Asserto(value={self.actual}, category={self.category})"
 
     def __enter__(self) -> Asserto:
         """
@@ -374,7 +381,7 @@ class Asserto:
         occurred.
         :return: The instance of `Asserto`.
         """
-        self._error_handler.transition_to_soft()
+        self._in_context = True
         return self
 
     def __exit__(
@@ -386,8 +393,5 @@ class Asserto:
         __tracebackhide__ = True
         if self.warn_unused and not self.triggered:
             self._warn_not_triggered()
-        if self._error_handler.soft_errors:
-            # There was a compilation of assertion errors
-            errors = self._error_handler.soft_errors
-            raise AssertionError(f"{len(errors)} Soft Assertion Failures, {errors}") from None
-        self._error_handler.transition_to_hard()
+        self._error_handler.check_soft_raise()
+        self._error_handler.reset()

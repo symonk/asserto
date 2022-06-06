@@ -17,7 +17,7 @@ class ExceptionChecker:
     def __init__(self, exc_types: EXC_TYPES_ALIAS, value: typing.Callable[[typing.Any], typing.Any], _referent) -> None:
         self.exc_types: typing.Iterable[BaseException] = to_iterable(exc_types)
         self._proxy_val = value
-        self.asserto_ref = _referent  # Todo: investigate weakref here.
+        self.asserto_ref = _referent
 
     def when_called_with(self, *, reason: typing.Optional[str] = None, **kwargs) -> None:
         """
@@ -32,7 +32,7 @@ class ExceptionChecker:
         """
         try:
             # update 'triggered' status to avoid unnecessary warnings
-            self.asserto_ref.triggered = True
+            self.asserto_ref.triggered = True  # type: ignore[attr-defined]
             _ = self._proxy_val(**kwargs)
             self.asserto_ref.error(f"{self._proxy_val} never raised any of: {self.exc_types}")
         except self.exc_types as e:  # type: ignore[misc]
