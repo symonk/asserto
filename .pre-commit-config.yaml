@@ -39,7 +39,7 @@ repos:
     hooks:
       - id: pdb-vars
   - repo: https://github.com/hadialqattan/pycln
-    rev: 85b2c350c6702296f95aa71b8223df644226863d
+    rev: 37f8dd7e3934f7079146fd29471b0a59ab75261e
     hooks:
       - id: pycln
         args: [--config=pyproject.toml, --all]
