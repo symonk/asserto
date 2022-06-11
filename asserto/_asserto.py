@@ -54,7 +54,6 @@ class Asserto:
         :param cause: A reason for the failure. if description was set; it takes precedence.
         :return: The `Asserto` instance for fluency
         """
-        __tracebackhide__ = True
         self._error_handler.check_should_raise(self._in_context, cause, self.category, self.description)
         return self
 
@@ -156,7 +155,6 @@ class Asserto:
         Note: Debugging this with an IDE can yield unrealistic as debugging tends to insert
         arbitrary code into the stack and this relies on frame inspection.
         """
-        __tracebackhide__ = True
         self.triggered = True
         # for now allow this to be bypassed as not all methods have a handler defined.
         try:
@@ -390,7 +388,6 @@ class Asserto:
         exc_val: typing.Optional[BaseException] = None,
         exc_tb: typing.Optional[types.TracebackType] = None,
     ):
-        __tracebackhide__ = True
         if self.warn_unused and not self.triggered:
             self._warn_not_triggered()
         self._error_handler.check_soft_raise()

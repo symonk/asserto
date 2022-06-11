@@ -4,8 +4,6 @@ from ._types import EXC_TYPES_ALIAS
 from ._util import to_iterable
 from .descriptors import IsCallable
 
-__tracebackhide__ = True
-
 
 class ExceptionChecker:
     """
