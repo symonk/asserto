@@ -8,9 +8,9 @@ import warnings
 from ._constants import MethodNames
 from ._error_handling import ErrorHandler
 from ._error_handling import RaisesErrors
+from ._exc_handling import ExceptionChecker
 from ._exceptions import DynamicCallableWithArgsError
 from ._exceptions import InvalidHandlerTypeException
-from ._exc_handling import ExceptionChecker
 from ._types import EXC_TYPES_ALIAS
 from ._types import RE_FLAGS_ALIAS
 from ._types import RE_PATTERN_ALIAS
@@ -102,13 +102,14 @@ class Asserto:
         self.description = description
         return self
 
-    def should_raise(self, exceptions: EXC_TYPES_ALIAS) -> ExceptionChecker:
+    def should_raise(self, exceptions: EXC_TYPES_ALIAS, match: typing.Optional[str] = None) -> ExceptionChecker:
         """
         Wraps the actual value into a callable if it is callable itself;
         :param exceptions: The type of exception expected.
+        :param match: An optional message to enforce against when the function is called later.
         :return: The `Asserto` instance for fluency
         """
-        return ExceptionChecker(exc_types=exceptions, value=self.actual, _referent=self)
+        return ExceptionChecker(exc_types=exceptions, value=self.actual, _referent=self, match=match)
 
     # Todo: should_not_raise
 

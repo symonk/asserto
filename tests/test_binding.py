@@ -36,7 +36,7 @@ def test_calling_unbound(asserto) -> None:
 
 def test_cannot_register_lambda(asserto) -> None:
     expected = "Binding functions does not support lambdas, they have no name"
-    asserto(register_assert).should_raise(ValueError).when_called_with(reason=expected, func=lambda: ...)
+    asserto(register_assert).should_raise(ValueError, match=expected).when_called_with(func=lambda: ...)
 
 
 def test_no_name(asserto) -> None:
@@ -44,16 +44,15 @@ def test_no_name(asserto) -> None:
         ...
 
     expected = "Binding functions must be of function types."
-    asserto(register_assert).should_raise(ValueError).when_called_with(reason=expected, func=C)
+    asserto(register_assert).should_raise(ValueError, match=expected).when_called_with(func=C)
 
 
 def test_ends_with_is(asserto) -> None:
     def foo_is(self):
         ...
 
-    asserto(register_assert).should_raise(ValueError).when_called_with(
-        reason="Binding functions cannot end with `_is`", func=foo_is
-    )
+    expected = "Binding functions cannot end with `_is`"
+    asserto(register_assert).should_raise(ValueError, match=expected).when_called_with(func=foo_is)
 
 
 @pytest.fixture

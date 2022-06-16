@@ -82,7 +82,7 @@ def simple_callable(x: int) -> typing.NoReturn:
 
 
 def test_exc_handling():
-    asserto(simple_callable).should_raise(ValueError).when_called_with(x=25)
+    asserto(simple_callable).should_raise(ValueError).when_called_with(25)
 ```
 
 -----
