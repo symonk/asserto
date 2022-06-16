@@ -288,10 +288,17 @@ class Asserto:
 
     def is_zero(self) -> Asserto:
         """
-        Checks the actual value is not zero.
+        Checks the actual value is zero.
         :return: The `Asserto` instance for fluency.
         """
         return self._dispatch(NumericHandler, MethodNames.IS_ZERO)
+
+    def is_not_zero(self) -> Asserto:
+        """
+        Checks the actual value is not zero.
+        :return: The `Asserto` instance for fluency.
+        """
+        return self._dispatch(NumericHandler, MethodNames.IS_NOT_ZERO)
 
     def is_greater_than(self, target: numbers.Number) -> Asserto:
         """

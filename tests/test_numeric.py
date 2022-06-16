@@ -20,14 +20,28 @@ def test_invalid_types(asserto):
         0.001,
     ),
 )
-def test_invalid_values(asserto, number):
-    with pytest.raises(AssertionError, match=rf"{re.escape(str(number))} was not equal to `0`\."):
+def test_is_zero_success(asserto, number):
+    with pytest.raises(AssertionError, match=rf"{re.escape(str(number))} was not equal to 0"):
         asserto(number).is_zero()
 
 
 @pytest.mark.parametrize("number", (0, 0.0, -0, 0j))
-def test_zero_checks(asserto, number):
+def test_is_zero_failure(asserto, number):
     asserto(number).is_zero()
+
+
+@pytest.mark.parametrize("number", (1, 2.5, -3.5, 4.9j))
+def test_is_not_zero_success(asserto, number):
+    asserto(number).is_not_zero()
+
+
+@pytest.mark.parametrize(
+    "number",
+    (0, 0.0, -0.0, 0j),
+)
+def test_is_not_zero_failure(asserto, number):
+    with pytest.raises(AssertionError, match=rf"{re.escape(str(number))} was 0"):
+        asserto(number).is_not_zero()
 
 
 def test_greater_than_success(asserto):

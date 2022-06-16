@@ -15,7 +15,12 @@ class NumericHandler(Handler):
     def is_zero(self) -> None:
         """Checks if a numeric type is explicitly zero"""
         if self.actual != 0:
-            raise AssertionError(f"{self.actual} was not equal to `0`.")
+            raise AssertionError(f"{self.actual} was not equal to 0")
+
+    def is_not_zero(self) -> None:
+        """Checks if a numeric type is not zero"""
+        if self.actual == 0:
+            raise AssertionError(f"{self.actual} was 0")
 
     def is_greater_than(self, target: numbers.Number) -> None:
         """Checks if a number is greater than a value"""

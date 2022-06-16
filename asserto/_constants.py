@@ -44,4 +44,5 @@ class MethodNames:
 
     # -- Numeric
     IS_ZERO: str = "is_zero"
+    IS_NOT_ZERO: str = "is_not_zero"
     IS_GREATER_THAN: str = "is_greater_than"
