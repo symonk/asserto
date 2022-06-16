@@ -28,3 +28,12 @@ def test_invalid_values(asserto, number):
 @pytest.mark.parametrize("number", (0, 0.0, -0, 0j))
 def test_zero_checks(asserto, number):
     asserto(number).is_zero()
+
+
+def test_greater_than_success(asserto):
+    asserto(1).is_greater_than(0)
+
+
+def test_greater_than_failure(asserto):
+    with pytest.raises(AssertionError, match="1 was less than 2"):
+        asserto(1).is_greater_than(2)

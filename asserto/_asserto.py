@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import numbers
 import types
 import typing
 import warnings
@@ -291,6 +292,15 @@ class Asserto:
         :return: The `Asserto` instance for fluency.
         """
         return self._dispatch(NumericHandler, MethodNames.IS_ZERO)
+
+    def is_greater_than(self, target: numbers.Number) -> Asserto:
+        """
+        Checks the actual value is greater than the target.
+
+        :param target: A number to compare the actual against.
+        :return: The `Asserto` instance for fluency.
+        """
+        return self._dispatch(NumericHandler, MethodNames.IS_GREATER_THAN, target)
 
     def _dispatch(self, handler: typing.Type[Handler], method: str, *args, **kwargs) -> Asserto:
         """

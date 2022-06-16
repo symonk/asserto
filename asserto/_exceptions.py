@@ -28,3 +28,7 @@ class InvalidHandlerTypeException(ValueError):
 
     def __init__(self, handler: typing.Type[Handler], method: str, value: typing.Any) -> None:
         super().__init__(f"`{handler.__name__}` cannot accept type: {type(value)} when calling: {method}")
+
+
+class AssertoTypeViolation(TypeError):
+    """ Raised when argument values passed to assertion methods fail on expected types. """
