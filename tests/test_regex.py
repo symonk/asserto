@@ -14,7 +14,7 @@ def test_regex_non_match_raises(asserto) -> None:
 
 @pytest.mark.parametrize("actual", [None, 1, Exception])
 def test_regex_handler_validator(actual, asserto) -> None:
-    with pytest.raises(ValueError, match="function: match does not support type: .*"):
+    with pytest.raises(ValueError, match="`RegexHandler` cannot accept type: <class 'NoneType'> when calling: match"):
         asserto(None).match(r"")
 
 

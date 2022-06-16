@@ -3,7 +3,7 @@ import typing
 from ._abc import Validatable
 
 
-class IsCallable(Validatable):
+class EnforcedCallable(Validatable):
     """
     A Simple check that an argument is a callable type.
     """
@@ -16,7 +16,7 @@ class IsCallable(Validatable):
 T = typing.TypeVar("T")
 
 
-class IsInstanceOf(Validatable, typing.Generic[T]):
+class EnforcedInstanceOf(Validatable, typing.Generic[T]):
     """Check if the value is an instance of multiple types."""
 
     def __init__(self, *types) -> None:

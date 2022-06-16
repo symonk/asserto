@@ -2,7 +2,7 @@ import typing
 
 from ._types import EXC_TYPES_ALIAS
 from ._util import to_iterable
-from .descriptors import IsCallable
+from .descriptors import EnforcedCallable
 
 
 class ExceptionChecker:
@@ -10,7 +10,7 @@ class ExceptionChecker:
     Encapsulation of the asserto callable exception handling syntax.
     """
 
-    _proxy_val = IsCallable()
+    _proxy_val = EnforcedCallable()
 
     def __init__(self, exc_types: EXC_TYPES_ALIAS, value: typing.Callable[[typing.Any], typing.Any], _referent) -> None:
         self.exc_types: typing.Iterable[BaseException] = to_iterable(exc_types)

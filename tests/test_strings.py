@@ -20,7 +20,7 @@ def test_starts_with_failure(asserto) -> None:
 
 
 def test_invalid_type_raises(asserto) -> None:
-    with pytest.raises(ValueError, match="function: starts_with does not support type: <class 'int'>"):
+    with pytest.raises(ValueError, match="`StringHandler` cannot accept type: <class 'int'> when calling: starts_with"):
         asserto(1).starts_with("foo")
 
 

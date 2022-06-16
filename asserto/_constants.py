@@ -13,16 +13,22 @@ class MethodNames:
     to various handlers responsible for individual assertion methods.
     """
 
+    # -- Strings
+
     ENDS_WITH: str = "ends_with"
     STARTS_WITH: str = "starts_with"
     IS_DIGIT: str = "is_digit"
     IS_ALPHA: str = "is_alpha"
-    # --
+
+    # -- Regular Expressions
+
     MATCH: str = "match"
     SEARCH: str = "search"
     FULLMATCH: str = "fullmatch"
     FINDALL: str = "findall"
-    # --
+
+    # -- Base Objects
+
     IS_TRUE: str = "is_true"
     IS_TRUTHY: str = "is_truthy"
     IS_FALSE: str = "is_false"
@@ -35,3 +41,6 @@ class MethodNames:
     DOES_NOT_HAVE_SAME_IDENTITY_AS: str = "does_not_have_same_identity_as"
     IS_NONE: str = "is_none"
     IS_NOT_NONE: str = "is_not_none"
+
+    # -- Numeric
+    IS_ZERO: str = "is_zero"

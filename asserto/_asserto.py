@@ -17,6 +17,7 @@ from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
 from .handlers import BaseHandler
 from .handlers import Handler
+from .handlers import NumericHandler
 from .handlers import RegexHandler
 from .handlers import StringHandler
 
@@ -143,38 +144,6 @@ class Asserto:
         at least a single character.
         """
         return self._dispatch(StringHandler, MethodNames.IS_ALPHA)
-
-    def _dispatch(self, handler: typing.Type[Handler], method: str, *args, **kwargs) -> Asserto:
-        """
-        Delegate a check to an underlying handler instance.
-
-        :param error_template: (Optional) The error message to raise on failure.
-
-        Arbitrary args & kwargs to pass through to the handler method.
-
-        Note: Debugging this with an IDE can yield unrealistic as debugging tends to insert
-        arbitrary code into the stack and this relies on frame inspection.
-        """
-        self.triggered = True
-        # for now allow this to be bypassed as not all methods have a handler defined.
-        try:
-            handler_instance = handler(self.actual)  # descriptors enforce types here.
-        except ValueError:
-            raise InvalidHandlerTypeException(f"function: {method} does not support type: {type(self.actual)}")
-        except KeyError:
-            raise KeyError(f"{method} does not have a dedicated handler.") from None
-        assertion_method: typing.Optional[types.MethodType] = getattr(handler_instance, method)
-        if assertion_method is None or not callable(assertion_method):
-            raise TypeError(f"assertion method was not a bound method on the handler {handler_instance}")
-        try:
-            _ = assertion_method(*args, **kwargs)
-        except AssertionError as e:
-            if description := self.description:
-                e = AssertionError(description)
-            self.error(e)
-        # Fall through type & value errors; we don't need to do anything in particular for them, just bubble em up.
-        # (for now anyway).
-        return self
 
     def match(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS = 0) -> Asserto:
         """
@@ -315,6 +284,45 @@ class Asserto:
         :return: The `Asserto` instance for fluency
         """
         return self._dispatch(BaseHandler, MethodNames.IS_NOT_NONE)
+
+    def is_zero(self) -> Asserto:
+        """
+        Checks the actual value is not zero.
+        :return: The `Asserto` instance for fluency.
+        """
+        return self._dispatch(NumericHandler, MethodNames.IS_ZERO)
+
+    def _dispatch(self, handler: typing.Type[Handler], method: str, *args, **kwargs) -> Asserto:
+        """
+        Delegate a check to an underlying handler instance.
+
+        :param error_template: (Optional) The error message to raise on failure.
+
+        Arbitrary args & kwargs to pass through to the handler method.
+
+        Note: Debugging this with an IDE can yield unrealistic as debugging tends to insert
+        arbitrary code into the stack and this relies on frame inspection.
+        """
+        self.triggered = True
+        # for now allow this to be bypassed as not all methods have a handler defined.
+        try:
+            handler_instance = handler(self.actual)  # descriptors enforce types here.
+        except ValueError:
+            raise InvalidHandlerTypeException(handler, method, self.actual) from None
+        except KeyError:
+            raise KeyError(f"{method} does not have a dedicated handler.") from None
+        assertion_method: typing.Optional[types.MethodType] = getattr(handler_instance, method)
+        if assertion_method is None or not callable(assertion_method):
+            raise TypeError(f"assertion method was not a bound method on the handler {handler_instance}")
+        try:
+            _ = assertion_method(*args, **kwargs)
+        except AssertionError as e:
+            if description := self.description:
+                e = AssertionError(description)
+            self.error(e)
+        # Fall through type & value errors; we don't need to do anything in particular for them, just bubble em up.
+        # (for now anyway).
+        return self
 
     @staticmethod
     def _warn_not_triggered() -> None:

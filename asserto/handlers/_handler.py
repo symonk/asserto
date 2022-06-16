@@ -3,7 +3,9 @@ import typing
 
 class Handler:
     """
-    Useful utility functions for all kinds of handlers.
+    Useful utility functions for handlers.  Subclasses of handlers should raise
+    AssertionErrors when things are wrong; the asserto machinery is catching them
+    internally to wrap and bubble something more user-friendly back to the user.
     """
 
     def __init__(self, actual: typing.Any) -> None:

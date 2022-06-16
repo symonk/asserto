@@ -3,7 +3,7 @@ import typing
 
 from .._types import RE_FLAGS_ALIAS
 from .._types import RE_PATTERN_ALIAS
-from ..descriptors import IsInstanceOf
+from ..descriptors import EnforcedInstanceOf
 from ._handler import Handler
 
 
@@ -12,7 +12,7 @@ class RegexHandler(Handler):
     Regular expression handler.
     """
 
-    actual: typing.Any = IsInstanceOf(str, re.Pattern)
+    actual: typing.Any = EnforcedInstanceOf(str, re.Pattern)
 
     def __init__(self, actual: typing.Any) -> None:
         super().__init__(actual)

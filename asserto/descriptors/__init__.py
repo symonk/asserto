@@ -1,4 +1,4 @@
-from ._validators import IsCallable
-from ._validators import IsInstanceOf
+from ._validators import EnforcedCallable
+from ._validators import EnforcedInstanceOf
 
-__all__ = ("IsCallable", "IsInstanceOf")
+__all__ = ("EnforcedCallable", "EnforcedInstanceOf")

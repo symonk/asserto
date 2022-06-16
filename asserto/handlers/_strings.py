@@ -1,6 +1,6 @@
 import typing
 
-from ..descriptors import IsInstanceOf
+from ..descriptors import EnforcedInstanceOf
 from ._handler import Handler
 
 
@@ -9,7 +9,7 @@ class StringHandler(Handler):
     A handler responsible for all string based checks.
     """
 
-    actual: str = IsInstanceOf(str)  # type: ignore[assignment]
+    actual: str = EnforcedInstanceOf(str)  # type: ignore[assignment]
 
     def __init__(self, actual: typing.Any) -> None:
         super().__init__(actual)

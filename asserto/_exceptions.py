@@ -2,6 +2,9 @@
 Asserto exception hierarchy.
     * ActualTypeError
 """
+import typing
+
+from .handlers import Handler
 
 
 class ActualTypeError(TypeError):
@@ -22,3 +25,6 @@ class DynamicCallableWithArgsError(TypeError):
 
 class InvalidHandlerTypeException(ValueError):
     """Raised when the actual value provided is not supported by the assertion method invoked by the caller."""
+
+    def __init__(self, handler: typing.Type[Handler], method: str, value: typing.Any) -> None:
+        super().__init__(f"`{handler.__name__}` cannot accept type: {type(value)} when calling: {method}")
