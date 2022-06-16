@@ -8,6 +8,7 @@ def main() -> int:
     return_code += remove_lock_if_exists()
     return_code += poetry_update()
     return_code += pre_commit_update()
+    return_code += run_poetry_up()
     if not return_code:
         commit_and_push()
     print(f"Exited: {return_code}")
@@ -20,6 +21,10 @@ def remove_lock_if_exists():
 
 def poetry_update():
     return _run_command(("poetry", "update"))
+
+
+def run_poetry_up():
+    return _run_command(("poetryup",))
 
 
 def pre_commit_update():
