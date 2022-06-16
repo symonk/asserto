@@ -15,7 +15,7 @@ class ExceptionChecker:
     def __init__(self, exc_types: EXC_TYPES_ALIAS, value: typing.Callable[[typing.Any], typing.Any], _referent) -> None:
         self.exc_types: typing.Iterable[BaseException] = to_iterable(exc_types)
         self._proxy_val = value
-        self.proxy_ref = _referent
+        self.asserto_ref = _referent
 
     def when_called_with(self, *, reason: typing.Optional[str] = None, **kwargs) -> None:
         """
@@ -30,9 +30,9 @@ class ExceptionChecker:
         """
         try:
             # update 'triggered' status to avoid unnecessary warnings
-            self.proxy_ref.triggered = True  # type: ignore[attr-defined]
+            self.asserto_ref.triggered = True  # type: ignore[attr-defined]
             _ = self._proxy_val(**kwargs)
-            self.proxy_ref.error(f"{self._proxy_val} never raised any of: {self.exc_types}")
+            self.asserto_ref.error(f"{self._proxy_val} never raised any of: {self.exc_types}")
         except self.exc_types as e:  # type: ignore[misc]
             if reason and str(e) != reason:
-                self.proxy_ref.error(f"Exception did not have expected message, was: {str(e)}")
+                self.asserto_ref.error(f"Exception did not have expected message, was: {str(e)}")

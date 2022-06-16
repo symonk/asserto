@@ -23,6 +23,8 @@
         - does_not_have_same_identity_as
         - is_none
         - is_not_none
-        -
+        - is_zero
+        - is_not_zero
+        - is_greater_than
     rendering:
         show_root_heading: false

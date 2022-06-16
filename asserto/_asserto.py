@@ -4,14 +4,13 @@ import numbers
 import types
 import typing
 import warnings
-import weakref
 
 from ._constants import MethodNames
 from ._error_handling import ErrorHandler
 from ._error_handling import RaisesErrors
-from ._exc_handling import ExceptionChecker
 from ._exceptions import DynamicCallableWithArgsError
 from ._exceptions import InvalidHandlerTypeException
+from ._exc_handling import ExceptionChecker
 from ._types import EXC_TYPES_ALIAS
 from ._types import RE_FLAGS_ALIAS
 from ._types import RE_PATTERN_ALIAS
@@ -109,7 +108,7 @@ class Asserto:
         :param exceptions: The type of exception expected.
         :return: The `Asserto` instance for fluency
         """
-        return ExceptionChecker(exc_types=exceptions, value=self.actual, _proxy_ref=weakref.proxy(self))
+        return ExceptionChecker(exc_types=exceptions, value=self.actual, _referent=self)
 
     # Todo: should_not_raise
 
