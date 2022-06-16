@@ -1,7 +1,7 @@
 exclude: ^(.tox|doc|ci/templates|)(/|$)
 repos:
   - repo: https://github.com/ambv/black
-    rev: 162ecd1d2cf9471efefb5b61c17d28b73acb79a1
+    rev: 6c1bd08f16b636de38b92aeb2e0a1e8ebef0a0b1
     hooks:
       - id: black
         args:
@@ -10,7 +10,7 @@ repos:
           - '--line-length=120'
         language_version: python3.10
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
+    rev: b0f06dc9f2260909f3423243de180edfc823ec5a
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -30,7 +30,7 @@ repos:
       - id: mypy
         files: asserto/
   - repo: https://github.com/PyCQA/flake8
-    rev: 00e4bcb10008925a765e517dd77410422808c38a
+    rev: 9f608813b80caf5a966e44d4bfb5e032159eb3e2
     hooks:
       - id: flake8
         args: ["--max-line-length=120"]
@@ -39,7 +39,7 @@ repos:
     hooks:
       - id: pdb-vars
   - repo: https://github.com/hadialqattan/pycln
-    rev: 37f8dd7e3934f7079146fd29471b0a59ab75261e
+    rev: 57e75497eaf76a8cc4b5d7414d8d8701b5550dbc
     hooks:
       - id: pycln
         args: [--config=pyproject.toml, --all]
