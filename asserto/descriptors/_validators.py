@@ -16,12 +16,12 @@ class EnforcedCallable(Validatable):
 T = typing.TypeVar("T")
 
 
-class EnforcedInstanceOf(Validatable, typing.Generic[T]):
+class ValidatesInstanceOf(Validatable, typing.Generic[T]):
     """Check if the value is an instance of multiple types."""
 
     def __init__(self, *types) -> None:
         self.types = types
 
     def validate(self, value: typing.Any) -> None:
-        if not isinstance(value, self.types):
+        if isinstance(value, self.types) is False:
             raise ValueError(f"{value} was not an instance of any of: {self.types}")

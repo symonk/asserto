@@ -23,8 +23,8 @@ class DynamicCallableWithArgsError(TypeError):
     """
 
 
-class InvalidHandlerTypeException(ValueError):
-    """Raised when the actual value provided is not supported by the assertion method invoked by the caller."""
+class HandlerTypeError(ValueError):
+    """Raised when the actual value passed to a handler is not suitable for it to handle."""
 
     def __init__(self, handler: typing.Type[Handler], method: str, value: typing.Any) -> None:
         super().__init__(f"`{handler.__name__}` cannot accept type: {type(value)} when calling: {method}")

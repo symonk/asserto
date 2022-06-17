@@ -2,7 +2,7 @@ import dataclasses
 
 
 @dataclasses.dataclass(frozen=True)
-class MethodNames:
+class Methods:
     """
     Encapsulation of method names.  These are used as part of the dynamic dispatch
     to various handlers responsible for individual assertion methods.
@@ -41,3 +41,4 @@ class MethodNames:
     IS_ZERO: str = "is_zero"
     IS_NOT_ZERO: str = "is_not_zero"
     IS_GREATER_THAN: str = "is_greater_than"
+    IS_LESSER_THAN: str = "is_lesser_than"
