@@ -38,7 +38,7 @@ class NumberHandler(Handler):
             raise AssertionError(f"Expected {self.actual} to be lesser than {other}, but it was not.")
 
     def is_positive(self) -> None:
-        """Asserts that the value is numeric, and is lesser than 0"""
+        """Asserts that the value is numeric, and is greater than 0"""
         return self.is_greater_than(0)
 
     def is_negative(self) -> None:
