@@ -34,7 +34,7 @@ def pre_commit_update():
 def commit_and_push():
     return (
         _run_command(("git", "add", "poetry.lock", ".pre-commit-config.yaml"))
-        + _run_command(("git", "commit", "-m", ":rocket: [Auto] - `dependencies rollup`."))
+        + _run_command(("git", "commit", "-m", ":rocket: `dependency upgrades`."))
         + _run_command(("git", "push"))
     )
 
