@@ -37,6 +37,14 @@ class NumberHandler(Handler):
         if self.actual >= other:
             raise AssertionError(f"Expected {self.actual} to be lesser than {other}, but it was not.")
 
+    def is_positive(self) -> None:
+        """Asserts that the value is numeric, and is lesser than 0"""
+        return self.is_greater_than(0)
+
+    def is_negative(self) -> None:
+        """Asserts that the value is numeric, and is lesser than 0"""
+        return self.is_lesser_than(0)
+
     def _validate_number(self) -> None:
         if isinstance(self.actual, numbers.Number) is False or isinstance(self.actual, bool) is True:
             raise ValueError()

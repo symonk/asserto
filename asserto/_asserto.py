@@ -317,6 +317,20 @@ class Asserto:
         """
         return self._dispatch(NumberHandler, Methods.IS_LESSER_THAN, other)
 
+    def is_positive(self) -> Asserto:
+        """Asserts that the value is numeric, and is greater than 0
+
+        :return: This Asserto instance.
+        """
+        return self._dispatch(NumberHandler, Methods.IS_POSITIVE)
+
+    def is_negative(self) -> Asserto:
+        """Asserts that the value is numeric, and is lesser than 0
+
+        :return: This Asserto instance.
+        """
+        return self._dispatch(NumberHandler, Methods.IS_NEGATIVE)
+
     def _dispatch(self, handler: typing.Type[Handler], method: str, *args, **kwargs) -> Asserto:
         """
         Delegate a check to an underlying handler instance.

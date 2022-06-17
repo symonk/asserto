@@ -42,3 +42,5 @@ class Methods:
     IS_NOT_ZERO: str = "is_not_zero"
     IS_GREATER_THAN: str = "is_greater_than"
     IS_LESSER_THAN: str = "is_lesser_than"
+    IS_POSITIVE: str = "is_positive"
+    IS_NEGATIVE: str = "is_negative"
