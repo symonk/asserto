@@ -34,7 +34,7 @@ class NumberHandler(Handler):
 
     def is_lesser_than(self, other: numbers.Number) -> None:
         """Asserts that the value is a numeric type and is lesser than other"""
-        if other >= self.actual:
+        if self.actual >= other:
             raise AssertionError(f"Expected {self.actual} to be lesser than {other}, but it was not.")
 
     def _validate_number(self) -> None:

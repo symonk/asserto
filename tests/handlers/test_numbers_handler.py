@@ -50,3 +50,14 @@ def test_greater_than_success(asserto):
 def test_greater_than_failure(asserto):
     with pytest.raises(AssertionError, match="Expected 1 to be greater than 2, but it was not."):
         asserto(1).is_greater_than(2)
+
+
+def test_lesser_than_success(asserto):
+    asserto(100).is_lesser_than(150)
+
+
+def test_lesser_than_failure(asserto):
+    with pytest.raises(AssertionError, match=r"Expected 10 to be lesser than 2, but it was not."):
+        asserto(10).is_lesser_than(2)
+
+
