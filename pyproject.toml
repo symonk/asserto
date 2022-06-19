@@ -12,7 +12,7 @@ all_bullets = true
 
 [tool.poetry]
 name = "asserto"
-version = "0.0.5-alpha"
+version = "0.0.6-alpha"
 description = "A fluent DSL for python assertions."
 authors = ["symonk <jackofspaces@gmail.com>"]
 readme = "README.md"
