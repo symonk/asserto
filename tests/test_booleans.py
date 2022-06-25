@@ -6,6 +6,7 @@ __tracebackhide__ = True
 def test_bool_not_bool_works_successfully(asserto) -> None:
     asserto(True).is_true()
     asserto(False).is_false()
+    asserto(None).is_false()
     asserto([]).is_false()
     asserto(()).is_false()
     asserto(0).is_false()
