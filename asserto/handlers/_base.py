@@ -15,7 +15,7 @@ class BaseHandler(Handler):
         """
         Asserts the actual value is explicitly True.
         """
-        if self.actual is False:
+        if self.actual is not True:
             raise AssertionError(f"{self.actual} was not True")
 
     def is_truthy(self) -> None:
@@ -29,7 +29,7 @@ class BaseHandler(Handler):
         """
         Asserts the actual value is explicitly False.
         """
-        if self.actual is True:
+        if self.actual is not False:
             raise AssertionError(f"{self.actual} was not False")
 
     def is_falsy(self) -> None:
