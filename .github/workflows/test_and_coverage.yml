@@ -87,6 +87,6 @@ jobs:
         if: "matrix.do_cov"
         uses: codecov/codecov-action@v2
         with:
-          flags: asserto unit tests
+          flags: asserto_unit_tests
           fail_ci_if_error: true
           verbose: true
