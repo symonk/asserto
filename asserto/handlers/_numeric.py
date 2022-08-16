@@ -50,13 +50,20 @@ class NumberHandler(Handler):
         """Asserts tht the value is numeric and is between lower and higher.  If inclusive
         is true, value is considered between if it equals either the lower or higher bounds.
         """
-        low_fn, high_fn = (operator.lt, operator.gt) if not inclusive else (operator.le, operator.ge)
-        return low_fn(self.actual, low) and high_fn(self.actual, high)
+        if inclusive:
+            low -= 1
+            high += 1
+        if self.actual <= low or self.actual >= high:
+            raise AssertionError(f"Expected {self.actual} to be between ({low}, ..., {high})")
 
     def is_not_between(self, low: numbers.Number, high: numbers.Number, inclusive: bool = False):
         """Asserts that the value is numeric and is not between a low and high bounds.  If inclusive
         is true, value is considered between if it equals either the low or high bounds."""
-        return not self.is_between(low, high, inclusive)
+        try:
+            self.is_between(low, high, inclusive)
+            return False
+        except AssertionError:
+            raise AssertionError(f"Expected {self.actual} to not be between ({low}, ..., {high}")
 
     def _validate_number(self) -> None:
         if isinstance(self.actual, numbers.Number) is False or isinstance(self.actual, bool) is True:
