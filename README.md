@@ -17,8 +17,8 @@ The main features of asserto are (and will be):
 
 + Chainable and Fluent API.
 + Ability for both `Hard` and `Soft` assertions.
-+ Rich diffs to highlight problems, reduce churn and improve effeciency and debuggability.
-+ Dynamic assertions; check any obj attribute or invoke any of it's function types.
++ Rich diffs to highlight problems, reduce churn and improve efficiency and debug-ability.
++ Dynamic assertions; check any obj attribute or invoke any of its function types.
 + Robust set of methods out of the box for common types.
 + Extensibility.  Bolt on your own assertions at runtime.
 + Human error detection, elaborate warnings when something is amiss.
