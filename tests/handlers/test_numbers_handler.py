@@ -67,7 +67,7 @@ def test_is_positive_success(asserto):
 
 @pytest.mark.parametrize("x", (-1, 0))
 def test_is_positive_failure(x, asserto):
-    with pytest.raises(AssertionError, match=fr"Expected {x} to be greater than 0, but it was not."):
+    with pytest.raises(AssertionError, match=rf"Expected {x} to be greater than 0, but it was not."):
         asserto(x).is_positive()
 
 
@@ -77,5 +77,5 @@ def test_is_negative_success(asserto):
 
 @pytest.mark.parametrize("x", (1, 0))
 def test_is_negative_failure(x, asserto):
-    with pytest.raises(AssertionError, match=fr"Expected {x} to be lesser than 0, but it was not."):
+    with pytest.raises(AssertionError, match=rf"Expected {x} to be lesser than 0, but it was not."):
         asserto(x).is_negative()
