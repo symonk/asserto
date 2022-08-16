@@ -140,6 +140,25 @@ class Asserto:
         """
         return self._dispatch(StringHandler, Methods.IS_DIGIT)
 
+    def is_between(self, low: numbers.Number, high: numbers.Number, inclusive: bool = False):
+        """
+        Asserts that the actual value is between a low and high bounds.  If inclusive is true
+        the actual value is considered between if it is equal to either of those bounds.
+        """
+        return self._dispatch(NumberHandler, Methods.IS_BETWEEN, low, high, inclusive)
+
+    def is_between_inclusive(self, low: numbers.Number, high: numbers.Number) -> Asserto:
+        """
+        Asserts that the actual value is inclusively between a low and high bounds
+        """
+        return self.is_between(low, high, inclusive=True)
+
+    def is_not_between(self, low: numbers.Number, high: numbers.Number, inclusive: bool = False):
+        return self._dispatch(NumberHandler, Methods.IS_NOT_BETWEEN, low, high, inclusive)
+
+    def is_not_between_inclusive(self, low: numbers.Number, high: numbers.Number):
+        return self.is_not_between(low, high, inclusive=True)
+
     def is_alpha(self) -> Asserto:
         """
         Asserts that the actual value contains only unicode letters and that the string has

@@ -79,3 +79,9 @@ def test_is_negative_success(asserto):
 def test_is_negative_failure(x, asserto):
     with pytest.raises(AssertionError, match=rf"Expected {x} to be lesser than 0, but it was not."):
         asserto(x).is_negative()
+
+
+def test_is_between_not_between_happy_path(asserto):
+    asserto(100).is_between(1000, 2000)
+    asserto(200).is_between(199, 201)
+    asserto(5).is_not_between(5, 10)

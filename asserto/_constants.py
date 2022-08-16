@@ -14,6 +14,8 @@ class Methods:
     STARTS_WITH: str = "starts_with"
     IS_DIGIT: str = "is_digit"
     IS_ALPHA: str = "is_alpha"
+    IS_BETWEEN: str = "is_between"
+    IS_NOT_BETWEEN: str = "is_not_between"
 
     # -- Regular Expressions
 

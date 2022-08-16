@@ -1,4 +1,5 @@
 import numbers
+import operator
 
 from ._base import Handler
 
@@ -44,6 +45,18 @@ class NumberHandler(Handler):
     def is_negative(self) -> None:
         """Asserts that the value is numeric, and is lesser than 0"""
         return self.is_lesser_than(0)  # type: ignore[arg-type]
+
+    def is_between(self, low: numbers.Number, high: numbers.Number, inclusive: bool = False):
+        """Asserts tht the value is numeric and is between lower and higher.  If inclusive
+        is true, value is considered between if it equals either the lower or higher bounds.
+        """
+        low_fn, high_fn = (operator.lt, operator.gt) if not inclusive else (operator.le, operator.ge)
+        return low_fn(self.actual, low) and high_fn(self.actual, high)
+
+    def is_not_between(self, low: numbers.Number, high: numbers.Number, inclusive: bool = False):
+        """Asserts that the value is numeric and is not between a low and high bounds.  If inclusive
+        is true, value is considered between if it equals either the low or high bounds."""
+        return not self.is_between(low, high, inclusive)
 
     def _validate_number(self) -> None:
         if isinstance(self.actual, numbers.Number) is False or isinstance(self.actual, bool) is True:
