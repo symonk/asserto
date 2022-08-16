@@ -84,4 +84,4 @@ def test_is_negative_failure(x, asserto):
 def test_is_between_not_between_happy_path(asserto):
     asserto(100).is_between(100, 101, inclusive=True)
     asserto(5).is_between(4, 6)
-    asserto(5).is_not_between(6,10)
+    # Todo: implement: asserto(5).is_not_between(6,10)

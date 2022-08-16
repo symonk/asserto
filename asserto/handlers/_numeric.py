@@ -63,7 +63,7 @@ class NumberHandler(Handler):
             self.is_between(low, high, inclusive)
             return False
         except AssertionError:
-            raise AssertionError(f"Expected {self.actual} to not be between ({low}, ..., {high}")
+            raise AssertionError(f"Expected {self.actual} to not be between ({low}, ..., {high})")
 
     def _validate_number(self) -> None:
         if isinstance(self.actual, numbers.Number) is False or isinstance(self.actual, bool) is True:
