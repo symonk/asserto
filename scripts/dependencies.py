@@ -24,7 +24,7 @@ def poetry_update():
 
 
 def run_poetry_up():
-    return _run_command(("poetryup",))
+    return _run_command(("poetryup", "--latest"))
 
 
 def pre_commit_update():
