@@ -84,4 +84,15 @@ def test_is_negative_failure(x, asserto):
 def test_is_between_not_between_happy_path(asserto):
     asserto(100).is_between(100, 101, inclusive=True)
     asserto(5).is_between(4, 6)
-    # Todo: implement: asserto(5).is_not_between(6,10)
+    asserto(5).is_not_between(6, 10)
+    asserto(5).is_not_between(5, 8, inclusive=True)
+
+
+def test_is_between_fails_correctly(asserto):
+    with pytest.raises(AssertionError, match=re.escape(r"Expected 100 to be between (200, ..., 500)")):
+        asserto(100).is_between(200, 500)
+
+
+def test_is_not_between_fails_correctly(asserto):
+    with pytest.raises(AssertionError, match=re.escape(r"Expected 250 to not be between (200, ..., 500)")):
+        asserto(250).is_not_between(200, 500)

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import numbers
 import types
 import typing
 import warnings
@@ -25,6 +24,7 @@ from .handlers import StringHandler
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
 # Todo: Api feels cumbersome with decorators; can we improve DRY-ness?
+# Todo: Consider short hand methods; are they worth it vs a single API?
 
 
 class Asserto:
@@ -140,24 +140,37 @@ class Asserto:
         """
         return self._dispatch(StringHandler, Methods.IS_DIGIT)
 
-    def is_between(self, low: numbers.Number, high: numbers.Number, inclusive: bool = False):
+    def is_between(self, low: float, high: float, inclusive: bool = False):
         """
         Asserts that the actual value is between a low and high bounds.  If inclusive is true
         the actual value is considered between if it is equal to either of those bounds.
         """
         return self._dispatch(NumberHandler, Methods.IS_BETWEEN, low, high, inclusive)
 
-    def is_between_inclusive(self, low: numbers.Number, high: numbers.Number) -> Asserto:
+    def is_between_inclusive(self, low: float, high: float) -> Asserto:
         """
-        Asserts that the actual value is inclusively between a low and high bounds
+        Asserts that the actual value is equal to or between the log and high bounds.
         """
         return self.is_between(low, high, inclusive=True)
 
-    def is_not_between(self, low: numbers.Number, high: numbers.Number, inclusive: bool = False):
+    is_between_incl = is_between_inclusive
+
+    def is_not_between(self, low: float, high: float, inclusive: bool = False):
+        """
+        Asserts that the actual value is between a **NOT** between a low and high bounds.  If inclusive is true
+        the actual value is only considered not between if it is strictly less than the low bounds and higher than
+        the high bounds, if it equals either it is considered to be between.
+        """
         return self._dispatch(NumberHandler, Methods.IS_NOT_BETWEEN, low, high, inclusive)
 
-    def is_not_between_inclusive(self, low: numbers.Number, high: numbers.Number):
+    def is_not_between_inclusive(self, low: float, high: float):
+        """
+        Asserts that the actual value is not between the low and high bounds.  if the actual value
+        is equal to the low or high bounds it is considered to be between them
+        """
         return self.is_not_between(low, high, inclusive=True)
+
+    is_not_between_incl = is_not_between_inclusive
 
     def is_alpha(self) -> Asserto:
         """
@@ -320,7 +333,7 @@ class Asserto:
         """
         return self._dispatch(NumberHandler, Methods.IS_NOT_ZERO)
 
-    def is_greater_than(self, other: numbers.Number) -> Asserto:
+    def is_greater_than(self, other: float) -> Asserto:
         """Asserts that the value is numeric, and it is greater than other
 
         :param other: A number.Number to compare the value against.
@@ -328,7 +341,7 @@ class Asserto:
         """
         return self._dispatch(NumberHandler, Methods.IS_GREATER_THAN, other)
 
-    def is_lesser_than(self, other: numbers.Number) -> Asserto:
+    def is_lesser_than(self, other: float) -> Asserto:
         """Asserts that the value is numeric, and it is lesser than other
 
         :param other: A number.Number to compare the value against.
