@@ -23,7 +23,7 @@ class DynamicCallableWithArgsError(TypeError):
     """
 
 
-class HandlerTypeError(ValueError):
+class UnsupportedHandlerTypeError(ValueError):
     """Raised when the actual value passed to a handler is not suitable for it to handle."""
 
     def __init__(self, handler: typing.Type[Handler], method: str, value: typing.Any) -> None:

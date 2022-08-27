@@ -9,7 +9,7 @@ from ._error_handling import ErrorHandler
 from ._error_handling import RaisesErrors
 from ._exc_handling import ExceptionChecker
 from ._exceptions import DynamicCallableWithArgsError
-from ._exceptions import HandlerTypeError
+from ._exceptions import UnsupportedHandlerTypeError
 from ._types import EXC_TYPES_ALIAS
 from ._types import RE_FLAGS_ALIAS
 from ._types import RE_PATTERN_ALIAS
@@ -381,11 +381,11 @@ class Asserto:
             handler_instance = handler(self.actual)  # descriptors enforce types here.
         except ValueError:
             # The type of actual is not viable for the given handler.
-            raise HandlerTypeError(handler, method, self.actual) from None
+            raise UnsupportedHandlerTypeError(handler, method, self.actual) from None
         except KeyError:
             raise KeyError(f"{method} does not have a dedicated handler.") from None
         assertion_method: typing.Optional[types.MethodType] = getattr(handler_instance, method)
-        if assertion_method is None or not callable(assertion_method):
+        if not callable(assertion_method):
             raise TypeError(f"assertion method was not a bound method on the handler {handler_instance}")
         try:
             _ = assertion_method(*args, **kwargs)

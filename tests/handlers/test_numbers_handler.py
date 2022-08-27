@@ -2,12 +2,14 @@ import re
 
 import pytest
 
-from asserto import HandlerTypeError
+from asserto import UnsupportedHandlerTypeError
 
 
 @pytest.mark.parametrize("objtype", ("one", None, True))
 def test_handler_only_permits_numbers(asserto, objtype):
-    with pytest.raises(HandlerTypeError, match=r"`NumberHandler` cannot accept type: <class.*> when calling: is_zero"):
+    with pytest.raises(
+        UnsupportedHandlerTypeError, match=r"`NumberHandler` cannot accept type: <class.*> when calling: is_zero"
+    ):
         asserto(objtype).is_zero()
 
 

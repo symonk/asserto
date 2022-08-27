@@ -26,3 +26,6 @@ class Handler:
         if len(self.actual) == length:
             raise ValueError(f"{self.actual} is empty.")
         return True
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(actual={self.actual!r})"
