@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.towncrier]
 directory = "changes"
 filename = "CHANGELOG.rst"
-version = "0.0.7"
+version = "0.1.0"
 name = "asserto"
 underlines = "=-~"
 all_bullets = true
