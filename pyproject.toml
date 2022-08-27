@@ -16,6 +16,7 @@ version = "0.0.7"
 description = "A fluent DSL for python assertions."
 authors = ["symonk <jackofspaces@gmail.com>"]
 readme = "README.md"
+include = ["asserto/py.typed"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
