@@ -49,6 +49,18 @@ class Asserto:
         self.category: typing.Optional[str] = None
         self.description: typing.Optional[str] = None
 
+    def reassign(self, actual: typing.Any) -> Asserto:
+        """Binds the actual value to the given asserto instances actual value.  This is purposefully not
+        added as a property or promoted via simply attr assignment as it should be seldom used as is an
+        experimental API for now.
+
+        :param actual: The new actual value for underlying assertions.
+
+        ** EXPERIMENTAL: Subject to change **
+        """
+        self.actual = actual
+        return self
+
     def error(self, cause: typing.Union[AssertionError, str]) -> Asserto:
         """
         The single point of assertion failing.  All functions delegate here to raise the underlying
@@ -341,6 +353,8 @@ class Asserto:
         """
         return self._dispatch(NumberHandler, Methods.IS_GREATER_THAN, other)
 
+    is_more_than = is_greater_than
+
     def is_lesser_than(self, other: float) -> Asserto:
         """Asserts that the value is numeric, and it is lesser than other
 
@@ -348,6 +362,8 @@ class Asserto:
         :return: This Asserto instance.
         """
         return self._dispatch(NumberHandler, Methods.IS_LESSER_THAN, other)
+
+    is_less_than = is_lesser_than
 
     def is_positive(self) -> Asserto:
         """Asserts that the value is numeric, and is greater than 0
