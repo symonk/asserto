@@ -150,7 +150,7 @@ async = ["aiofiles (>=0.7,<1.0)"]
 
 [[package]]
 name = "identify"
-version = "2.5.4"
+version = "2.5.5"
 description = "File identification library for Python"
 category = "dev"
 optional = false
@@ -283,7 +283,7 @@ mkdocs = ">=1.1"
 
 [[package]]
 name = "mkdocs-material"
-version = "8.4.2"
+version = "8.4.3"
 description = "Documentation that simply works"
 category = "dev"
 optional = false
@@ -689,7 +689,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "f72bc24ec65a688ffcbd7b53bcfdae87be7458ca8a4e19ad5c850dfb2bd86a22"
+content-hash = "19d9de454c25c3f8bb56e15403980d006ddff8e607ec29a9fd945b3b1a1a3f15"
 
 [metadata.files]
 attrs = [
