@@ -24,7 +24,7 @@ rich = "^12.6.0"
 
 [tool.poetry.dev-dependencies]
 codecov = "^2.1.12"
-pre-commit = "^2.20.0"
+pre-commit = "^3.2.2"
 mkdocs = "^1.4.0"
 mkdocs-material = "^8.5.6"
 mkdocstrings= {extras = ["python"], version = "^0.19.0"}
