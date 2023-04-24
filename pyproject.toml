@@ -20,7 +20,7 @@ include = ["asserto/py.typed"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-rich = "^12.6.0"
+rich = "^13.3.4"
 
 [tool.poetry.dev-dependencies]
 codecov = "^2.1.12"
@@ -33,7 +33,6 @@ tox = "^3.26.0"
 pip = "^22.0.4"
 coverage = "^6.5.0"
 towncrier = "^22.8.0"
-poetryup = "0.12.0"
 
 [tool.pytest.ini_options]
 filterwarnings = [
