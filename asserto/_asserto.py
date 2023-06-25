@@ -15,7 +15,6 @@ from ._types import RE_FLAGS_ALIAS
 from ._types import RE_PATTERN_ALIAS
 from ._util import is_namedtuple_like
 from ._warnings import NoAssertAttemptedWarning
-from .mixins.string_mixin import AssertsStringsMixin
 from .handlers import BaseHandler
 from .handlers import Handler
 from .handlers import NumberHandler
@@ -28,7 +27,7 @@ from .handlers import StringHandler
 # Todo: Consider short hand methods; are they worth it vs a single API?
 
 
-class Asserto(AssertsStringsMixin):
+class Asserto:
     """
     The entrypoint into asserting objects.
 

@@ -1,7 +1,8 @@
-from enum import StrEnum
+from enum import Enum
 
 
-class Methods(StrEnum):
+# StrEnum does not exist in 3.8
+class Methods(str, Enum):
     """
     Encapsulation of method names.  These are used as part of the dynamic dispatch
     to various handlers responsible for individual assertion methods.
