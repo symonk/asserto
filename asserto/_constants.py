@@ -1,8 +1,7 @@
-import dataclasses
+from enum import StrEnum
 
 
-@dataclasses.dataclass(frozen=True)
-class Methods:
+class Methods(StrEnum):
     """
     Encapsulation of method names.  These are used as part of the dynamic dispatch
     to various handlers responsible for individual assertion methods.
