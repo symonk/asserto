@@ -1,6 +1,7 @@
 from collections import namedtuple
 
 from asserto._util import is_namedtuple_like
+from asserto._util import object_to_name
 from asserto._util import to_iterable
 
 
@@ -24,3 +25,8 @@ def test_namedtuple_types(asserto) -> None:
     asserto(is_namedtuple_like(C)).is_false()
     asserto(is_namedtuple_like(None)).is_false()
     asserto(is_namedtuple_like(t(1, 2, 3))).is_true()
+
+
+def test_obj_to_str(asserto) -> None:
+    name = object_to_name(ValueError())
+    asserto(name).is_equal_to("ValueError")

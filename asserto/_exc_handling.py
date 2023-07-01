@@ -45,5 +45,10 @@ class ExceptionChecker:
         except self.exc_types as e:  # type: ignore[misc]
             if self.pattern is not None and self.pattern.match(str(e)) is None:
                 self.asserto_ref.error(
-                    f"Exception occurred but did not match pattern: {self.pattern} instead was: {str(e)}"
+                    f"{type(e)} occurred but did not match pattern: {self.pattern} instead was: {str(e)}"
                 )
+        except Exception as e:
+            arguments = f"{args, kwargs}" if all((args, kwargs)) else "no arguments"
+            self.asserto_ref.error(
+                f"{self._proxy_val.__name__} did not raise any of {self.exc_types}.  Instead it raised {type(e)} when called with {arguments}."  # noqa
+            )
