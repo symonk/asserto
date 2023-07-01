@@ -269,6 +269,8 @@ class Asserto:
         """
         return self._dispatch(BaseHandler, Methods.IS_EQUAL_TO, other)
 
+    equals = is_equal_to
+
     def is_not_equal_to(self, other: typing.Any) -> Asserto:
         """
         Compares the value against `other` for non equality.
