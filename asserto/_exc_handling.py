@@ -21,7 +21,7 @@ class ExceptionChecker:
         _referent,
         match: typing.Optional[RE_PATTERN_ALIAS] = None,
     ) -> None:
-        self.exc_types: typing.Iterable[BaseException] = to_iterable(exc_types)
+        self.exc_types: typing.Iterable[typing.Type[BaseException]] = to_iterable(exc_types)
         self._proxy_val = value
         self.asserto_ref = _referent
         self.pattern: typing.Optional[re.Pattern[str]] = re.compile(match) if isinstance(match, str) else match
@@ -40,14 +40,21 @@ class ExceptionChecker:
         try:
             # update 'triggered' status to avoid unnecessary warnings
             self.asserto_ref.triggered = True  # type: ignore[attr-defined]
-            _ = self._proxy_val(*args, **kwargs)
+            self._proxy_val(*args, **kwargs)
+            # No exception was raised at all; raise an assertion error.
             self.asserto_ref.error(f"{self._proxy_val} never raised any of: {self.exc_types}")
-        except self.exc_types as e:  # type: ignore[misc]
-            if self.pattern is not None and self.pattern.match(str(e)) is None:
-                self.asserto_ref.error(
-                    f"{type(e)} occurred but did not match pattern: {self.pattern} instead was: {str(e)}"
-                )
-        except Exception as e:
+        except BaseException as e:
+            exc_type, exc_string = type(e), str(e)
+            if isinstance(e, self.exc_types):  # type: ignore [arg-type]
+                if self.pattern:
+                    if self.pattern.match(exc_string) is None:
+                        # Type matched, but the pattern regex did not, raise.
+                        self.asserto_ref.error(
+                            f"{exc_type} occurred but did not match pattern: {self.pattern} instead was: {exc_string}"
+                        )
+                # type matched, no expected pattern, it was a success.
+                return
+            # The exception was not as expected, raise an assertion error against the type.
             arguments = f"{args, kwargs}" if all((args, kwargs)) else "no arguments"
             self.asserto_ref.error(
                 f"{self._proxy_val.__name__} did not raise any of {self.exc_types}.  Instead it raised {type(e)} when called with {arguments}."  # noqa
