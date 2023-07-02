@@ -24,9 +24,9 @@ def test_category_is_set(asserto) -> None:
 
 def test_triggered(asserto) -> None:
     x = asserto(50)
-    asserto(x.triggered).is_false()
+    asserto(x._triggered).is_false()
     x.is_equal_to(50)
-    asserto(x.triggered).is_true()
+    asserto(x._triggered).is_true()
 
 
 def test_context_triggered_warning(asserto) -> None:

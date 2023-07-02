@@ -71,24 +71,6 @@ class Asserto:
         self._error_handler.check_should_raise(self._in_context, cause, self.category, self.description)
         return self
 
-    @property
-    def triggered(self) -> bool:
-        """
-        Check if the instance has invoked any methods that could have raised an `AssertionError`.
-        :return: boolean indicating if a method has been invoked.
-        """
-        return self._triggered
-
-    @triggered.setter
-    def triggered(self, _) -> None:
-        """
-        Consider the asserto instance as `triggered`.  Instances which are instantiated but do not
-        invoke any assertion methods will omit a warning as this usually indicates user error and
-        helps to reduce mistakes in test code leading to misguided confidence in the test suite.
-        :return: The `Asserto` instance for fluency.
-        """
-        self._triggered = True
-
     def set_category(self, category: str) -> Asserto:
         """
         Set the category for the assertion.  Categories are prefixed to the assertion
@@ -393,7 +375,7 @@ class Asserto:
         arbitrary code into the stack and this relies on frame inspection.
         """
         __tracebackhide__ = True  # pytest magic.
-        self.triggered = True
+        self._triggered = True
         # for now allow this to be bypassed as not all methods have a handler defined.
         try:
             handler_instance = handler(self.actual)  # descriptors enforce types here.
@@ -447,7 +429,7 @@ class Asserto:
                 failure = f"{self.actual!r} missing attribute: {key_attr}"
 
         def _dynamic_callable(*args):
-            self.triggered = True  # Dynamic wrapper has been invoked!
+            self._triggered = True  # Dynamic wrapper has been invoked!
             if failure:
                 self.error(failure)
             if len(args) != 1:
@@ -487,7 +469,7 @@ class Asserto:
         exc_val: typing.Optional[BaseException] = None,
         exc_tb: typing.Optional[types.TracebackType] = None,
     ):
-        if self.warn_unused and not self.triggered:
+        if self.warn_unused and not self._triggered:
             self._warn_not_triggered()
         self._error_handler.check_soft_raise()
         self._error_handler.reset()
