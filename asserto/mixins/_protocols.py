@@ -1,6 +1,7 @@
-from typing import Protocol
 from typing import Any
+from typing import Protocol
 from typing import Union
+
 
 class HasActualValue(Protocol):
     """A simple interface for something containing a `actual` value.
@@ -8,15 +9,16 @@ class HasActualValue(Protocol):
     to compose asserto."""
 
     @property
-    def actual(self) -> Any: ...
+    def actual(self) -> Any:
+        ...
 
-    
+
 class CanError(Protocol):
     """A simple interface for something that can raise an AssertionError."""
 
     def error(self, cause: Union[AssertionError, str]) -> Any:
         ...
 
-        
+
 class Assertable(HasActualValue, CanError):
     ...

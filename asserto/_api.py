@@ -14,7 +14,7 @@ def asserto(actual: typing.Any, warn_unused: bool = False) -> Asserto:
     """
     return Asserto(actual, warn_unused)
 
-    
+
 assert_that = asserto
 
 
