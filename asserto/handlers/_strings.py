@@ -22,10 +22,6 @@ class StringHandler(Handler):
         if self.raise_if_length_equals() and not self.actual.isdigit():
             raise AssertionError(f"{self.actual} did not contain only numeric digits.")
 
-    def ends_with(self, suffix: str) -> None:
-        if not self.actual.endswith(suffix):
-            raise AssertionError(f"{self.actual} did not end with {suffix=}")
-
     def starts_with(self, prefix: str) -> None:
         if not self.actual.startswith(prefix):
             raise AssertionError(f"{self.actual} did not begin with {prefix=}")

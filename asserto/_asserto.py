@@ -20,6 +20,7 @@ from .handlers import Handler
 from .handlers import NumberHandler
 from .handlers import RegexHandler
 from .handlers import StringHandler
+from .mixins import AssertsStringsMixin
 
 # Todo: base: `tidy up docstrings`
 # Todo: base `remove duplication here`
@@ -27,7 +28,7 @@ from .handlers import StringHandler
 # Todo: Consider short hand methods; are they worth it vs a single API?
 
 
-class Asserto:
+class Asserto(AssertsStringsMixin):
     """
     The entrypoint into asserting objects.
 
@@ -41,7 +42,7 @@ class Asserto:
         warn_unused: bool = False,
         error_handler: typing.Type[RaisesErrors] = ErrorHandler,
     ):
-        self.actual = actual
+        self._actual = actual
         self._triggered = False
         self.warn_unused = warn_unused
         self._in_context = False
@@ -49,17 +50,13 @@ class Asserto:
         self.category: typing.Optional[str] = None
         self.description: typing.Optional[str] = None
 
-    def reassign(self, actual: typing.Any) -> Asserto:
-        """Binds the actual value to the given asserto instances actual value.  This is purposefully not
-        added as a property or promoted via simply attr assignment as it should be seldom used as is an
-        experimental API for now.
+    @property
+    def actual(self) -> typing.Any:
+        return self._actual
 
-        :param actual: The new actual value for underlying assertions.
-
-        ** EXPERIMENTAL: Subject to change **
-        """
-        self.actual = actual
-        return self
+    @actual.setter
+    def actual(self, value: typing.Any) -> None:
+        self._actual = value
 
     def error(self, cause: typing.Union[AssertionError, str]) -> Asserto:
         """
@@ -106,18 +103,6 @@ class Asserto:
         return ExceptionChecker(exc_types=exceptions, value=self.actual, _referent=self, match=match)
 
     # Todo: should_not_raise
-
-    def ends_with(self, suffix: str) -> Asserto:
-        """
-        Asserts that the actual value ends with suffix.
-
-        :param suffix: The suffix to compare the tail of the string against.
-        """
-        return self._dispatch(
-            StringHandler,
-            Methods.ENDS_WITH,
-            suffix,
-        )
 
     def starts_with(self, prefix: str) -> Asserto:
         """

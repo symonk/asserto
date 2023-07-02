@@ -38,5 +38,5 @@ def test_context_triggered_warning(asserto) -> None:
 def test_can_be_reassigned(asserto) -> None:
     with asserto(100) as a:
         a.is_equal_to(100)
-        a.reassign(200)
+        a.actual = 200
         a.is_equal_to(200)
