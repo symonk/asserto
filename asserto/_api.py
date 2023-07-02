@@ -14,6 +14,9 @@ def asserto(actual: typing.Any, warn_unused: bool = False) -> Asserto:
     """
     return Asserto(actual, warn_unused)
 
+    
+assert_that = asserto
+
 
 def register_assert(func: types.FunctionType) -> typing.Callable[[typing.Any], typing.Any]:
     """
