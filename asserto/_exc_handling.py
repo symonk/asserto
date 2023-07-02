@@ -57,5 +57,5 @@ class ExceptionChecker:
             # The exception was not as expected, raise an assertion error against the type.
             arguments = f"{args, kwargs}" if all((args, kwargs)) else "no arguments"
             self.asserto_ref.error(
-                f"{self._proxy_val.__name__} did not raise any of {self.exc_types}.  Instead it raised {type(e)} when called with {arguments}."  # noqa
+                f"{self._proxy_val.__name__} did not raise any of {self.exc_types}.  Instead it raised {exc_type} when called with {arguments}."  # noqa
             )
