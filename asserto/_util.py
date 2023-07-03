@@ -3,6 +3,16 @@ import typing
 T = typing.TypeVar("T")
 
 
+def is_iterable(item: typing.Any) -> bool:
+    """Checks if an item is an iterable in a python 3 compliant manner.  This encompasses both
+    new iterator protocol aswell as older protocol via __getitem__ etc."""
+    try:
+        iter(item)
+        return True
+    except TypeError:
+        return False
+
+
 def to_iterable(item: typing.Any) -> typing.Tuple[T, ...]:
     """
     Converts a tuple from any items that can be iterated over.

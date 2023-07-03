@@ -1,5 +1,6 @@
 from collections import namedtuple
 
+from asserto._util import is_iterable
 from asserto._util import is_namedtuple_like
 from asserto._util import object_to_name
 from asserto._util import to_iterable
@@ -30,3 +31,20 @@ def test_namedtuple_types(asserto) -> None:
 def test_obj_to_str(asserto) -> None:
     name = object_to_name(ValueError())
     asserto(name).is_equal_to("ValueError")
+
+
+class OldSchool:
+    def __init__(self) -> None:
+        self.x = tuple(range(3))
+
+    def __getitem__(self, x):
+        if x > len(self.x):
+            raise IndexError
+        return self.x[x]
+
+
+def test_is_iterable(asserto) -> None:
+    asserto(is_iterable(100)).is_false()
+    asserto(is_iterable("foo")).is_true()
+    asserto(is_iterable((1, 2, 3))).is_true()
+    asserto(is_iterable(OldSchool())).is_true()
