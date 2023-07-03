@@ -11,6 +11,13 @@ class AssertsStringsMixin(Assertable):
     """Mixin responsible for composing assertions for string types."""
 
     def ends_with(self, suffix: str) -> Self:
+        """Asserts the actual value ends with the particular suffix.
+        When the actual value is a string it is compared using the
+        string builtin.  When the actual value is an iterable, the last
+        element in the iterable is compared for equality against suffix.
+
+        :param suffix: The expected substring for the actual value to end with.
+        """
         if isinstance(self.actual, str):
             if not suffix:
                 raise ValueError(f"{suffix=} must not be empty.")
