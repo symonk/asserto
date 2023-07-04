@@ -21,7 +21,6 @@ nav:
     - Introduction: index.md
     - QuickStart: quickstart.md
     - Assertions: assertions.md
-    - Advanced Usage: advanced.md
 plugins:
     - search
     - mkdocstrings:
