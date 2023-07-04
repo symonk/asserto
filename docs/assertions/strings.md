@@ -2,6 +2,6 @@
 
 
 ::: asserto.mixins._string_mixin.AssertsStringsMixin
-    selection:
+    options:
         members:
             - ends_with

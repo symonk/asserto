@@ -16,6 +16,8 @@ theme:
 repo_name: symonk/asserto
 repo_url: https://github.com/symonk/asserto/
 edit_uri: ""
+extra_css:
+ - stylesheets/extra.css
 watch:
   - asserto
 nav:
@@ -28,9 +30,8 @@ plugins:
         default_handler: python
         handlers:
           python:
-            selection:
+            options:
               docstring_style: sphinx
-            rendering:
               line_length: 88
               show_if_no_docstring: false
               merge_init_into_class: true
@@ -41,7 +42,7 @@ plugins:
               annotations_path: brief
               show_signature_annotations: true
               separate_signature: false
-              
+
 markdown_extensions:
   - admonition
   - attr_list
