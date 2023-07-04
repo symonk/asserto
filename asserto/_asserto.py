@@ -19,7 +19,6 @@ from .handlers import BaseHandler
 from .handlers import Handler
 from .handlers import NumberHandler
 from .handlers import RegexHandler
-from .handlers import StringHandler
 from .mixins import AssertsStringsMixin
 
 # Todo: base: `tidy up docstrings`
@@ -104,21 +103,6 @@ class Asserto(AssertsStringsMixin):
 
     # Todo: should_not_raise
 
-    def starts_with(self, prefix: str) -> Asserto:
-        """
-        Asserts that the actual value ends with prefix.
-
-        :param prefix: The prefix to compare the head of the string against.
-        """
-        return self._dispatch(StringHandler, Methods.STARTS_WITH, prefix)
-
-    def is_digit(self) -> Asserto:
-        """
-        Asserts that the actual value contains only unicode letters and that the string has
-        at least a single character.
-        """
-        return self._dispatch(StringHandler, Methods.IS_DIGIT)
-
     def is_between(self, low: float, high: float, inclusive: bool = False):
         """
         Asserts that the actual value is between a low and high bounds.  If inclusive is true
@@ -150,13 +134,6 @@ class Asserto(AssertsStringsMixin):
         return self.is_not_between(low, high, inclusive=True)
 
     is_not_between_incl = is_not_between_inclusive
-
-    def is_alpha(self) -> Asserto:
-        """
-        Asserts that the actual value contains only unicode letters and that the string has
-        at least a single character.
-        """
-        return self._dispatch(StringHandler, Methods.IS_ALPHA)
 
     def match(self, pattern: RE_PATTERN_ALIAS, flags: RE_FLAGS_ALIAS = 0) -> Asserto:
         """

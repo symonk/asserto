@@ -35,3 +35,27 @@ class AssertsStringsMixin(Assertable):
         else:
             raise TypeError(f"{self.actual} is not a string or iterable.")
         return self
+
+    def is_alpha(self) -> Self:
+        if isinstance(self.actual, str):
+            if not self.actual.isalpha():
+                self.error(f"{self.actual} did not contain only alpha numeric chracters.")
+        else:
+            raise TypeError(f"{self.actual} is not a string.")
+        return self
+
+    def is_digit(self) -> Self:
+        if isinstance(self.actual, str):
+            if not self.actual.isdigit():
+                self.error(f"{self.actual} did not contain only numeric digits.")
+        else:
+            raise TypeError(f"{self.actual} is not a string.")
+        return self
+
+    def starts_with(self, prefix: str) -> Self:
+        if isinstance(self.actual, str):
+            if not self.actual.startswith(prefix):
+                self.error(f"{self.actual} did not begin with {prefix=}")
+        else:
+            raise TypeError(f"{self.actual} is not a string or iterable.")
+        return self
