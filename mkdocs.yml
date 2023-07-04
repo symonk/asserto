@@ -55,4 +55,4 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
-copyright: Copyright &copy; 2016 - 2022 Simon Kerr
+copyright: Copyright &copy; 2022 - 2024 Simon Kerr
