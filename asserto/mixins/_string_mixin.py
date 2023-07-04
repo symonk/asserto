@@ -11,12 +11,19 @@ class AssertsStringsMixin(Assertable):
     """Mixin responsible for composing assertions for string types."""
 
     def ends_with(self, suffix: str) -> Self:
-        """Asserts the actual value ends with the particular suffix.
-        When the actual value is a string it is compared using the
-        string builtin.  When the actual value is an iterable, the last
-        element in the iterable is compared for equality against suffix.
+        """Asserts the actual value ends with a given prefix.  If the actual
+        value is an iterable, the last element within it will be compared for
+        equality (==) against the suffix.
 
         :param suffix: The expected substring for the actual value to end with.
+
+        :raises TypeError: When the actual value is not a string or iterable.
+        :raises TypeError: When the suffix value is not a string.
+        :raises ValueError: When the suffix or actual values are empty.
+        :raises ValueError: When the actual value is an empty string.
+        :raises AssertionError: When the actual value does not end with the suffix.
+
+        :return: The `Asserto` instance for fluent chaining.
         """
         if isinstance(self.actual, str):
             if not suffix:
@@ -40,8 +47,8 @@ class AssertsStringsMixin(Assertable):
         """Asserts the actual value is considered alphabetic.  Empty strings will
         not be considered alphabetic for this case.
 
-        :raises TypeError: when the actual value is not of type string.
-        :raises AssertionError: when the actual value is not an alphabetic string.
+        :raises TypeError: If the actual value is not of type string.
+        :raises AssertionError: If the actual value is not an alphabetic string.
 
         :return: The `Asserto` instance for fluent chaining.
         """
@@ -62,8 +69,8 @@ class AssertsStringsMixin(Assertable):
         """Asserts the actual value is a digit string.  Empty strings will not be considered
         digit strings for this case.
 
-        :raises TypeError: when the actual value is not of type string.
-        :raises AssertionError: when the actual value is not an alphabetic string.
+        :raises TypeError: If the actual value is not of type string.
+        :raises AssertionError: If the actual value is not an alphabetic string.
 
         :return: The `Asserto` instance for fluent chaining.
         """
