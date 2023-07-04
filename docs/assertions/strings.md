@@ -6,3 +6,4 @@
         members:
             - ends_with
             - is_alpha
+            - is_digit

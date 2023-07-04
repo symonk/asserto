@@ -13,5 +13,5 @@ def test_is_alphabetic_raises_type_error_when_actual_is_not_a_string() -> None:
 
 
 def test_is_alphabetic_failure() -> None:
-    with pytest.raises(AssertionError, match=".* was not alphabetic."):
+    with pytest.raises(AssertionError, match=".* is not alphabetic."):
         asserto("abc1").is_alpha()
