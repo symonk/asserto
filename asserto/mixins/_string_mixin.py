@@ -6,6 +6,12 @@ from typing_extensions import Self
 from .._util import to_iterable
 from ._protocols import Assertable
 
+# Todo: end_with offering a `start` and `end`?
+# Todo: starts_with offering a `start` and `end`?
+# Todo: Docs reuse through __doc__ ?
+# Todo: Utility functions and general DRY here
+# Todo: This is our first mixin impl, so let's make it perfect before rolling out.
+
 
 class AssertsStringsMixin(Assertable):
     """Mixin responsible for composing assertions for string types."""
@@ -81,6 +87,13 @@ class AssertsStringsMixin(Assertable):
         return self
 
     def starts_with(self, prefix: str) -> Self:
+        """Asserts the actual value starts with the prefix.  If the actual value is
+        an iterable the first element is compared for equality (==) against the prefix.
+
+
+        :param prefix: The value to check the actual value starts with.
+
+        """
         if isinstance(self.actual, str):
             if not self.actual.startswith(prefix):
                 self.error(f"{self.actual} did not begin with {prefix=}")
