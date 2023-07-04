@@ -1,6 +1,6 @@
 site_name: Asserto
 site_description: A fluent DSL for python assertions.
-site_url:
+site_url: ""
 theme:
   name: material
   features:
