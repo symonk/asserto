@@ -12,5 +12,5 @@ def test_starts_with_failure() -> None:
 
 
 def test_invalid_type_raises() -> None:
-    with pytest.raises(ValueError, match="`StringHandler` cannot accept type: <class 'int'> when calling: starts_with"):
+    with pytest.raises(TypeError, match="1 is not a string or iterable."):
         asserto(1).starts_with("foo")
