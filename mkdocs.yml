@@ -16,10 +16,12 @@ theme:
 repo_name: symonk/asserto
 repo_url: https://github.com/symonk/asserto/
 edit_uri: ""
-
+watch:
+  - asserto
 nav:
     - Introduction: index.md
-    - Assertions: assertions.md
+    - 'Assertions':
+      - 'assertions/strings.md'
 plugins:
     - search
     - mkdocstrings:
@@ -32,10 +34,14 @@ plugins:
               line_length: 88
               show_if_no_docstring: false
               merge_init_into_class: true
-              show_source: false
+              show_source: true
               docstring_section_style: table
-        watch:
-          - asserto/
+              show_bases: false
+              show_symbol_type_toc: true
+              annotations_path: brief
+              show_signature_annotations: true
+              separate_signature: false
+              
 markdown_extensions:
   - admonition
   - attr_list
