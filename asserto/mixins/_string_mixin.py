@@ -37,6 +37,20 @@ class AssertsStringsMixin(Assertable):
         return self
 
     def is_alpha(self) -> Self:
+        """Asserts the actual value is considered alphabetic.  Empty strings will
+        not be considered alphabetic for this case.
+        
+        :raises TypeError: when the actual value is not of type string.
+        :raises AssertionError: when the actual value is not an alphabetic string.
+        
+        :return: The `Asserto` instance for fluent chaining.
+        """
+
+        if not isinstance(self.actual, str):
+            raise TypeError(f"{self.actual} is not a string, it is of type: {type(self.actual)}.")
+        if not self.actual.isalpha():
+            self.error(f"{self.actual} was not alphabetic.")
+
         if isinstance(self.actual, str):
             if not self.actual.isalpha():
                 self.error(f"{self.actual} did not contain only alpha numeric chracters.")

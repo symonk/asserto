@@ -42,6 +42,7 @@ plugins:
               annotations_path: brief
               show_signature_annotations: true
               separate_signature: false
+              show_docstring_returns: true
 
 markdown_extensions:
   - admonition
