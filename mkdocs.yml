@@ -19,7 +19,6 @@ edit_uri: ""
 
 nav:
     - Introduction: index.md
-    - QuickStart: quickstart.md
     - Assertions: assertions.md
 plugins:
     - search
