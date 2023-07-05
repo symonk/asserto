@@ -1,5 +1,7 @@
 import pytest
 
+from asserto import asserto
+
 
 def test_is_none_or_not_none_works_successfully() -> None:
     asserto(None).is_none()

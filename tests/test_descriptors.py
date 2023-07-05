@@ -1,5 +1,6 @@
 import re
 
+from asserto import asserto
 from asserto.descriptors import EnforcedCallable
 from asserto.descriptors import ValidatesInstanceOf
 

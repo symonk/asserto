@@ -1,5 +1,7 @@
 import pytest
 
+from asserto import asserto
+
 
 def test_identity_functions_correctly() -> None:
     one = two = three = four = object()

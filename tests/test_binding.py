@@ -1,6 +1,7 @@
 import pytest
 
 from asserto import Asserto
+from asserto import asserto
 from asserto import register_assert
 
 

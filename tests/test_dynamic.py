@@ -4,6 +4,8 @@ from types import SimpleNamespace
 
 import pytest
 
+from asserto import asserto
+
 from .utility.dynamic import Dynamic
 
 

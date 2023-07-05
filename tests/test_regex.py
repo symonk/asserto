@@ -2,6 +2,8 @@ import re
 
 import pytest
 
+from asserto import asserto
+
 
 def test_regex_matches() -> None:
     asserto("Hello World").match(r"^H[a-z]{4}\sW[a-z]{1}")
@@ -13,7 +15,9 @@ def test_regex_non_match_raises() -> None:
 
 
 @pytest.mark.parametrize("actual", [None, 1, Exception])
-def test_regex_handler_validator(actual, ) -> None:
+def test_regex_handler_validator(
+    actual,
+) -> None:
     with pytest.raises(ValueError, match="`RegexHandler` cannot accept type: <class 'NoneType'> when calling: match"):
         asserto(None).match(r"")
 

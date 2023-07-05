@@ -3,6 +3,7 @@ import re
 import pytest
 
 from asserto import UnsupportedHandlerTypeError
+from asserto import asserto
 
 
 @pytest.mark.parametrize("objtype", ("one", None, True))
@@ -68,7 +69,9 @@ def test_is_positive_success() -> None:
 
 
 @pytest.mark.parametrize("x", (-1, 0))
-def test_is_positive_failure(x, ) -> None:
+def test_is_positive_failure(
+    x,
+) -> None:
     with pytest.raises(AssertionError, match=rf"Expected {x} to be greater than 0, but it was not."):
         asserto(x).is_positive()
 
@@ -78,7 +81,9 @@ def test_is_negative_success() -> None:
 
 
 @pytest.mark.parametrize("x", (1, 0))
-def test_is_negative_failure(x, ) -> None:
+def test_is_negative_failure(
+    x,
+) -> None:
     with pytest.raises(AssertionError, match=rf"Expected {x} to be lesser than 0, but it was not."):
         asserto(x).is_negative()
 

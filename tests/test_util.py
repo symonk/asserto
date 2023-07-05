@@ -1,5 +1,6 @@
 from collections import namedtuple
 
+from asserto import asserto
 from asserto._util import is_iterable
 from asserto._util import is_namedtuple_like
 from asserto._util import object_to_name

@@ -1,4 +1,5 @@
 from asserto.handlers._numeric import NumberHandler
+from asserto import asserto
 
 
 def test_handler_repr_is_correct():

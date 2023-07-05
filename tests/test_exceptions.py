@@ -4,6 +4,8 @@ import re
 
 import pytest
 
+from asserto import asserto
+
 
 def test_raises_without_exception() -> None:
     asserto(_raiser).should_raise(ValueError).when_called_with(True)

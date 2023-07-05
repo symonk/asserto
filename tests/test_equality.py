@@ -1,5 +1,7 @@
 import pytest
 
+from asserto import asserto
+
 from .utility.id_equality import EqualObj
 
 

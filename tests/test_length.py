@@ -2,6 +2,7 @@ import re
 
 import pytest
 
+from asserto import asserto
 from asserto._exceptions import ActualTypeError  # noqa
 
 from .utility.length import DunderLen

@@ -2,6 +2,8 @@ import re
 
 import pytest
 
+from asserto import asserto
+
 
 def test_multiple_soft_assertions() -> None:
     with pytest.raises(AssertionError) as error:

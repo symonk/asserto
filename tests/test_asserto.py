@@ -1,6 +1,7 @@
 import pytest
 
 from asserto import NoAssertAttemptedWarning
+from asserto import asserto
 
 
 def test_simple_repr() -> None:

@@ -1,5 +1,7 @@
 import pytest
 
+from asserto import asserto
+
 from .utility.instance_checks import DirectSubklazz
 from .utility.instance_checks import IndirectSubklazz
 from .utility.instance_checks import Klazz

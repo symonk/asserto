@@ -1,5 +1,7 @@
 import pytest
 
+from asserto import asserto
+
 
 def test_description_takes_precedence() -> None:
     with pytest.raises(AssertionError, match="foo!"):

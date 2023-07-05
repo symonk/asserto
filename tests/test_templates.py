@@ -1,3 +1,4 @@
+from asserto import asserto
 from asserto._templates import CallableTemplate
 
 
