@@ -7,7 +7,7 @@ from asserto import asserto
 
 
 @pytest.mark.parametrize("objtype", ("one", None, True))
-def test_handler_only_permits_numbers(asserto, objtype) -> None:
+def test_handler_only_permits_numbers(objtype) -> None:
     with pytest.raises(
         UnsupportedHandlerTypeError, match=r"`NumberHandler` cannot accept type: <class.*> when calling: is_zero"
     ):
@@ -22,18 +22,18 @@ def test_handler_only_permits_numbers(asserto, objtype) -> None:
         0.001,
     ),
 )
-def test_is_zero_success(asserto, number) -> None:
+def test_is_zero_success(number) -> None:
     with pytest.raises(AssertionError, match=rf"Expected {re.escape(str(number))} to be 0 but it was not."):
         asserto(number).is_zero()
 
 
 @pytest.mark.parametrize("number", (0, 0.0, -0, 0j))
-def test_is_zero_failure(asserto, number) -> None:
+def test_is_zero_failure(number) -> None:
     asserto(number).is_zero()
 
 
 @pytest.mark.parametrize("number", (1, 2.5, -3.5, 4.9j))
-def test_is_not_zero_success(asserto, number) -> None:
+def test_is_not_zero_success(number) -> None:
     asserto(number).is_not_zero()
 
 
@@ -41,7 +41,7 @@ def test_is_not_zero_success(asserto, number) -> None:
     "number",
     (0, 0.0, -0.0, 0j),
 )
-def test_is_not_zero_failure(asserto, number) -> None:
+def test_is_not_zero_failure(number) -> None:
     with pytest.raises(AssertionError, match=rf"Expected {re.escape(str(number))} to not be 0 but it was."):
         asserto(number).is_not_zero()
 
