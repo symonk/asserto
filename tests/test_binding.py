@@ -23,23 +23,23 @@ def bind_function(request) -> None:
 
 
 @pytest.mark.usefixtures("bind_function")
-def test_binding_successful(asserto) -> None:
+def test_binding_successful() -> None:
     register_assert(is_length_five)
     asserto([1, 2, 3, 4, 5]).is_length_five()
 
 
-def test_calling_unbound(asserto) -> None:
+def test_calling_unbound() -> None:
     with pytest.raises(AttributeError) as error:
         asserto(5).is_length_five()
     asserto(error.value.args[0]).is_equal_to("unknown assertion method: is_length_five")
 
 
-def test_cannot_register_lambda(asserto) -> None:
+def test_cannot_register_lambda() -> None:
     expected = "Binding functions does not support lambdas, they have no name"
     asserto(register_assert).should_raise(ValueError, match=expected).when_called_with(func=lambda: ...)
 
 
-def test_no_name(asserto) -> None:
+def test_no_name() -> None:
     class C:
         ...
 
@@ -47,7 +47,7 @@ def test_no_name(asserto) -> None:
     asserto(register_assert).should_raise(ValueError, match=expected).when_called_with(func=C)
 
 
-def test_ends_with_is(asserto) -> None:
+def test_ends_with_is() -> None:
     def foo_is(self):
         ...
 
@@ -65,5 +65,5 @@ def wrapped_fn(request):
 
 
 @pytest.mark.usefixtures("wrapped_fn")
-def test_decorator_binds(asserto) -> None:
+def test_decorator_binds() -> None:
     asserto(5).my_fn()

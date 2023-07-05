@@ -3,7 +3,7 @@ import pytest
 __tracebackhide__ = True
 
 
-def test_bool_not_bool_works_successfully(asserto) -> None:
+def test_bool_not_bool_works_successfully() -> None:
     asserto(True).is_true()
     asserto(False).is_false()
     asserto(None).is_false()
@@ -15,18 +15,18 @@ def test_bool_not_bool_works_successfully(asserto) -> None:
     asserto({}).is_false()
 
 
-def test_non_false_raises_for_is_false(asserto) -> None:
+def test_non_false_raises_for_is_false() -> None:
     with pytest.raises(AssertionError, match=r"True was not False"):
         asserto(True).is_false()
 
 
-def test_non_true_raises_for_is_true(asserto) -> None:
+def test_non_true_raises_for_is_true() -> None:
     with pytest.raises(AssertionError) as error:
         asserto(False).is_true()
     asserto(error.value.args[0]).is_equal_to("False was not True")
 
 
-def test_truthy_is_true(asserto) -> None:
+def test_truthy_is_true() -> None:
     class C:
         ...
 
@@ -36,7 +36,7 @@ def test_truthy_is_true(asserto) -> None:
     asserto(1).is_truthy()
 
 
-def test_falsy_is_false(asserto) -> None:
+def test_falsy_is_false() -> None:
     class C:
         def __bool__(self):
             return False

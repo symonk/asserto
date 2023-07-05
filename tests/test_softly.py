@@ -3,7 +3,7 @@ import re
 import pytest
 
 
-def test_multiple_soft_assertions(asserto) -> None:
+def test_multiple_soft_assertions() -> None:
     with pytest.raises(AssertionError) as error:
         with asserto(100) as a:
             a.is_equal_to(99).is_equal_to(101)

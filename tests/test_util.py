@@ -6,15 +6,15 @@ from asserto._util import object_to_name
 from asserto._util import to_iterable
 
 
-def test_single_item_is_tuple(asserto) -> None:
+def test_single_item_is_tuple() -> None:
     asserto(to_iterable(1)).is_equal_to((1,))
 
 
-def test_iterable_is_tuple(asserto) -> None:
+def test_iterable_is_tuple() -> None:
     asserto(to_iterable([1, 2, 3])).is_equal_to((1, 2, 3))
 
 
-def test_namedtuple_types(asserto) -> None:
+def test_namedtuple_types() -> None:
     t = namedtuple("t", "a b c")
 
     class C:
@@ -28,7 +28,7 @@ def test_namedtuple_types(asserto) -> None:
     asserto(is_namedtuple_like(t(1, 2, 3))).is_true()
 
 
-def test_obj_to_str(asserto) -> None:
+def test_obj_to_str() -> None:
     name = object_to_name(ValueError())
     asserto(name).is_equal_to("ValueError")
 
@@ -43,7 +43,7 @@ class OldSchool:
         return self.x[x]
 
 
-def test_is_iterable(asserto) -> None:
+def test_is_iterable() -> None:
     asserto(is_iterable(100)).is_false()
     asserto(is_iterable("foo")).is_true()
     asserto(is_iterable((1, 2, 3))).is_true()
