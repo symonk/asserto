@@ -80,7 +80,7 @@ class AssertsStringsMixin(Assertable):
 
     @type_check_actual(str)
     def is_blank(self) -> Asserto:
-        """Asserts the actual value is an empty (black) string.
+        """Asserts the actual value is an empty (blank) string.
 
         :raises TypeError: If the actual value is not of type string.
         :raises AssertionError: If the actual value is not an empty string
