@@ -105,9 +105,10 @@ class AssertsStringsMixin(Assertable):
                     self.error(f"{self.actual} did not begin with {prefix=}")
             else:
                 iterable = iter(self.actual)
-                if not next(iterable, None):
+                first = next(iterable, None)
+                if first is None:
                     raise ValueError(f"cannot check if an empty iterable started with {prefix}")
-                if not next(iterable) == prefix:
+                if first != prefix:
                     self.error(f"{self.actual} did not start with {prefix}")
         else:
             raise TypeError("starts_with cannot be called if the actual value is not a string or iterable")
