@@ -7,7 +7,9 @@ import typing
 
 def build_namespace() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--no-push", "-np", action="store_false", default=True, help="Push the update to remote.", dest="no_push")
+    parser.add_argument(
+        "--no-push", "-np", action="store_false", default=True, help="Push the update to remote.", dest="no_push"
+    )
     return parser.parse_args()
 
 

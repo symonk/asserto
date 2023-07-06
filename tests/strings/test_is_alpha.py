@@ -1,4 +1,5 @@
 import pytest
+from utility.error_templates import invalid_actual_regex
 
 from asserto import asserto
 
@@ -8,7 +9,7 @@ def test_is_alphabetic_correctly() -> None:
 
 
 def test_is_alphabetic_raises_type_error_when_actual_is_not_a_string() -> None:
-    with pytest.raises(TypeError, match="None is not a string, it is of type: <class 'NoneType'>."):
+    with pytest.raises(TypeError, match=invalid_actual_regex(None, str, "is_alpha")):
         asserto(None).is_alpha()
 
 
