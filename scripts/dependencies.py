@@ -1,16 +1,27 @@
 #!/bin/env python3
+import argparse
 import subprocess
 import sys
 import typing
 
 
+def build_namespace() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--no-push", "-np", action="store_false", default=True, help="Push the update to remote.", dest="no_push")
+    return parser.parse_args()
+
+
 def main() -> int:
+    namespace = build_namespace()
     return_code = 0
     return_code += remove_lock_if_exists()
     return_code += poetry_update()
     return_code += pre_commit_update()
     if not return_code:
-        commit_and_push()
+        if namespace.no_push:
+            commit_and_push()
+        else:
+            print("Changes detected but script was executed with --no-push so changes remain local.")
     print(f"Exited: {return_code}")
     return return_code
 
