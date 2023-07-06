@@ -94,9 +94,21 @@ class AssertsStringsMixin(Assertable):
         :param prefix: The value to check the actual value starts with.
 
         """
-        if isinstance(self.actual, str):
-            if not self.actual.startswith(prefix):
-                self.error(f"{self.actual} did not begin with {prefix=}")
+        if not isinstance(prefix, str):
+            raise TypeError(f"starts_with prefix must be a string, not: {type(prefix)}")
+        if not prefix:
+            raise ValueError("starts_with cannot be called with an empty prefix string")
+
+        if isinstance(self.actual, Iterable):
+            if isinstance(self.actual, str):
+                if not self.actual.startswith(prefix):
+                    self.error(f"{self.actual} did not begin with {prefix=}")
+            else:
+                iterable = to_iterable(self.actual)
+                if not iterable:
+                    raise ValueError(f"cannot check if an empty iterable started with {prefix}")
+                if not iterable[0] == prefix:
+                    self.error(f"{self.actual} did not start with {prefix}")
         else:
-            raise TypeError(f"{self.actual} is not a string or iterable.")
+            raise TypeError("starts_with cannot be called if the actual value is not a string or iterable")
         return self
