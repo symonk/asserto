@@ -39,8 +39,3 @@ def is_namedtuple_like(obj: typing.Any) -> bool:
     if not isinstance(fields, tuple):
         return False
     return all(type(f) == str for f in fields)
-
-
-def object_to_name(obj: typing.Any) -> str:
-    """Returns the class name of any object."""
-    return obj.__class__.__name__

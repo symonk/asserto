@@ -21,7 +21,7 @@ def update_triggered(fn: typing.Callable[[typing.Any], typing.Any]) -> typing.Ca
     return wrapper
 
 
-def enforce_actual_has_type_of(
+def type_check_actual(
     expected_types: typing.Union[typing.Type[typing.Any], typing.Tuple[typing.Type[typing.Any], ...]]
 ):
     """Decorator that guards the self.actual type for mixin

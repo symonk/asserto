@@ -1,4 +1,5 @@
 import pytest
+from utility.error_templates import invalid_actual_regex
 
 from asserto import asserto
 
@@ -14,7 +15,7 @@ def test_prefix_with_empty_string_raises_value_error() -> None:
 
 
 def test_actual_not_string_or_iterable() -> None:
-    with pytest.raises(TypeError, match="starts_with cannot be called if the actual value is not a string or iterable"):
+    with pytest.raises(TypeError, match=invalid_actual_regex(None, str, "starts_with")):
         asserto(None).starts_with("foo")
 
 

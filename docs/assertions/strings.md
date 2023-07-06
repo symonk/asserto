@@ -8,3 +8,4 @@
             - is_alpha
             - is_digit
             - starts_with
+            - is_blank
