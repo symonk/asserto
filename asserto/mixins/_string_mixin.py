@@ -1,7 +1,7 @@
 from typing import Any
 from typing import Iterable
 
-from typing_extensions import Self
+from typing_extensions import Self as Asserto
 
 from .._decorators import enforce_actual_has_type_of
 from .._protocols import Assertable
@@ -17,7 +17,7 @@ from .._util import to_iterable
 class AssertsStringsMixin(Assertable):
     """Mixin responsible for composing assertions for string types."""
 
-    def ends_with(self, suffix: str) -> Self:
+    def ends_with(self, suffix: str) -> Asserto:
         """Asserts the actual value ends with a given prefix.  If the actual
         value is an iterable, the last element within it will be compared for
         equality (==) against the suffix.
@@ -51,7 +51,7 @@ class AssertsStringsMixin(Assertable):
         return self
 
     @enforce_actual_has_type_of(str)
-    def is_alpha(self) -> Self:
+    def is_alpha(self) -> Asserto:
         """Asserts the actual value is considered alphabetic.  Empty strings will
         not be considered alphabetic for this case.
 
@@ -66,7 +66,7 @@ class AssertsStringsMixin(Assertable):
         return self
 
     @enforce_actual_has_type_of(str)
-    def is_digit(self) -> Self:
+    def is_digit(self) -> Asserto:
         """Asserts the actual value is a digit string.  Empty strings will not be considered
         digit strings for this case.
 
@@ -79,7 +79,7 @@ class AssertsStringsMixin(Assertable):
             self.error(f"{self.actual} is not a digit string.")
         return self
 
-    def starts_with(self, prefix: str) -> Self:
+    def starts_with(self, prefix: str) -> Asserto:
         """Asserts the actual value starts with the prefix.  If the actual value is
         an iterable the first element is compared for equality (==) against the prefix.
 
