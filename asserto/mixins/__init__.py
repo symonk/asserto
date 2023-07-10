@@ -1,3 +1,3 @@
-from ._string_mixin import AssertsStringsMixin
+from ._strings import AssertsStringsMixin
 
 __all__ = ("AssertsStringsMixin",)

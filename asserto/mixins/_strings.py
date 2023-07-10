@@ -3,9 +3,9 @@ from typing import Iterable
 
 from typing_extensions import Self as Asserto
 
-from .._decorators import type_check_actual
 from .._protocols import Assertable
 from .._util import to_iterable
+from ._mixin_utils import enforce_type_of
 
 # Todo: end_with offering a `start` and `end`?
 # Todo: starts_with offering a `start` and `end`?
@@ -17,7 +17,6 @@ from .._util import to_iterable
 class AssertsStringsMixin(Assertable):
     """Mixin responsible for composing assertions for string types."""
 
-    @type_check_actual((str, Iterable))
     def ends_with(self, suffix: str) -> Asserto:
         """Asserts the actual value ends with a given prefix.  If the actual
         value is an iterable, the last element within it will be compared for
@@ -33,6 +32,8 @@ class AssertsStringsMixin(Assertable):
 
         :return: The `Asserto` instance for fluent chaining.
         """
+        enforce_type_of(self.actual, Iterable)
+        
         if isinstance(self.actual, str):
             if not suffix:
                 raise ValueError(f"{suffix=} must not be empty.")
@@ -49,7 +50,6 @@ class AssertsStringsMixin(Assertable):
                 self.error(f"Expected `{self.actual}` to end with {suffix=} but it did not.")
         return self
 
-    @type_check_actual(str)
     def is_alpha(self) -> Asserto:
         """Asserts the actual value is considered alphabetic.  Empty strings will
         not be considered alphabetic for this case.
@@ -59,12 +59,12 @@ class AssertsStringsMixin(Assertable):
 
         :return: The `Asserto` instance for fluent chaining.
         """
+        enforce_type_of(self.actual, str)
         if not self.actual.isalpha():
             self.error(f"{self.actual} is not alphabetic.")
 
         return self
 
-    @type_check_actual(str)
     def is_digit(self) -> Asserto:
         """Asserts the actual value is a digit string.  Empty strings will not be considered
         digit strings for this case.
@@ -74,22 +74,22 @@ class AssertsStringsMixin(Assertable):
 
         :return: The `Asserto` instance for fluent chaining.
         """
+        enforce_type_of(self.actual, str)
         if not self.actual.isdigit():
             self.error(f"{self.actual} is not a digit string.")
         return self
 
-    @type_check_actual(str)
     def is_blank(self) -> Asserto:
         """Asserts the actual value is an empty (blank) string.
 
         :raises TypeError: If the actual value is not of type string.
         :raises AssertionError: If the actual value is not an empty string
         """
+        enforce_type_of(self.actual, str)
         if len(self.actual):
             self.error(f"{self.actual} was not an empty string.")
         return self
 
-    @type_check_actual((str, Iterable))
     def starts_with(self, prefix: str) -> Asserto:
         """Asserts the actual value starts with the prefix.  If the actual value is
         an iterable the first element is compared for equality (==) against the prefix.
@@ -100,6 +100,7 @@ class AssertsStringsMixin(Assertable):
         :return: The `Asserto` instance for fluent chaining.
 
         """
+        enforce_type_of(self.actual, Iterable)
         if not isinstance(prefix, str):
             raise TypeError(f"starts_with prefix must be a string, not: {type(prefix)}")
         if not prefix:
