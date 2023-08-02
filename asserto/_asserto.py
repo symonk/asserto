@@ -4,7 +4,7 @@ import types
 import typing
 import warnings
 
-from ._constants import Methods
+from ._const import Methods
 from ._error_handling import ErrorHandler
 from ._error_handling import RaisesErrors
 from ._exc_handling import ExceptionChecker
