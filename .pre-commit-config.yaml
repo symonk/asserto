@@ -1,4 +1,5 @@
-exclude: ^(.tox|doc|ci/templates|)(/|$)
+files: ^(asserto|scripts)
+types: [python]
 repos:
   - repo: https://github.com/ambv/black
     rev: 23.7.0
@@ -43,3 +44,8 @@ repos:
     hooks:
       - id: pycln
         args: [--config=pyproject.toml, --all]
+  - repo: https://github.com/pylint-dev/pylint
+    rev: v2.17.5
+    hooks:
+      - id: pylint
+        args: [-j, "0"]

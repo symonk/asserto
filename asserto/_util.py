@@ -38,4 +38,4 @@ def is_namedtuple_like(obj: typing.Any) -> bool:
     fields = getattr(obj, "_fields", None)
     if not isinstance(fields, tuple):
         return False
-    return all(type(f) == str for f in fields)
+    return all(type(f) is str for f in fields)
