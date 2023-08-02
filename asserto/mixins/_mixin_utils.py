@@ -1,5 +1,6 @@
 import inspect
 import typing
+
 from ._const import ACTUAL_TYPE_ERROR
 
 

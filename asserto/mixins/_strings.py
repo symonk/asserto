@@ -33,7 +33,7 @@ class AssertsStringsMixin(Assertable):
         :return: The `Asserto` instance for fluent chaining.
         """
         enforce_type_of(self.actual, Iterable)
-        
+
         if isinstance(self.actual, str):
             if not suffix:
                 raise ValueError(f"{suffix=} must not be empty.")
