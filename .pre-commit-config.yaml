@@ -40,12 +40,12 @@ repos:
     hooks:
       - id: pdb-vars
   - repo: https://github.com/hadialqattan/pycln
-    rev: v2.2.0
+    rev: v2.2.1
     hooks:
       - id: pycln
         args: [--config=pyproject.toml, --all]
   - repo: https://github.com/pylint-dev/pylint
-    rev: v2.17.5
+    rev: v3.0.0a6
     hooks:
       - id: pylint
         args: [-j, "0"]
