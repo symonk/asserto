@@ -2,7 +2,7 @@ files: ^(asserto|scripts)
 types: [python]
 repos:
   - repo: https://github.com/ambv/black
-    rev: 23.7.0
+    rev: 23.9.1
     hooks:
       - id: black
         args:
@@ -11,7 +11,7 @@ repos:
           - '--line-length=120'
         language_version: python3.8
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -26,7 +26,7 @@ repos:
     hooks:
       - id: isort
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.4.1
+    rev: v1.6.0
     hooks:
       - id: mypy
         files: asserto/
@@ -40,12 +40,12 @@ repos:
     hooks:
       - id: pdb-vars
   - repo: https://github.com/hadialqattan/pycln
-    rev: v2.2.1
+    rev: v2.3.0
     hooks:
       - id: pycln
         args: [--config=pyproject.toml, --all]
   - repo: https://github.com/pylint-dev/pylint
-    rev: v3.0.0a6
+    rev: v3.0.1
     hooks:
       - id: pylint
         args: [-j, "0"]
