@@ -36,6 +36,10 @@ def poetry_update():
     return _run_command(("poetry", "update"))
 
 
+def poetry_up_deps():
+    return _run_command(("poetry", "up"))
+
+
 def pre_commit_update():
     return _run_command(("pre-commit", "autoupdate"))
 
