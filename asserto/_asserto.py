@@ -351,7 +351,7 @@ class Asserto(AssertsStringsMixin):
             raise TypeError(f"assertion method was not a bound method on the handler {handler_instance}")
         try:
             _ = assertion_method(*args, **kwargs)
-        except AssertionError:
+        except AssertionError as e:
             if description := self.description:
                 e = AssertionError(description)
             self.error(e)
