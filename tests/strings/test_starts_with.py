@@ -1,5 +1,5 @@
 import pytest
-from utility.error_templates import invalid_actual_regex
+from tests.utility.error_templates import invalid_actual_regex
 
 from asserto import asserto
 
