@@ -71,15 +71,8 @@ warn_unused_configs = 'True'
 no_implicit_reexport = 'False'
 ignore_errors = 'False'
 
-[tool.black]
-target-version = ['py310']
+[tool.ruff]
 line-length = 120
+target-version = "py311"
 
-[tool.flake8]
-# flake8 does not currently support pyproject.toml (handle via pre-commit directly).
-
-[tool.pylint]
-max-line-length = 120
-
-[tool.pylint.'MESSAGES CONTROL']
-disable = "missing-module-docstring"
+[tool.ruff.lint]
